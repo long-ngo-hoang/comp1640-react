@@ -6,6 +6,7 @@ import NavBar from './components/navbar';
 
 
 
+
 function App() {
   return (
     <>     
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         {/* <Route path='/news' element={<NewsPage />} /> */}
+        {/* <Route path='/login' element={<LogIn />} /> */}
       </Routes>
 
 
