@@ -1,26 +1,43 @@
-import axios from 'axios';
-import React from 'react';
+   import React, { useEffect } from 'react'
+  import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+  import { fetchIdeas } from '../redux/ideasSlice'
+  import { deleteIdeaAsync } from '../redux/ideasSlice'
+  import {selectAllIdeas} from '../redux/ideasSlice'
 
-export default function GetData(){
-    const [data,setData] = React.useState([]);
-  
-    React.useEffect(() => {
-      axios.get(`https://localhost:44393/WeatherForecast`)
-      .then((res) =>  {
-        setData(res.data)
-        console.log(res);
-    }).catch(err => console.log(err))
-    }, [])
+
+  const IdeasView = () => {
+    const idea = useSelector(selectAllIdeas)
+    const dispatch = useDispatch()
+    function handleRemove(id) {
+      dispatch(deleteIdeaAsync(id));
+    }
+
     
-    return (
-        <>
-         <ul>
-            {data.map(data => (
-                <><li key={data.date}>{data.date}</li><li>{data.temperatureC}</li><li>{data.temperatureF}</li><li>{data.summary}</li></>
+    // // function handleRemove(id) {
+    // //   dispatch(deleteIdeaAsync(id));
+    // // }
+    
+    useEffect(() => {
+      dispatch(fetchIdeas())     
+    }, [])
 
+    return (
+      <div>
+        <h2>List of Users</h2>
+          <ul>
+            {idea.map(idea => (
+              <li key={idea.id}>{idea.name}
+              <button type="button" onClick={() => handleRemove(idea.id)}>
+              Remove
+            </button>
+
+            <Link to={`Idea/${idea.id}`}>View Idea</Link>
+            <Link to={`/Idea/edit/${idea.id}`}>Edit Post</Link>
+            </li>    
             ))}
-        </ul>
-  
-          </> 
+          </ul>
+      </div>
     )
   }
+export default IdeasView;
