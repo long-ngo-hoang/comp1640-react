@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+
 import {
   MDBContainer,
   MDBRow,
@@ -6,38 +7,17 @@ import {
   MDBCard,
   MDBCardBody,
 } from "mdb-react-ui-kit";
-import './newpages.css';
-import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
+import Navbar1 from "../../navbar/navbar1";
 
-class NewsPage extends Component {
-  state = {clicked: false};
-  handleClick = () =>{this.setState({clicked:!this.state.clicked})}
-  render(){
+import {FaThumbsDown, FaThumbsUp, FaBan, FaPenSquare} from "react-icons/fa";
+
+function ManageIdeas(){
+  const clickEvent = () => {}
+  
   return (
     <>
-    <nav>
-      <div>
-        <ul id="navbar" className={this.state.clicked ? "#navbar active":"#navbar"}>
-          <li><a href="index.html">Department 1</a></li>
-          <li><a href="index.html">Manage Ideas</a></li>
-          <li><a href="index.html">View All Ideas</a></li>
-          <li><a href="index.html">Create Ideas</a></li>
-        </ul>
-      </div>
-      <div id="mobile" onClick={this.handleClick}>
-        <i id="bar"
-        className={this.state.clicked ?"fas fa-times":"fas fa-bars"}></i>
-      </div>
-      <div>
-      <div className="fas">
-        <i className="fas fa-bell"></i>
-      </div>
-      <div className="fas">
-        <i className="fas fa-user"></i>
-      </div>
-      </div>
-    </nav>
-
+    <Navbar1/>
+    
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-9">
         <MDBCol md="12" xl="10">
@@ -73,7 +53,9 @@ class NewsPage extends Component {
                         </div>
                  </div>
                  <div style={{width: "70%", margin: "auto"}}>
-                  <p>Written by</p>
+                    <button type="button" class="btn btn-danger" style={{marginRight: "5px"}} >Delete</button>
+
+                    <button type="button" class="btn btn-primary">Update</button>
                  </div>
                 
                  
@@ -112,7 +94,9 @@ class NewsPage extends Component {
                         </div>
                  </div>
                  <div style={{width: "70%", margin: "auto"}}>
-                  <p>Written by</p>
+                    <button type="button" class="btn btn-danger" style={{marginRight: "5px"}} >Delete</button>
+
+                    <button type="button" class="btn btn-primary">Update</button>
                  </div>
                 
                  
@@ -140,19 +124,28 @@ class NewsPage extends Component {
                   lg="3"
                   className="border-sm-start-none border-start"
                  style={{display: "flex"}}>
-                  <div style={{width: "30%"}}>
-                        <div className="container">                  
-                          <FaThumbsUp icon="fa-regular fa-thumbs-up" style={{display:"flex"}} />      
-                          <p>200</p>      
+                  <div  style={{width: "30%"}}>
+                        <div className="container">  
+                                     
+                          <FaThumbsUp icon="fa-regular fa-thumbs-up" style={{display:"flex"}} />
+                          <p>18</p>      
+                              
                         </div>
-                        <div className="container"> 
+                        
+                        <div className="container">
+                                      
+
                           <FaThumbsDown icon="fa-regular fa-thumbs-down"  />  
-                          <p>18</p>
+                          <p>200</p>
                         </div>
                  </div>
+
                  <div style={{width: "70%", margin: "auto"}}>
-                  <p>Written by</p>
+                 <button type="button" class="btn btn-danger" style={{marginRight: "5px"}} >Delete</button>
+
+                 <button type="button" class="btn btn-primary">Update</button>
                  </div>
+               
                 
                  
                 </MDBCol>
@@ -166,5 +159,5 @@ class NewsPage extends Component {
     </>
   );
 }
-}
-export default NewsPage;
+
+export default ManageIdeas;
