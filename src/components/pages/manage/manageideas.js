@@ -9,10 +9,10 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar1 from "../../navbar/navbar1";
 
-import {FaThumbsDown, FaThumbsUp, FaBan, FaPenSquare} from "react-icons/fa";
+import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 
 function ManageIdeas(){
-  const clickEvent = () => {}
+ 
   
   return (
     <>

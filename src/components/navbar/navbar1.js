@@ -1,9 +1,19 @@
 import './navbar1.css';
 import React from 'react';
+import Notifications from 'react-notifications-menu';
+import { useState } from 'react';
 
 
 function Navbar1()  {
 
+  const DEFAULT_NOTIFICATION = {
+    image:
+      "",
+    message: "Notification one.",
+    detailPage: "/events",
+    receivedTime: "12h ago"
+  };
+  const [data, setData] = useState([DEFAULT_NOTIFICATION]);
   const [clicked, setClicked] = React.useState(false);
 
 
@@ -29,7 +39,18 @@ function Navbar1()  {
       </div>
       <div>
       <div className="fas">
-        <i className="fas fa-bell"></i>
+        <Notifications
+          data={data}
+          header={{
+            title: "Notifications",
+            option: { text: "View All", onClick: () => console.log("Clicked") }
+          }}
+          markAsRead={(data) => {
+            console.log(data);
+          }}
+          
+        />
+        
       </div>
       <div className="fas">
         <i className="fas fa-user"></i>
