@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
-import SelectedBox from '../../APIs/selectedBox';
+import SelectedBox from './selectedBox';
 import { updateIdeaAsync } from '../../redux/ideasSlice';
 import { selectIdeaById } from '../../redux/ideasSlice';
 import { useParams, useNavigate  } from 'react-router-dom';
@@ -15,17 +15,19 @@ import { useSelector } from 'react-redux'
      const dispatch = useDispatch();
      const navigate = useNavigate()
      const post = useSelector((state) => selectIdeaById(state,postId))
-
+     console.log("test",post)
         const [idea, setIdea] = useState({
         id: post.id,
-        academicYearId: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-        userId: "3fe9366b-8a12-448f-816a-cfc7115bb08b",
+        academicYearId: "b6bce65a-e39c-4691-82c0-9809ea6e46ef",
+        departmentId: "63dd6da1-c392-40f9-8630-edb7265dd941",
+        userId: "5fca3a55-45f9-46a0-8b05-5696b0ac4d02",
         categoryId: "",
         name: post?.name,
         description: "",
         // document: "",
         isAnonymous: post?.isAnonymous
     });
+  
 
     const [slectedCategories, setSelectedCategories] = useState(post?.categoryId); 
     const onChangeName = (e) =>{
@@ -65,7 +67,7 @@ import { useSelector } from 'react-redux'
         console.log(idea);
         dispatch(updateIdeaAsync(idea)
         ) 
-        navigate(`/idea/${postId}`)
+        navigate(`/idea/detail/${postId}`)
     }
 
     const[files, setFiles] = useState([{

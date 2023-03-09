@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
-import SelectedBox from '../../APIs/selectedBox';
+import SelectedBox from './selectedBox';
 import { addIdeaAsync } from '../../redux/ideasSlice';
 import UploadFile from '../../APIs/uploadFile';
-
+import {  useNavigate  } from 'react-router-dom';
 export default function AddIdea() {
   
      const dispatch = useDispatch();
+     const navigate = useNavigate()
     const [idea, setIdea] = useState({
-        academicYearId: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-        userId: "3fe9366b-8a12-448f-816a-cfc7115bb08b",
+        // academicYearId: "b6bce65a-e39c-4691-82c0-9809ea6e46ef",
+        // departmentId: "63dd6da1-c392-40f9-8630-edb7265dd941",
+        // userId: "5fca3a55-45f9-46a0-8b05-5696b0ac4d02",
         categoryId: "",
         name: "",
         description: "",
@@ -40,11 +42,11 @@ export default function AddIdea() {
             return{...preV, categoryId: e.target.value}
         })
     }
-    const onChangeDocument = (e) =>{
-        setIdea((preV) => {
-            return{...preV, document: e.target.value}
-        })
-    }
+    // const onChangeDocument = (e) =>{
+    //     setIdea((preV) => {
+    //         return{...preV, description: e.target.value}
+    //     })
+    // }
     const onChangeAnonymous = (value) => {
         setIdea((preV) => {
             return{...preV, isAnonymous: value}
@@ -54,8 +56,9 @@ export default function AddIdea() {
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addIdeaAsync({idea})
+        dispatch(addIdeaAsync(idea)
         ) 
+        navigate(`/idea/view`)
   }
 
 
@@ -69,10 +72,10 @@ export default function AddIdea() {
     
         return (
           <>
-         
             <form>
             <h1>Create Idea</h1>
-            <BootstrapSwitchButton
+            <div className='switch-btn'>
+            <BootstrapSwitchButton 
                 checked={idea.isAnonymous}
                 width={100}
                 onstyle="success"
@@ -80,10 +83,11 @@ export default function AddIdea() {
                 // offlabel='Regular User'
                 onChange={onChangeAnonymous} 
             />
-                <label htmlFor="name">Name</label>
+            </div>
+                <label htmlFor="name">Name:</label>
                 <input onChange={onChangeName} value={idea.name}/>
-                <label htmlFor="name">Description</label>
-                <input onChange={onChangeDescription} value={idea.description}/>
+                <label htmlFor="name">Description:</label>
+                <textarea onChange={onChangeDescription} value={idea.description}/>
                 <label htmlFor="cars">Choose categories:</label>
                     <select
                     disabled={false}
@@ -93,9 +97,8 @@ export default function AddIdea() {
                             <SelectedBox/>
                             </select>
                 <UploadFile/>
-                <label> Document</label>
-                <input onChange={onChangeDocument} value={idea.document}/>
-                <button onClick={handleSubmit}>Add Idea</button>
+                {/* <input onChange={onChangeDocument} value={idea.description}/> */}
+                <button className='button' onClick={handleSubmit}>Add Idea</button>
             </form>
             
           </>
