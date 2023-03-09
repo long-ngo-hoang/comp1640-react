@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './abc.css';
+import { useParams, useNavigate  } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginAsync } from '../../redux/loginSlice';
+import { refreshToken } from '../../redux/loginSlice';
+
 
 export function LogIn (){
-    const{useState}=React;
-    
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const[eye,seteye]=useState(true);
     const[inpass,setinpass]=useState("password");
      const[warning,setwarning]=useState(false);
     const[tick,settick]=useState(false);
     
      const[inputText,setInputText]=useState({ 
-        
         email:"",
         password:""
     });
     
-      const[wemail,setwemail]=useState(false);
+    const[wemail,setwemail]=useState(false);
     const[wpassword,setwpassword]=useState(false);
 
  const Eye=()=>{
@@ -66,8 +70,10 @@ const Tick=()=>{
         }
         else if(inputText.password === "")
         setwpassword(true);
-      else{
-          alert("form submitted");
+         else{
+            dispatch(loginAsync(inputText))
+            // dispatch(refreshToken())
+        //   alert("form submitted");
       }
     } 
     

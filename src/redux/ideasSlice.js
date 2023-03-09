@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
   status: 'loading',// 'loading' | 'succeeded' | 'failed'
+  pageindex: 1,
+  totalpage: 1,
   ideas: [],
   error: ''
 }
@@ -11,23 +13,30 @@ const instance = axios.create({
     baseURL: 'https://localhost:7044'
   });
 
-export const fetchIdeas = createAsyncThunk('ideas/fetchIdeas', async () => {
+const token = localStorage.getItem('token');
 
+ const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+export const fetchIdeas = createAsyncThunk('ideas/fetchIdeas', async () => {
   const response = await instance
-    .get('/Ideas');
+    .get('/Ideas?pageIndex=1',config);
     console.log(response.data)
   return response.data;
 })
 
-export const addIdeaAsync = createAsyncThunk('ideas/addIdeaAsync', async (payload) => {
+export const addIdeaAsync = createAsyncThunk('ideas/addIdeaAsync', async (initialIdea) => {
   const response = await instance
-    .post(`/Ideas` , payload.idea);
+  // console.log("C", initialIdea)
+    .post(`/Ideas` , initialIdea, config);
+    console.log(response)
   return response.data;
 })
 
-export const loadOptions = createAsyncThunk('ideas/loadOptions', async () => {
+export const getIdeaByID = createAsyncThunk('ideas/getIdeaByID', async (initialIdea) => {
+  const  id  = initialIdea;
   const response = await instance
-    .get(`/Ideas`);
+    .get(`/Ideas/${id}`,config);
     console.log(response.data)
   return response.data;
 })
@@ -57,15 +66,7 @@ const ideasSlice = createSlice({
   name: 'ideas',
   initialState,
   reducers:{
-          addIdea: (state, action) => {
-            state.ideas.push(action.payload);
-          },     
-          removeIdea: (state, action) => {
-            const id = action.payload;
-            state.ideas = state.ideas.filter((item)=> item.id !== id
-            )
-            console.log(action);
-          },
+
   },
   extraReducers: builder => {
     builder.addCase(fetchIdeas.pending, (state, action) => {
@@ -74,12 +75,17 @@ const ideasSlice = createSlice({
     })
     builder.addCase(fetchIdeas.fulfilled, (state, action) => {
       state.status = 'succeeded'
+      state.ideas = action.payload.ideas
+      state.error = ''
+    })
+    builder.addCase(getIdeaByID.fulfilled, (state, action) => {
+      state.status = 'succeeded'
       state.ideas = action.payload
       state.error = ''
     })
     builder.addCase(addIdeaAsync.fulfilled, (state, action) => {
       state.status = 'succeeded'
-      state.ideas = action.payload
+      state.ideas.ideas.push(action.payload)
       state.error = ''
     })
     builder.addCase(updateIdeaAsync.fulfilled, (state, action) => {
@@ -96,7 +102,7 @@ const ideasSlice = createSlice({
       state.error = ''
     })
     builder.addCase(deleteIdeaAsync.fulfilled, (state, action) => {
-      const {id} = action.payload;
+      const id = action.payload;
       state.ideas = state.ideas.filter((item)=> item.id !== id
       )
     })
@@ -108,7 +114,9 @@ export  const {removeIdea} = ideasSlice.actions;
 
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
-export const selectIdeaById = (state, Id) =>
-    state.ideas.ideas.find((idea) => idea.id === Id);
+export const selectIdeaById = (state) => state.ideas.ideas;
+
+
+
 
 export default ideasSlice.reducer

@@ -8,9 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import store, {persistor} from './redux/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-
+import { injectStore } from './redux/categoriesSlice';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+injectStore(store)
 
 root.render(
   <React.StrictMode>
