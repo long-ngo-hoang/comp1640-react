@@ -3,10 +3,8 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
 import SelectedBox from './selectedBox';
-import SelectedBox from './selectedBox';
 import { addIdeaAsync } from '../../redux/ideasSlice';
 import UploadFile from '../../APIs/uploadFile';
-import {  useNavigate  } from 'react-router-dom';
 import {  useNavigate  } from 'react-router-dom';
 export default function AddIdea() {
   
