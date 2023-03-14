@@ -1,24 +1,19 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import instance from './api';
 
 const initialState = {
   loading: false,
   departments: [],
   error: ''
 }
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
 
 export const getDepartments = createAsyncThunk('department/getDepartments', async () => {
   const response = await instance
     .get('/Departments');
-    console.log(response.data)
   return response.data;
 })
 
 export const addDepartmentsAsync = createAsyncThunk('department/addDepartmentsAsync', async (initialIdea) => {
-  console.log(initialIdea)
   const response = await instance
     .post(`/Departments` , initialIdea);
   return response.data;
@@ -29,7 +24,6 @@ export const updateDepartmentsAsync = createAsyncThunk('department/updateDepartm
   try{
   const response = await instance
     .put(`/Departments/${id}`, initialIdea);
-    console.log("update" , response)
   return response.data;
   }catch(err)
   {
@@ -51,17 +45,20 @@ const departmentsSlice = createSlice({
   reducers:{
   },
   extraReducers: builder => {
+    
     builder.addCase(getDepartments.fulfilled, (state, action) => {
       state.loading = false
       state.departments = action.payload
       state.error = ''
     })
+
     builder.addCase(addDepartmentsAsync.fulfilled, (state, action) => {
       state.loading = false
       console.log(action.payload)
       state.departments.push(action.payload)
       state.error = ''
     })
+
     builder.addCase(updateDepartmentsAsync.fulfilled, (state, action) => {
       // state.loading = false
       // console.log(action.payload)
@@ -73,13 +70,13 @@ const departmentsSlice = createSlice({
       state.departments = [...department, action.payload];
       state.error = ''
     })
+
     builder.addCase(deleteDepartmentsAsync.fulfilled, (state, action) => {
       const id = action.payload;
       state.departments = state.departments.filter((item)=> item.id !== id)
     })
   }
 })
-
 
 export const selectAllDepartments = (state) => state.departments.departments;
 

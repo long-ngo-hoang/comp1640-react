@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import instance from './api';
 
 const initialState = {
   loading: false,
@@ -7,16 +7,13 @@ const initialState = {
   error: ''
 }
 
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
-
 export const getAcademicYears = createAsyncThunk('academicYears/getAcademicYears', async () => {
   const response = await instance
     .get('/AcademicYears');
     console.log(response.data)
   return response.data;
 })
+
 export const addAcademicYearsAsync = createAsyncThunk('academicYears/addAcademicYearsAsync', async (initialIdea) => {
   console.log(initialIdea)
   const response = await instance

@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateProfilesById } from '../../redux/userSclice';
+import { updateProfilesById } from '../../redux/usersSlice.js';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux'
-import { selectAllUsers } from '../../redux/userSclice'
+import { selectAllUsers } from '../../redux/usersSlice.js'
 
-    export default function UpdateUser() {
+export default function UpdateUser() {
 
     const { Id } = useParams()
-    
-     const dispatch = useDispatch();
-     const navigate = useNavigate()
-     const user = useSelector(selectAllUsers)
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const user = useSelector(selectAllUsers)
 
     const [users, setUsers] = useState({
         id: Id,
@@ -26,14 +24,13 @@ import { selectAllUsers } from '../../redux/userSclice'
         setUsers((preV) => {     
             return{...preV, avatarUrl: e.target.value}
         })
-        
     }
+
     const onChangeFullName = (e) =>{
         setUsers((preV) => {
             return{...preV, fullName: e.target.value}
         })
     }
-
 
     const onChangeAddress = (e) =>{
         setUsers((preV) => {
@@ -47,7 +44,6 @@ import { selectAllUsers } from '../../redux/userSclice'
         })
     }
 
-
     const handleSubmit = (event )=> {
         event.preventDefault();
         dispatch(updateProfilesById(users)
@@ -55,7 +51,6 @@ import { selectAllUsers } from '../../redux/userSclice'
         navigate(`/profile/view`)
     }
 
-    
         return (
           <>
             <form>
@@ -68,7 +63,6 @@ import { selectAllUsers } from '../../redux/userSclice'
                 <input onChange={onChangeAddress} value={user.address}/>
                 <label htmlFor="name">phone</label>
                 <input onChange={onChangePhone} value={user.phone}/>
-
                 <button onClick={handleSubmit}>Update User</button>
             </form>
           </>

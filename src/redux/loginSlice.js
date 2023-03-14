@@ -1,29 +1,23 @@
-import axios from 'axios'
+import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { Cookies } from 'react-cookie';
 
 const initialState = {
     loading: false,
     token: null,
     error: ''
 }
+
+const token = localStorage.getItem('token');
 const instance = axios.create({
-    baseURL: 'https://localhost:7044'
+    baseURL: 'https://localhost:7044',
+    // headers: { Authorization: `Bearer ${token}` }
   });
-  const cookies = new Cookies();
-  const token = localStorage.getItem('token');
-  const cookie = cookies.get(`rf`);
-  console.log("ga", cookie)
-  const config = {
-    headers: { Authorization: `QsRS9QpgNBIxUTIxd5qi6PuHoPCNQMdWLcnyBXQG9Vmp5LvQk1cNnRQYOU7fcxi99xGM3%2B%2FH5aRTXGEzMMueVA%3D%3D` }
-};
-  
-  export const loginAsync = createAsyncThunk('login/loginAsync', async (initialIdea ,{rejectWithValue}) => {
-    
+ 
+  export const loginAsync = createAsyncThunk('login/loginAsync', async (initialIdea ,{rejectWithValue}) => {   
     try{
-      
     const response = await instance
       .post(`/api/Auth/Login` , initialIdea);
+      console.log("ádas", response)
     return response.data;
     }
     catch(error){
@@ -35,45 +29,32 @@ const instance = axios.create({
     }
   })
 
-  export const refreshToken = createAsyncThunk('login/refreshToken', async (_,{rejectWithValue}) => {   
-    console.log("ngu   ", config)
+  export const refreshToken = createAsyncThunk('login/refreshToken', async (initialToken,{rejectWithValue}) => {   
     try{     
     const response = await instance
-      .post(`/api/Auth/Refresh-Token`, config);
+      .post(`/api/Auth/RefreshToken?refreshToken=${encodeURIComponent(initialToken)}`);
+      
       return response.data;
     }
       catch(error){     
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message)
         } else {
-          console.log("b")
+          console.log("b", error.message)
             return rejectWithValue(error.message)
         }
     }    
   })
 
-//   export default function parseJwt(token) {
-//     var dateNow = new Date();
-
-//     if (!token) { return; }
-//     const base64Url = token.split('.')[1];
-//     const base64 = base64Url.replace('-', '+').replace('_', '/');
-//     const tokenAfterParse =  JSON.parse(window.atob(base64));
-//     if(tokenAfterParse.exp > dateNow.getTime()){
-//     return true;
-//     }
-//     else{
-        
-//         return false;
-//     }
-// }
-
-
   const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers:{
- 
+      logout:(state,action)=>{
+        state.token = null
+        localStorage.removeItem('token')
+        localStorage.removeItem('rftoken')
+      }
     },
     extraReducers: builder => {
       // builder.addCase(getCategories.fulfilled, (state, action) => {
@@ -87,16 +68,17 @@ const instance = axios.create({
     //   })
       builder.addCase(loginAsync.fulfilled, (state, action) => {
         state.loading = false
-        // console.log(action.payload)
+        console.log(action.payload)
         state.token = action.payload
-        localStorage.setItem('token', state.token)
+        localStorage.setItem('token', state.token.token)
+        localStorage.setItem('rftoken', state.token.refreshToken)
         state.error = ''
       })
       builder.addCase(refreshToken.fulfilled, (state, action) => {
         state.loading = false
-        // console.log(action.payload)
         state.token = action.payload
-        localStorage.setItem('token', state.token)
+        localStorage.setItem('token', state.token.token)
+        localStorage.setItem('rftoken', state.token.refreshToken)
         state.error = ''
       })
     //   builder.addCase(loginAsync.rejected, (state, action) => {
@@ -107,4 +89,8 @@ const instance = axios.create({
     }
   })
   
+export const {logout}  = loginSlice.actions
+
+export const selectToken = (state) => state.login.token.token;
+
 export default loginSlice.reducer

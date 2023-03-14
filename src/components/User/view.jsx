@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getProfiles } from '../../redux/userSclice'
-import { selectAllUsers } from '../../redux/userSclice'
-import {  useNavigate  } from 'react-router-dom'
+import { getProfiles } from '../../redux/usersSlice.js'
+import { selectAllUsers } from '../../redux/usersSlice.js'
 import { Link } from 'react-router-dom'
 
 const UserView = () => {
 
+    const user = useSelector(selectAllUsers)
+    const dispatch = useDispatch()
 
-  const user = useSelector(selectAllUsers)
-  console.log("a", user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
+    useEffect(() => {
     dispatch(getProfiles())     
-  }, [])
+    }, [])
 
   return (
     <div class="idea__content container">

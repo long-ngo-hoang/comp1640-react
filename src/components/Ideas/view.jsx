@@ -6,19 +6,21 @@
   import {  useNavigate  } from 'react-router-dom'
   import { Link } from 'react-router-dom'
   import  './view.css'
-  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  import { logout } from '../../redux/loginSlice'
 
   const IdeasView = () => {
     const ideas = useSelector(selectAllIdeas)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    
     function handleRemove(id) {
       dispatch(deleteIdeaAsync(id));
     }
 
-    
+    function handleLogout() {
+      dispatch(logout());
+    }
 
-    
     useEffect(() => {
       dispatch(fetchIdeas())     
     }, [])
@@ -46,6 +48,9 @@
               </div>    
               ))}                
           </ul>
+          <button className='col-4' type="btn-btn" onClick={() => handleLogout()}>
+                logout
+              </button>
         </div>
           
       </div>

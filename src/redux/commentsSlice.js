@@ -1,16 +1,11 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import instance from './api';
 
 const initialState = {
   loading: false,
   comments: [],
   error: ''
 }
-
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
-
 
 export const addCommentAsync = createAsyncThunk('comments/addCommentsAsync', async (initialIdea) => {
   console.log(initialIdea)
@@ -79,11 +74,9 @@ const categoriesSlice = createSlice({
   }
 })
 
-
 export const selectAllComments = (state) => state.comment.comments;
 
 export const selectCommentsById = (state, Id) =>
     state.comment.comments.find((item) => item.id === Id);
-
 
 export default categoriesSlice.reducer

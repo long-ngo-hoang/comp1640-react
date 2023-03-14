@@ -5,20 +5,20 @@ import { useParams } from 'react-router-dom';
 import { deleteCommentAsync } from '../../redux/commentsSlice'
 import { getIdeaByID } from '../../redux/ideasSlice'
 import {selectAllIdeas} from '../../redux/ideasSlice'
-import {AddComments} from '../Comments/create'
 import './detail.css'
-    export default function DetailIdea() {
-    const { postId } = useParams()
 
+export default function DetailIdea() {
+
+    const { postId } = useParams()
     const idea = useSelector(selectAllIdeas)
     const [showCommet, setShowComment] = useState(true)
-
-    const onClickShowComment = () => setShowComment(!showCommet)
     const dispatch = useDispatch()
 
-     function handleRemove(id) {
+    const onClickShowComment = () => setShowComment(!showCommet)
+
+    function handleRemove(id) {
          dispatch(deleteCommentAsync(id));
-     }
+    }
 
     useEffect(() => {
         dispatch(getIdeaByID(postId))     

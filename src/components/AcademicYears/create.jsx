@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addCategoryAsync} from '../../redux/categoriesSlice'
+import {addAcademicYearsAsync} from '../../redux/academicYearsSlice'
 import {  useNavigate  } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 export default function AddAcademicYears() {
   
-     const dispatch = useDispatch();
-     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [academicYears, setAcademicYears] = useState({
         name: '',
         startDate: new Date(),
         closureDate: new Date(),
         finalClosureDate: new Date(),
     });
-    // 
+  
+    let startDate = moment(academicYears.startDate).format('YYYY-MM-DDTHH:mm:ss');
+    let closureDate = moment(academicYears.closureDate).format('YYYY-MM-DDTHH:mm:ss');
+    let finalClosureDate = moment(academicYears.finalClosureDate).format('YYYY-MM-DDTHH:mm:ss');
+
     const onChangeName = (e) =>{
         setAcademicYears((preV) => {     
             return{...preV, name: e.target.value}
@@ -26,7 +31,6 @@ export default function AddAcademicYears() {
         setAcademicYears((preV) => {
             return{...preV, startDate: date}
         })
-        console.log( date);
     }
 
     const onChangeClosureDate = (date) =>{
@@ -41,19 +45,24 @@ export default function AddAcademicYears() {
         })
     }
 
-   const handleSubmit = (event )=> {
+    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addCategoryAsync({AddAcademicYears})
+        dispatch(addAcademicYearsAsync({
+            name: academicYears.name,
+           StartDate: startDate, 
+           ClosureDate: closureDate, 
+           FinalClosureDate: finalClosureDate
+          })
         ) 
-        navigate(`/category/view`)
-  }  
+        navigate(`/academicyear/view`)
+    }  
 
         return (
           <>
-               <div className="container" >
+            <div className="container" >
   
-  <div className="card mb-4">
-    <div className="card-header py-3">
+            <div className="card mb-4">
+            <div className="card-header py-3">
     <h2>Add AcademicYear</h2>
      
     </div>
@@ -98,18 +107,13 @@ export default function AddAcademicYears() {
                 dateFormat="dd-MM-yyyy HH:mm"
             />
         </div>
-
-        
         <div className="form-outline mb-4">
         <button onClick={handleSubmit}>Add Idea</button>
-          
         </div>
       </form>
     </div>
   </div>
 </div>
-            
-            
           </>
         )
       

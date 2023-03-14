@@ -15,7 +15,6 @@ const ViewDepartments = () => {
     dispatch(deleteDepartmentsAsync(id));
   }
 
-  
   useEffect(() => {
     dispatch(getDepartments())     
   }, [])
