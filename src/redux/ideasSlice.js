@@ -72,15 +72,8 @@ const ideasSlice = createSlice({
       state.error = ''
     })
 
-    builder.addCase(getIdeaByID.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.ideas = action.payload
-      state.error = ''
-    })
-
     builder.addCase(addIdeaAsync.fulfilled, (state, action) => {
       state.status = 'succeeded'
-      state.ideas.ideas.push(action.payload)
       state.ideas.ideas.push(action.payload)
       state.error = ''
     })

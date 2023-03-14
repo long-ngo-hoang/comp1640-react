@@ -1,102 +1,15 @@
-// import store from './store';
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-// import { useDispatch } from 'react-redux';
 import instance from './api';
 
-// import store from './store';
-
-
-// import { createStore } from 'redux'
-
-
-// const store = createStore(todos, ['Use Redux'])
-// const store = createStore(todos, ['Use Redux'])
 const initialState = {
   loading: false,
   categories: [],
   error: ''
 }
-// const instance = axios.create({
-//     baseURL: 'https://localhost:7044'
-//   });
-
-
-// let store
-// export const injectStore = _store => {
-//   store = _store
-// }
-
-// const token = localStorage.getItem('token');
-
-// const config = {
-//      headers: { Authorization: `Bearer ${token}` }
-//  };
-
-
-//  instance.interceptors.request.use(
-//   async (config) => {         
-//     // const dispatch = useDispatch();
-//     // const store1 ={store};
-//     let currentDate = new Date();
-//       const decodedToken = jwt_decode(token);    
-
-//       const exp = decodedToken.exp;
-    
-//       const expired = (Date.now() >= exp * 1000)
-//       console.log(expired)
-//       if (decodedToken.exp !== currentDate.getTime()) {
-//         console.log("a")
-        
-//         // store.dispatch();
-//         await store.dispatch(refreshToken());
-//       }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
-  let store
-
-export const injectStore = _store => {
-  store = _store
-}
-
-const token = localStorage.getItem('token');
-
-const config = {
-     headers: { Authorization: `Bearer ${token}` }
- };
-
-
- instance.interceptors.request.use(
-  async (config) => {         
-    // const dispatch = useDispatch();
-    // const store1 ={store};
-    let currentDate = new Date();
-      const decodedToken = jwt_decode(token);    
-      const exp = decodedToken.exp;
-    
-      const expired = (Date.now() >= exp * 1000)
-      console.log(expired)
-      if (decodedToken.exp !== currentDate.getTime()) {
-        console.log("a")
-        
-        // store.dispatch();
-        await store.dispatch(refreshToken());
-      }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 export const getCategories = createAsyncThunk('categories/getCategories', async () => {
   const response = await instance
-    .get('/Categories', config);
+    .get('/Categories');
     console.log(response.data)
   return response.data;
 })
@@ -131,7 +44,6 @@ export const deleteCategoryAsync = createAsyncThunk('categories/deleteCategoryAs
 
 const categoriesSlice = createSlice({
   name: 'categorie',
-  name: 'categorie',
   initialState,
   reducers:{
   },
@@ -140,27 +52,6 @@ const categoriesSlice = createSlice({
       state.loading = false
       state.categories = action.payload
       state.error = ''
-    })
-    builder.addCase(addCategoryAsync.fulfilled, (state, action) => {
-      state.loading = false
-      console.log(action.payload)
-      state.categories.push(action.payload)
-      state.error = ''
-    })
-    builder.addCase(updateCategoryAsync.fulfilled, (state, action) => {
-      // state.loading = false
-      // console.log(action.payload)
-      // state.categories.push(action.payload)
-      // state.error = ''
-     state.loading = false
-      const  {id}  = action.payload;
-      const category = state.categories.filter((category)=> category.id !== id);
-      state.categories = [...category, action.payload];
-      state.error = ''
-    })
-    builder.addCase(deleteCategoryAsync.fulfilled, (state, action) => {
-      const id = action.payload;
-      state.categories = state.categories.filter((item)=> item.id !== id)
     })
     builder.addCase(addCategoryAsync.fulfilled, (state, action) => {
       state.loading = false
