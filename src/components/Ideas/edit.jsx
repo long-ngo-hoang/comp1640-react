@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux'
         categoryId: "",
         name: post?.name,
         description: "",
-        // document: "",
         isAnonymous: post?.isAnonymous
     });
   
@@ -64,7 +63,6 @@ import { useSelector } from 'react-redux'
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        console.log(idea);
         dispatch(updateIdeaAsync(idea)
         ) 
         navigate(`/idea/detail/${postId}`)

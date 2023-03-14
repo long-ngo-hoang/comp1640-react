@@ -1,14 +1,11 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import instance from './api';
 
 const initialState = {
   loading: false,
   documents: [],
   error: ''
 }
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
 
 export const getDocuments = createAsyncThunk('categories/getDocuments', async () => {
   const response = await instance

@@ -3,11 +3,9 @@ import { useDispatch } from 'react-redux';
 import {addDepartmentsAsync} from '../../redux/departmentsSlice'
 import {  useNavigate  } from 'react-router-dom';
 
-
 export default function AddDepartments() {
-  
-     const dispatch = useDispatch();
-     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [name, setName] = useState('');
     
     const onChangeName = (e) =>{
@@ -19,7 +17,7 @@ export default function AddDepartments() {
         dispatch(addDepartmentsAsync({name})
         ) 
         navigate(`/departments/view`)
-  }  
+    }  
 
         return (
           <>
@@ -39,18 +37,13 @@ export default function AddDepartments() {
                 <input onChange={onChangeName} value={name}/>
               <span className="text-danger"></span>
         </div>
-
-        
         <div className="form-outline mb-4">
-        <button onClick={handleSubmit}>Add Departments</button>
-          
+        <button onClick={handleSubmit}>Add Departments</button> 
         </div>
       </form>
     </div>
   </div>
-</div>
-            
-            
+</div> 
           </>
         )
       

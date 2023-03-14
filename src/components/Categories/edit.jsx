@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {updateCategoryAsync} from '../../redux/categoriesSlice'
 import { useParams, useNavigate  } from 'react-router-dom';
 import {selectCategoryById} from '../../redux/categoriesSlice'
+
 export default function UpdateCategories() {
     const { Id } = useParams()
 
@@ -13,7 +14,6 @@ export default function UpdateCategories() {
   
     const onChangeName = (e) =>{
         setNameCategories(e.target.value)
-        
     }
 
    const handleSubmit = (event )=> {
@@ -21,7 +21,7 @@ export default function UpdateCategories() {
         dispatch(updateCategoryAsync({id: category.id ,name: nameCategories})
         ) 
         navigate(`/category/view`)
-  }  
+    }  
 
         return (
           <>   

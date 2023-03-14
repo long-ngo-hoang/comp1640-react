@@ -8,18 +8,15 @@ import UploadFile from '../../APIs/uploadFile';
 import {  useNavigate  } from 'react-router-dom';
 export default function AddIdea() {
   
-     const dispatch = useDispatch();
-     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [idea, setIdea] = useState({
-        // academicYearId: "b6bce65a-e39c-4691-82c0-9809ea6e46ef",
-        // departmentId: "63dd6da1-c392-40f9-8630-edb7265dd941",
-        // userId: "5fca3a55-45f9-46a0-8b05-5696b0ac4d02",
         categoryId: "",
         name: "",
         description: "",
-        // document: "",
         isAnonymous: false
     });
+
     const [slectedCategories, setSelectedCategories] = useState('');
     const [optionList, setOptionList] = useState([]);
     
@@ -27,14 +24,13 @@ export default function AddIdea() {
         setIdea((preV) => {     
             return{...preV, name: e.target.value}
         })
-        
     }
+
     const onChangeDescription = (e) =>{
         setIdea((preV) => {
             return{...preV, description: e.target.value}
         })
     }
-
 
     const onChangeSelected = (e) => {
         setSelectedCategories(e.target.value);
@@ -42,16 +38,11 @@ export default function AddIdea() {
             return{...preV, categoryId: e.target.value}
         })
     }
-    // const onChangeDocument = (e) =>{
-    //     setIdea((preV) => {
-    //         return{...preV, description: e.target.value}
-    //     })
-    // }
+
     const onChangeAnonymous = (value) => {
         setIdea((preV) => {
             return{...preV, isAnonymous: value}
-        })
-        
+        }) 
     }
 
    const handleSubmit = (event )=> {
@@ -59,8 +50,7 @@ export default function AddIdea() {
         dispatch(addIdeaAsync(idea)
         ) 
         navigate(`/idea/view`)
-  }
-
+    }
 
     const[files, setFiles] = useState([{
         name: 'myFile.pdf'

@@ -32,8 +32,8 @@
    width: 100%;
  }
    input:focus, input:valid{
-  color: #ff6600;
-  border: #ff6600;
+  color: #000000;
+  border: #000000;
 }
 
  label {

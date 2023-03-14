@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {addCommentAsync} from '../../redux/commentsSlice'
-import { useParams, useNavigate  } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useNavigate  } from 'react-router-dom';
+
 export default function EditComments() {
     // const {Id} = useParams()
     // const comment = useSelector((state) => selectCommentById(state,Id))
 
-     const dispatch = useDispatch();
-     const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const [Comments, setComments] = useState({
         userId: "5fca3a55-45f9-46a0-8b05-5696b0ac4d02",
         ideaID: "835294b7-f98e-4869-8a88-392f45e099bb",
         content: "",
         isAnonymous: false
     });
+
     const onChangeName = (e) =>{
         setComments((preV) => {     
             return{...preV, content: e.target.value}
@@ -23,12 +24,10 @@ export default function EditComments() {
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        console.log(Comments)
         dispatch(addCommentAsync(Comments)
         ) 
-
         navigate(`/idea/view`)
-  }  
+    }  
 
         return (
           <>

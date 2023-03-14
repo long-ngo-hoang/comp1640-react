@@ -6,14 +6,11 @@ import { selectCategoryById} from '../../redux/departmentsSlice'
 
 export default function UpdateDepartments() {
     const { Id } = useParams()
-
     const department = useSelector((state) => selectCategoryById(state,Id))
-    console.log("b", department)
      const dispatch = useDispatch()
      const navigate = useNavigate()
     const [name, setName] = useState(department?.name);
     
-    console.log(name)
     const onChangeName = (e) =>{
         setName(e.target.value);
     }

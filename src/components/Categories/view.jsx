@@ -5,8 +5,6 @@ import {getCategories} from '../../redux/categoriesSlice'
 import {selectAllCategories} from '../../redux/categoriesSlice'
 import {deleteCategoryAsync} from '../../redux/categoriesSlice'
 
-
-
 const ViewCategories = () => {
   const category = useSelector(selectAllCategories)
  
@@ -16,7 +14,6 @@ const ViewCategories = () => {
     dispatch(deleteCategoryAsync(id));
   }
 
-  
   useEffect(() => {
     dispatch(getCategories())     
   }, [])
@@ -46,4 +43,5 @@ const ViewCategories = () => {
     </div>
   )
 }
+
 export default ViewCategories;

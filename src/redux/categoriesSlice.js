@@ -1,9 +1,8 @@
 // import store from './store';
-import axios from 'axios'
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 // import { useDispatch } from 'react-redux';
-import { refreshToken } from './loginSlice';
-import jwt_decode from "jwt-decode";
+import instance from './api';
 
 // import store from './store';
 
@@ -17,49 +16,50 @@ const initialState = {
   categories: [],
   error: ''
 }
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
-
-  let store
-
-export const injectStore = _store => {
-  store = _store
-}
-
-const token = localStorage.getItem('token');
-
-const config = {
-     headers: { Authorization: `Bearer ${token}` }
- };
+// const instance = axios.create({
+//     baseURL: 'https://localhost:7044'
+//   });
 
 
- instance.interceptors.request.use(
-  async (config) => {         
-    // const dispatch = useDispatch();
-    // const store1 ={store};
-    let currentDate = new Date();
-      const decodedToken = jwt_decode(token);    
-      const exp = decodedToken.exp;
+// let store
+// export const injectStore = _store => {
+//   store = _store
+// }
+
+// const token = localStorage.getItem('token');
+
+// const config = {
+//      headers: { Authorization: `Bearer ${token}` }
+//  };
+
+
+//  instance.interceptors.request.use(
+//   async (config) => {         
+//     // const dispatch = useDispatch();
+//     // const store1 ={store};
+//     let currentDate = new Date();
+//       const decodedToken = jwt_decode(token);    
+
+//       const exp = decodedToken.exp;
     
-      const expired = (Date.now() >= exp * 1000)
-      console.log(expired)
-      if (decodedToken.exp !== currentDate.getTime()) {
-        console.log("a")
+//       const expired = (Date.now() >= exp * 1000)
+//       console.log(expired)
+//       if (decodedToken.exp !== currentDate.getTime()) {
+//         console.log("a")
         
-        // store.dispatch();
-        await store.dispatch(refreshToken());
-      }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//         // store.dispatch();
+//         await store.dispatch(refreshToken());
+//       }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 export const getCategories = createAsyncThunk('categories/getCategories', async () => {
   const response = await instance
-    .get('/Categories', config);
+    .get('/Categories');
     console.log(response.data)
   return response.data;
 })
@@ -67,7 +67,7 @@ export const getCategories = createAsyncThunk('categories/getCategories', async 
 export const addCategoryAsync = createAsyncThunk('categories/addCategoryAsync', async (initialIdea) => {
   console.log(initialIdea)
   const response = await instance
-    .post(`/Categories` , initialIdea,config);
+    .post(`/Categories`, initialIdea);
   return response.data;
 })
 
@@ -127,12 +127,9 @@ const categoriesSlice = createSlice({
   }
 })
 
-
 export const selectAllCategories = (state) => state.categories.categories;
 
 export const selectCategoryById = (state, Id) =>
     state.categories.categories.find((category) => category.id === Id);
-
-
 
 export default categoriesSlice.reducer

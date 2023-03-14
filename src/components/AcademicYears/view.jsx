@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import {getAcademicYears} from '../../redux/academicYearsSlice'
 import {selectAllAcademicYears} from '../../redux/academicYearsSlice'
 import {deleteAcademicYearsAsync} from '../../redux/academicYearsSlice'
-// import { Link } from 'react-router-dom'
+
 const ViewAcademicYears = () => {
   const academicView = useSelector(selectAllAcademicYears)
   
@@ -20,8 +20,8 @@ const ViewAcademicYears = () => {
 
   return (
     <div>
-        <h2>Categories list</h2>
-          <Link to={`category/createCatogory`}>
+        <h2>academicyear list</h2>
+          <Link to={`/academicyear/create`}>
             <button>
             Create Idea
             </button>
