@@ -17,7 +17,7 @@ export default function HomePage(){
         <>
         {/* <h1>HomePage</h1>
         <TodoList/> */}
-                {/* <LogIn /> */}
+                <LogIn />
         {/* <AddIdea/> */}
         {/* <GetData/> */}
         {/* <FileUpload/> */}

@@ -3,8 +3,10 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
 import SelectedBox from './selectedBox';
+import SelectedBox from './selectedBox';
 import { addIdeaAsync } from '../../redux/ideasSlice';
 import UploadFile from '../../APIs/uploadFile';
+import {  useNavigate  } from 'react-router-dom';
 import {  useNavigate  } from 'react-router-dom';
 export default function AddIdea() {
   
@@ -78,6 +80,8 @@ export default function AddIdea() {
                 <input onChange={onChangeName} value={idea.name}/>
                 <label htmlFor="name">Description:</label>
                 <textarea onChange={onChangeDescription} value={idea.description}/>
+                <label htmlFor="name">Description:</label>
+                <textarea onChange={onChangeDescription} value={idea.description}/>
                 <label htmlFor="cars">Choose categories:</label>
                     <select
                     disabled={false}
@@ -89,9 +93,10 @@ export default function AddIdea() {
                 <UploadFile/>
                 {/* <input onChange={onChangeDocument} value={idea.description}/> */}
                 <button className='button' onClick={handleSubmit}>Add Idea</button>
+                {/* <input onChange={onChangeDocument} value={idea.description}/> */}
+                <button className='button' onClick={handleSubmit}>Add Idea</button>
             </form>
             
           </>
         )
-      
 }

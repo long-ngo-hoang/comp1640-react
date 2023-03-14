@@ -12,6 +12,7 @@ import { injectStore } from './redux/api';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 injectStore(store)
+injectStore(store)
 
 root.render(
   <React.StrictMode>

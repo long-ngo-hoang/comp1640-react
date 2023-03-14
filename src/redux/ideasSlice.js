@@ -53,30 +53,39 @@ const ideasSlice = createSlice({
   name: 'ideas',
   initialState,
   reducers:{
-
   },
   extraReducers: builder => {
     builder.addCase(fetchIdeas.pending, (state, action) => {
       state.status = 'loading'
       state.error = ''
     })
+
     builder.addCase(fetchIdeas.fulfilled, (state, action) => {
       state.status = 'succeeded'
       state.ideas = action.payload.ideas
       state.error = ''
     })
+
+    builder.addCase(getIdeaByID.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.ideas = action.payload.ideas
+      state.error = ''
+    })
+
     builder.addCase(getIdeaByID.fulfilled, (state, action) => {
       state.status = 'succeeded'
       state.ideas = action.payload
       state.error = ''
     })
+
     builder.addCase(addIdeaAsync.fulfilled, (state, action) => {
       state.status = 'succeeded'
       state.ideas.ideas.push(action.payload)
+      state.ideas.ideas.push(action.payload)
       state.error = ''
     })
+
     builder.addCase(updateIdeaAsync.fulfilled, (state, action) => {
-      // console.log("lol hieu", action)
       // if (!action.payload?.id) {
       //   console.log('Update could not complete')
       //   console.log(action.payload)
@@ -88,6 +97,7 @@ const ideasSlice = createSlice({
       state.ideas = [...idea, action.payload];
       state.error = ''
     })
+
     builder.addCase(deleteIdeaAsync.fulfilled, (state, action) => {
       const id = action.payload;
       state.ideas = state.ideas.filter((item)=> item.id !== id
@@ -97,13 +107,8 @@ const ideasSlice = createSlice({
   }
 })
 
-export  const {removeIdea} = ideasSlice.actions;
-
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
 export const selectIdeaById = (state) => state.ideas.ideas;
-
-
-
 
 export default ideasSlice.reducer

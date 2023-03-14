@@ -49,6 +49,15 @@ const store = configureStore({
     // }),
     // middleware: [thunk, logger]
     
+    reducer: persistedReducer,
+    // middleware: (getDefaultMiddleware) =>
+    // getDefaultMiddleware({
+    //   serializableCheck: {
+    //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    //   },
+    // }),
+    // middleware: [thunk, logger]
+    
 });
 
 // const store = configureStore({
