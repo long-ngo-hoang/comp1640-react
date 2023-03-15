@@ -39,7 +39,7 @@ const RequireAuth = ({allowedRoles}) => {
     // }
 
     return(
-        decodedToken.Roles == allowedRoles
+        decodedToken.Roles != allowedRoles
         ?<Outlet/>
         : token
             ?<Navigate to="/" state={{ from: location }} replace />

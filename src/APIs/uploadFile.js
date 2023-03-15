@@ -10,17 +10,12 @@ export default  function UploadFile() {
 
     const uploadHandler = async (e) =>{
         setFileUpload(e.target.files[0]);
-        
-        console.log()
-    const instance = axios.create({
+            const instance = axios.create({
         baseURL: 'https://localhost:7044'
       });
     
-      const response = await instance
+    const response = await instance
         .get('/Ideas/GetS3PreSignedUrl');
-        console.log(response.data.fileName)
-
-      
 
     var config = {
         method: 'put',
@@ -34,14 +29,9 @@ export default  function UploadFile() {
 
   axios(config)
   .then(function (response) {
-    console.log(JSON.stringify(response.data));
   })
   .catch(function (error) {
-    console.log(error);
   });
-
-  console.log("https://d1r3dw8zgjplb.cloudfront.net/" + response.data.fileName);
-
     }
     
     return(

@@ -5,11 +5,18 @@ import { useParams } from 'react-router-dom';
 import { deleteCommentAsync } from '../../redux/commentsSlice'
 import { getIdeaByID } from '../../redux/ideasSlice'
 import {selectAllIdeas} from '../../redux/ideasSlice'
-import './detail.css'
-
+import {
+    MDBContainer,
+    MDBRow,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBInput,
+  } from 'mdb-react-ui-kit';
+  import Navbar1 from '../navbar/navbar1';
 export default function DetailIdea() {
 
-    const { postId } = useParams()
+    const { id } = useParams()
     const idea = useSelector(selectAllIdeas)
     const [showCommet, setShowComment] = useState(true)
     const dispatch = useDispatch()
@@ -21,7 +28,7 @@ export default function DetailIdea() {
     }
 
     useEffect(() => {
-        dispatch(getIdeaByID(postId))     
+        dispatch(getIdeaByID(id))     
       }, [])
     // const renderListComment = idea.comments?.map((item) =>
     //  <li key={item.id}>{item.content}</li> );
@@ -35,24 +42,56 @@ export default function DetailIdea() {
     }
 
     return (
-        <article className='container detail__content'>
-            <div className='title'>
-            {/* {idea?.map(item =>
-                 (                                                           
-                <li>{item.name}</li>               
-              ))}     */}
-            <h2>{idea.name}</h2>
-            <p>{idea.id}</p>
-            </div>
-            <div className='icon'>
-            <i className="fas fa-thumbs-up"></i>
-            <i className="fas fa-comment" onClick={onClickShowComment}></i>
-            </div>   
-            {/* {showCommet && <h2> erpr</h2><div> 
-             */}
-             {/* {idea.comments.length ? idea.comments : <h2> error</h2> }  */}
-            {showCommet && <div> 
-                
+<>
+        <Navbar1 />
+        <MDBContainer fluid>
+          <MDBRow className='justify-content-center align-items-center m-5'>
+            <MDBCard>
+              <MDBCardBody className='px-4'>
+                <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Details Idea</h3>
+                <p>Anonymous is : {idea.isAnonymous}</p>
+                  <br />
+                <MDBRow>
+               
+                  <MDBCol md='12'>
+                    <label className="mb-0">Name</label>
+                    <p>{idea.name}</p>
+                  </MDBCol>
+      
+                  <MDBCol md='12'>
+                    <label className="mb-0">Description</label>
+                    <p>{idea.description}</p>
+                  </MDBCol>
+                </MDBRow>           
+              </MDBCardBody>
+            </MDBCard>
+          </MDBRow>
+          
+        <MDBRow className='justify-content-center align-items-center m-5 ' >
+          <MDBCard
+            className="shadow-0 border"
+            style={{ backgroundColor: "#f0f2f5" }}
+          >
+            <MDBCardBody className='px-4'>
+            <h3>Comments</h3>
+              <MDBInput wrapperClass="mb-4" placeholder="Type comment..." />
+
+              <MDBCard className="mb-4">
+                <MDBCardBody>
+                  <p>Type your note, and hit enter to add it</p>
+
+                  <div className="d-flex justify-content-between">
+                    <div className="d-flex flex-row align-items-center">
+                      <p className="small mb-0 ms-2">Written by: Martha</p>
+                    </div>
+                  </div>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCardBody>
+          </MDBCard>
+      </MDBRow>
+      </MDBContainer>
+   
             <ul className='item'>
             {idea.comments?.map(item=> (
                 <li key={item.id}>{item.content}
@@ -64,10 +103,9 @@ export default function DetailIdea() {
                 {/* <AddComments/> */}
                 {/* {renderListComment} */}
             </ul>
-            </div>}
             <p className="postCredit">      
             </p>
-        </article>
+        </>
     )
 }
 

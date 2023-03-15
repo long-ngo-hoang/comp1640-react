@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {addCategoryAsync} from '../../redux/categoriesSlice'
 import {  useNavigate  } from 'react-router-dom';
+import {
+  MDBCol,
+  MDBInput,
+  MDBContainer,
+  MDBRow
+} from "mdb-react-ui-kit";
+import Navbar1 from '../navbar/navbar1';
+
 export default function AddCategories() {
   
     const dispatch = useDispatch();
@@ -14,36 +22,40 @@ export default function AddCategories() {
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addCategoryAsync({name: categories})
-        ) 
+        dispatch(addCategoryAsync({name: categories}))
+         
         navigate(`/category/view`)
     }  
 
         return (
-          <>
-  <div className="container" >
-  
-  <div className="card mb-4">
-    <div className="card-header py-3">
-    <h2>Add Categories</h2>
-     
-    </div>
-    <div className="card-body">
-      <form >
-        <div className="text-danger"></div>
-        <div className="form-outline mb-4">
-          <label  className="control-label">Category</label>
-                <input onChange={onChangeName} value={categories.name}/>
-              <span className="text-danger"></span>
-        </div>
-        <div className="form-outline mb-4">
-        <button onClick={handleSubmit}>Add Idea</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div> 
-          </>
+      <>
+        <Navbar1/>
+        <MDBContainer fluid>
+          <MDBRow className='justify-content-center align-items-center m-5'>
+            <div className="container" >
+              <div className="card mb-4">
+                <div className="card-header py-3">
+                  <h2>Create Categories</h2>
+                </div>
+                <div className="card-body">
+                  <form >
+                    <div className="text-danger"></div>
+                    <div className="form-outline mb-4">
+                      <MDBCol md='12'>
+                        <label className="mb-2" >Name</label>
+                        <MDBInput  size='lg' id='form2' type='text' onChange={onChangeName} value={categories.name}/>
+                      </MDBCol>
+                    </div>
+                    <MDBCol md='12'>
+                      <button className="btn btn-primary" onClick={handleSubmit}>Create Category</button>
+                    </MDBCol>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </MDBRow>
+        </MDBContainer>
+      </>
         )
       
 }

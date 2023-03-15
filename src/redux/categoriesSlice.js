@@ -10,12 +10,10 @@ const initialState = {
 export const getCategories = createAsyncThunk('categories/getCategories', async () => {
   const response = await instance
     .get('/Categories');
-    console.log(response.data)
   return response.data;
 })
 
 export const addCategoryAsync = createAsyncThunk('categories/addCategoryAsync', async (initialIdea) => {
-  console.log(initialIdea)
   const response = await instance
     .post(`/Categories`, initialIdea);
   return response.data;
@@ -26,7 +24,6 @@ export const updateCategoryAsync = createAsyncThunk('categories/updateCategoryAs
   try{
   const response = await instance
     .put(`/Categories/${id}`, initialIdea);
-    console.log("update" , response)
   return response.data;
   }catch(err)
   {
@@ -55,13 +52,11 @@ const categoriesSlice = createSlice({
     })
     builder.addCase(addCategoryAsync.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload)
       state.categories.push(action.payload)
       state.error = ''
     })
     builder.addCase(updateCategoryAsync.fulfilled, (state, action) => {
       // state.loading = false
-      // console.log(action.payload)
       // state.categories.push(action.payload)
       // state.error = ''
      state.loading = false

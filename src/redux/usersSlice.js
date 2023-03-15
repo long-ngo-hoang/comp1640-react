@@ -19,7 +19,6 @@ const config = {
 export const getProfiles = createAsyncThunk('users/getProfiles', async () => {
   const response = await instance
     .get('/Profiles', config);
-    console.log(response.data)
   return response.data;
 })
 
@@ -27,18 +26,15 @@ export const getProfilesById = createAsyncThunk('users/getProfilesById', async (
     const {id} = initialIdea;
     const response = await instance
       .get(`/Profiles/GetProfileByUserId/${id}`, config);
-      console.log(response.data)
     return response.data;
   })
 
 
 export const updateProfilesById = createAsyncThunk('users/updateProfilesById', async (initialIdea) => {
   const {id} = initialIdea;
-  console.log("a", id)
   try{
   const response = await instance
     .put(`/Profiles/UpdateProfileByUserId/${id}`, initialIdea);
-    console.log("update" , response)
   return response.data;
   }catch(err)
   {
@@ -66,7 +62,6 @@ const userSlice = createSlice({
     })
     builder.addCase(updateProfilesById.fulfilled, (state, action) => {
       // state.loading = false
-      // console.log(action.payload)
       // state.categories.push(action.payload)
       // state.error = ''
      state.loading = false

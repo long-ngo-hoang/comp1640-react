@@ -3,10 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import {addDepartmentsAsync} from '../../redux/departmentsSlice'
 import {  useParams, useNavigate  } from 'react-router-dom';
 import { selectCategoryById} from '../../redux/departmentsSlice'
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+} from 'mdb-react-ui-kit';
+import Navbar1 from '../navbar/navbar1';
 
 export default function UpdateDepartments() {
     const { Id } = useParams()
-    const department = useSelector((state) => selectCategoryById(state,Id))
+    const department = useSelector((state) => selectCategoryById(state, Id))
      const dispatch = useDispatch()
      const navigate = useNavigate()
     const [name, setName] = useState(department?.name);
@@ -24,32 +33,25 @@ export default function UpdateDepartments() {
 
         return (
           <>
-               <div className="container" >
-  
-  <div className="card mb-4">
-    <div className="card-header py-3">
-    <h2>Update Department</h2>
-     
-    </div>
-    <div className="card-body">
-      <form >
-        <div className="text-danger"></div>
-
-        <div className="form-outline mb-4">
-          <label  className="control-label">Category</label>
-                <input onChange={onChangeName} value={name}/>
-              <span className="text-danger"></span>
-        </div>       
-        <div className="form-outline mb-4">
-        <button onClick={handleSubmit}>Update Departments</button>
-          
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-            
-            
+            <Navbar1 />
+            <MDBContainer fluid>
+              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBCard>
+                <MDBCardBody className='px-4'>
+                  <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Departments</h3>
+                  <MDBRow>   
+                    <MDBCol md='12'>
+                      <label className="mb-0">Name</label>
+                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={name}/>
+                    </MDBCol>
+                  </MDBRow>  
+                    <MDBCol md='12'>
+                      <button className="btn btn-primary" onClick={handleSubmit}>Update Departments</button>
+                    </MDBCol>        
+                </MDBCardBody>
+              </MDBCard>
+              </MDBRow>
+            </MDBContainer>
           </>
         )
       

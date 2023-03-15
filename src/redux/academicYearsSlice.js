@@ -10,12 +10,10 @@ const initialState = {
 export const getAcademicYears = createAsyncThunk('academicYears/getAcademicYears', async () => {
   const response = await instance
     .get('/AcademicYears');
-    console.log(response.data)
   return response.data;
 })
 
 export const addAcademicYearsAsync = createAsyncThunk('academicYears/addAcademicYearsAsync', async (initialIdea) => {
-  console.log(initialIdea)
   const response = await instance
     .post(`/AcademicYears` , initialIdea);
   return response.data;
@@ -26,7 +24,6 @@ export const updateAcademicYearsAsync = createAsyncThunk('academicYears/updateAc
   try{
   const response = await instance
     .put(`/AcademicYears/${id}`, initialIdea);
-    console.log("update" , response)
   return response.data;
   }catch(err)
   {
@@ -55,7 +52,6 @@ const academicYearsSlice = createSlice({
     })
     builder.addCase(updateAcademicYearsAsync.fulfilled, (state, action) => {
       // state.loading = false
-      // console.log(action.payload)
       // state.categories.push(action.payload)
       // state.error = ''
      state.loading = false

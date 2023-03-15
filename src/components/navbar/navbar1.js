@@ -1,6 +1,6 @@
 import './navbar1.css';
 import React from 'react';
-import Notifications from 'react-notifications-menu';
+// import Notifications from 'react-notifications-menu';
 import { useState } from 'react';
 
 
@@ -39,7 +39,7 @@ function Navbar1()  {
       </div>
       <div>
       <div className="fas">
-        <Notifications
+        {/* <Notifications
           data={data}
           header={{
             title: "Notifications",
@@ -49,7 +49,7 @@ function Navbar1()  {
             console.log(data);
           }}
           
-        />
+        /> */}
         
       </div>
       <div className="fas">

@@ -11,7 +11,7 @@ import AddAcademicYears from "../AcademicYears/create"
 import ViewAcademicYears from "../AcademicYears/view"
 import AddDepartments from "../Departments/create"
 import ViewDepartments from "../Departments/view"
-import ManageIdeas from "./manage/manageideas"
+import ManageIdeas from "../Ideas/manageideas"
 export default function HomePage(){
     return(
         <>

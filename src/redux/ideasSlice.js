@@ -9,9 +9,17 @@ const initialState = {
   error: ''
 }
 
+
+
 export const fetchIdeas = createAsyncThunk('ideas/fetchIdeas', async () => {
   const response = await instance
     .get('/Ideas?pageIndex=1');
+  return response.data;
+})
+
+export const fetchIdeasByUserId = createAsyncThunk('ideas/fetchIdeasByUserId', async () => {
+  const response = await instance
+    .get('/Ideas/UserId?pageIndex=1');
   return response.data;
 })
 
@@ -66,6 +74,12 @@ const ideasSlice = createSlice({
       state.error = ''
     })
 
+    builder.addCase(fetchIdeasByUserId.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.ideas = action.payload.ideas
+      state.error = ''
+    })
+
     builder.addCase(getIdeaByID.fulfilled, (state, action) => {
       state.status = 'succeeded'
       state.ideas = action.payload.ideas
@@ -80,8 +94,6 @@ const ideasSlice = createSlice({
 
     builder.addCase(updateIdeaAsync.fulfilled, (state, action) => {
       // if (!action.payload?.id) {
-      //   console.log('Update could not complete')
-      //   console.log(action.payload)
       //   return;
       // } 
       state.status = 'succeeded'
@@ -102,6 +114,9 @@ const ideasSlice = createSlice({
 
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
-export const selectIdeaById = (state) => state.ideas.ideas;
+export const selectIdeaById = (state, Id) => state.ideas.ideas.find((idea) => idea.id === Id);
+
+export const selectIdea = (state) => state.ideas;
+
 
 export default ideasSlice.reducer

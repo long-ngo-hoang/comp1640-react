@@ -1,41 +1,47 @@
 import React, { useState } from 'react';
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
-import './addIdea.css'
 import { useDispatch } from 'react-redux';
 import SelectedBox from './selectedBox';
 import { updateIdeaAsync } from '../../redux/ideasSlice';
 import { selectIdeaById } from '../../redux/ideasSlice';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux'
-
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBInput,
+  MDBSwitch,
+  MDBTextArea
+} from 'mdb-react-ui-kit';
+import Navbar1 from '../navbar/navbar1';
+import './addIdea.css'
     export default function UpdateIdea() {
 
-    const { postId } = useParams()
-    
+    const { id } = useParams()
      const dispatch = useDispatch();
      const navigate = useNavigate()
-     const post = useSelector((state) => selectIdeaById(state,postId))
-     console.log("test",post)
+     const ideaInDb = useSelector((state) => selectIdeaById(state, id))
+
         const [idea, setIdea] = useState({
-        id: post.id,
-        academicYearId: "b6bce65a-e39c-4691-82c0-9809ea6e46ef",
-        departmentId: "63dd6da1-c392-40f9-8630-edb7265dd941",
-        userId: "5fca3a55-45f9-46a0-8b05-5696b0ac4d02",
-        categoryId: "",
-        name: post?.name,
-        description: "",
-        isAnonymous: post?.isAnonymous
+        id : id,
+        categoryId: ideaInDb.categoryId,
+        name: ideaInDb.name,
+        description: ideaInDb.description,
+        isAnonymous: ideaInDb.isAnonymous
     });
   
 
-    const [slectedCategories, setSelectedCategories] = useState(post?.categoryId); 
+    const [slectedCategories, setSelectedCategories] = useState(ideaInDb?.categoryId); 
+
     const onChangeName = (e) =>{
         setIdea((preV) => {     
             return{...preV, name: e.target.value}
         })
-        
     }
     const onChangeDescription = (e) =>{
+
         setIdea((preV) => {
             return{...preV, description: e.target.value}
         })
@@ -54,18 +60,16 @@ import { useSelector } from 'react-redux'
         })
     }
 
-    const onChangeAnonymous = (value) => {
+    const onChangeAnonymous = () => {
         setIdea((preV) => {
-            return{...preV, isAnonymous: value}
+            return{...preV, isAnonymous: !idea.isAnonymous}
         })
-        
     }
 
     const handleSubmit = (event )=> {
         event.preventDefault();
         dispatch(updateIdeaAsync(idea)
         ) 
-        navigate(`/idea/detail/${postId}`)
     }
 
     const[files, setFiles] = useState([{
@@ -75,35 +79,51 @@ import { useSelector } from 'react-redux'
     const removeFile = (filename) => {
         setFiles(files.filter(file => file.name !== filename))
     }
-    
         return (
           <>
-            <form>
-            <h1>Update Idea</h1>
-            <BootstrapSwitchButton
+          <Navbar1 />
+    <MDBContainer fluid>
+      <MDBRow className='justify-content-center align-items-center m-5'>
+        <MDBCard>
+          <MDBCardBody className='px-4'>
+            <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Idea</h3>
+             <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} />
+              <br />
+            <MDBRow>
+              {/* <BootstrapSwitchButton
                 checked={idea.isAnonymous}
                 width={100}
                 onstyle="success"
                 onlabel='Anonymous'
                 // offlabel='Regular User'
                 onChange={onChangeAnonymous} 
-            />
-                <label htmlFor="name">Name</label>
-                <input onChange={onChangeName} value={idea.name}/>
-                <label htmlFor="name">Description</label>
-                <input onChange={onChangeDescription} value={idea.description}/>
-                <label htmlFor="cars">Choose categories:</label>
-                    <select
-                    disabled={false}
-                    value={slectedCategories}
-                    onChange={onChangeSelected} 
-                        >
-                            <SelectedBox/>
-                            </select>
-                <label> Document</label>
-                <input onChange={onChangeDocument} value={idea.document}/>
-                <button onClick={handleSubmit}>Update Idea</button>
-            </form>
+            /> */}
+           
+              <MDBCol md='12'>
+                <label className="mb-0">Name</label>
+                <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={idea.name}/>
+              </MDBCol>
+
+              <MDBCol md='12'>
+                <label className="mb-0">Description</label>
+                <MDBTextArea wrapperClass='mb-4'  id='textAreaExample' rows={8} onChange={onChangeDescription} value={idea.description}/>
+              </MDBCol>
+
+              <MDBCol md='12'>
+              <label className="mb-0">Category</label>
+                    <select  disabled={false} value={slectedCategories} onChange={onChangeSelected}>
+                      <SelectedBox/>
+                    </select>
+                </MDBCol>
+            </MDBRow>           
+          </MDBCardBody>
+
+          <MDBCol md='12'>
+          <button className="btn btn-primary" onClick={handleSubmit}>Update Idea</button>
+          </MDBCol>
+        </MDBCard>
+      </MDBRow>
+</MDBContainer>
           </>
         )
 }
