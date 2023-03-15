@@ -23,7 +23,7 @@ import usersSlice from "./usersSlice.js";
 const persistCongig = {
     key: 'root',
     storage,
-    // blacklist: ['login']
+    // blacklist: ['ideas']
    
 };
 
@@ -48,16 +48,6 @@ const store = configureStore({
     //   },
     // }),
     // middleware: [thunk, logger]
-    
-    reducer: persistedReducer,
-    // middleware: (getDefaultMiddleware) =>
-    // getDefaultMiddleware({
-    //   serializableCheck: {
-    //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    //   },
-    // }),
-    // middleware: [thunk, logger]
-    
 });
 
 // const store = configureStore({

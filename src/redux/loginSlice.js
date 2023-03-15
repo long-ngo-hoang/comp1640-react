@@ -17,7 +17,6 @@ const instance = axios.create({
     try{
     const response = await instance
       .post(`/api/Auth/Login` , initialIdea);
-      console.log("ádas", response)
     return response.data;
     }
     catch(error){
@@ -40,7 +39,6 @@ const instance = axios.create({
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message)
         } else {
-          console.log("b", error.message)
             return rejectWithValue(error.message)
         }
     }    
@@ -68,7 +66,6 @@ const instance = axios.create({
     //   })
       builder.addCase(loginAsync.fulfilled, (state, action) => {
         state.loading = false
-        console.log(action.payload)
         state.token = action.payload
         localStorage.setItem('token', state.token.token)
         localStorage.setItem('rftoken', state.token.refreshToken)

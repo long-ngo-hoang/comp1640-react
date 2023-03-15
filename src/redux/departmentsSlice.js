@@ -54,14 +54,12 @@ const departmentsSlice = createSlice({
 
     builder.addCase(addDepartmentsAsync.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload)
       state.departments.push(action.payload)
       state.error = ''
     })
 
     builder.addCase(updateDepartmentsAsync.fulfilled, (state, action) => {
       // state.loading = false
-      // console.log(action.payload)
       // state.categories.push(action.payload)
       // state.error = ''
      state.loading = false

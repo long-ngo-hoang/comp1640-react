@@ -8,7 +8,6 @@ const initialState = {
 }
 
 export const addCommentAsync = createAsyncThunk('comments/addCommentsAsync', async (initialIdea) => {
-  console.log(initialIdea)
   const response = await instance
     .post(`/Comments` , initialIdea);
   return response.data;
@@ -19,7 +18,6 @@ export const updateCommentAsync = createAsyncThunk('comments/updateCommentsAsync
   try{
   const response = await instance
     .put(`/Comments/${id}`, initialIdea);
-    console.log("update" , response)
   return response.data;
   }catch(err)
   {
@@ -51,14 +49,12 @@ const categoriesSlice = createSlice({
     // })
     builder.addCase(addCommentAsync.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload)
       state.comments.push(action.payload)
       state.error = ''
     })
 
     builder.addCase(updateCommentAsync.fulfilled, (state, action) => {
       // state.loading = false
-      // console.log(action.payload)
       // state.categories.push(action.payload)
       // state.error = ''
      state.loading = false

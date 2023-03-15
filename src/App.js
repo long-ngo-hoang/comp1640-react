@@ -1,12 +1,12 @@
-import NewsPage from './components/pages/newpage/newspage';
+import ViewIdeas from './components/Ideas/view';
 import NavBar from './components/navbar';
-import ManageIdeas from './components/pages/manage/manageideas';
+import ManageIdeas from './components/Ideas/manageideas';
 import DetailIdea from './components/Ideas/details';
 import UpdateIdea from './components/Ideas/edit';
 import ViewCategories from './components/Categories/view';
 import AddCategories from './components/Categories/create';
 import UpdateCategories from './components/Categories/edit';
-import IdeasView from './components/Ideas/view';
+// import IdeasView from './components/Ideas/view';
 import EditComments from './components/Comments/edit';
 import ViewDepartments from './components/Departments/view';
 import AddDepartments from './components/Departments/create';
@@ -28,20 +28,19 @@ function App() {
       <Routes>
       <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={<LogIn/>} />
-        <Route path='/news' element={<NewsPage />} />
 
-        
-        <Route path="idea" element={<RequireAuth allowedRoles={["Administrator"]}/>}>    
-          <Route path="view" element={<IdeasView />} />
+        <Route path="ideas" element={<RequireAuth allowedRoles={["dministrator"]}/>}>   
+          <Route path='myideas' element={<ManageIdeas />} />
+          <Route path="view" element={<ViewIdeas />} />
           <Route path="create" element={<AddIdea />} />
-          <Route path="detail/:postId" element={<DetailIdea />} />
-          <Route path="edit/:postId" element={<UpdateIdea />} />
+          <Route path="detail/:id" element={<DetailIdea />} />
+          <Route path="edit/:id" element={<UpdateIdea />} />
           <Route path="comment/edit/:Id" element={<EditComments />} />
         </Route>
 
-        <Route path="category">
+        <Route path="categories">
           <Route path="view" element={<ViewCategories />} />
-          <Route path="createCatogory" element={<AddCategories/>} />
+          <Route path="create" element={<AddCategories/>} />
           <Route path="edit/:Id" element={<UpdateCategories />} />
         </Route>
 

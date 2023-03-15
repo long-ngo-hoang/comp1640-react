@@ -10,7 +10,6 @@ const initialState = {
 export const getDocuments = createAsyncThunk('categories/getDocuments', async () => {
   const response = await instance
     .get('/Documents');
-    console.log(response.data)
   return response.data;
 })
 

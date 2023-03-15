@@ -56,47 +56,11 @@
     
     
 }
-.social{
-    margin-top:20px;
-    display:flex;
-    flex-direction:column;
-    gap:20px
-}
-.social span{
-    height:40px;
-    width:100%;
-    border:1px solid #ccc;
-    border-radius:7px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    font-weight:600;
-    cursor:pointer;
-}
-.social span i{
-    font-size:13px;
-    margin-right:4px;
-    margin-top:2px;
-    color:#0669e3;
-}
+
 .right-side hr{
     margin-top:20px;
 }
 
-.or{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-top:-8px;
-   
-}
-.or p{
-     background-color:#fff;
-    padding:0 4px;
-    font-size:10px;
-    font-weight:700;
-}
 .input-text{
     position:relative;
     margin-top:20px;
@@ -218,20 +182,6 @@ input[type="password"]{
 }
 .button button:hover{
     background-color:#e33606;
-}
-.register{
-    margin-top:30px;
-    display:flex;
-    justify-content:center;
-}
-.register p{
-    font-size:10px;
-    font-weight:700;
-}
-.register a{
-    color:blue;
-    text-decoration:none;
-    cursor:pointer;
 }
 
 .warning{
