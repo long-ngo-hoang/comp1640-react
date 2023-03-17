@@ -82,7 +82,7 @@ const ideasSlice = createSlice({
 
     builder.addCase(getIdeaByID.fulfilled, (state, action) => {
       state.status = 'succeeded'
-      state.ideas = action.payload.ideas
+      state.ideas = action.payload
       state.error = ''
     })
 

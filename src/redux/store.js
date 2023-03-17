@@ -23,7 +23,7 @@ import usersSlice from "./usersSlice.js";
 const persistCongig = {
     key: 'root',
     storage,
-    // blacklist: ['ideas']
+    blacklist: ['ideas']
    
 };
 
@@ -47,7 +47,7 @@ const store = configureStore({
     //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     //   },
     // }),
-    // middleware: [thunk, logger]
+    // middleware: [thunk, logger]    
 });
 
 // const store = configureStore({

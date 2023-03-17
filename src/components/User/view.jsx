@@ -21,6 +21,7 @@ const UserView = () => {
             <h2>{user.id}</h2>
             <h2>{user.createdAt}</h2>
             <button className='col-4'><Link to={`/profile/edit/${user}`}>Edit User</Link></button>
+            <button className='col-4'><Link to={`/profile/changePass`}>Change Pass</Link></button>
         </ul>
       </div>
     </div>

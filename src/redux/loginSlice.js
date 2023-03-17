@@ -44,6 +44,22 @@ const instance = axios.create({
     }    
   })
 
+  export const forgotPasswordAsync = createAsyncThunk('login/forgotPasswordAsync', async (email,{rejectWithValue}) => {   
+    
+    try{     
+    const response = await instance
+      .post(`/api/Auth/ForgotPassword?email=${email}`);
+      return response;
+    }
+      catch(error){     
+        if (error.response && error.response.data.message) {
+            return rejectWithValue(error.response.data.message)
+        } else {
+            return rejectWithValue(error.message)
+        }
+    }    
+  })
+
   const loginSlice = createSlice({
     name: 'login',
     initialState,
@@ -77,6 +93,10 @@ const instance = axios.create({
         localStorage.setItem('token', state.token.token)
         localStorage.setItem('rftoken', state.token.refreshToken)
         state.error = ''
+      })
+      builder.addCase(forgotPasswordAsync.fulfilled, (state, action) => {
+        state.loading = true
+        state.error = 'Success'
       })
     //   builder.addCase(loginAsync.rejected, (state, action) => {
     //     state.loading = false
