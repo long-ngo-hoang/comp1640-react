@@ -1,31 +1,32 @@
-import axios from 'axios'
+// import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import instance from './api'
 
 const initialState = {
   loading: false,
   users: [],
   error: ''
 }
-const instance = axios.create({
-    baseURL: 'https://localhost:7044'
-  });
+// const instance = axios.create({
+//     baseURL: 'https://localhost:7044'
+//   });
 
-const token = localStorage.getItem('token');
+// const token = localStorage.getItem('token');
 
-const config = {
-     headers: { Authorization: `Bearer ${token}` }
- };
+// const config = {
+//      headers: { Authorization: `Bearer ${token}` }
+//  };
 
 export const getProfiles = createAsyncThunk('users/getProfiles', async () => {
   const response = await instance
-    .get('/Profiles', config);
+    .get('/Profiles');
   return response.data;
 })
 
 export const getProfilesById = createAsyncThunk('users/getProfilesById', async (initialIdea) => {
     const {id} = initialIdea;
     const response = await instance
-      .get(`/Profiles/GetProfileByUserId/${id}`, config);
+      .get(`/Profiles/GetProfileByUserId/${id}`);
     return response.data;
   })
 
@@ -40,6 +41,17 @@ export const updateProfilesById = createAsyncThunk('users/updateProfilesById', a
   {
     return initialIdea;
   }
+})
+
+export const changePasswordAsync = createAsyncThunk('users/changePasswordAsync', async(initialIdea) => {
+  try{
+    const response = await instance
+      .post(`/api/Auth/ChangePassword`, initialIdea);
+    return response.data;
+    }catch(err)
+    {
+      return initialIdea;
+    }
 })
 
 

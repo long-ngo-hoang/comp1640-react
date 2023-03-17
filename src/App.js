@@ -19,6 +19,8 @@ import HomePage from './components/pages/homepage';
 import RequireAuth from './authorization';
 import ViewAcademicYears from './components/AcademicYears/view';
 import AddAcademicYears from './components/AcademicYears/create';
+import ChangePassword from './components/User/resetPass';
+import ForgotPassword from './components/Login/forgotPass';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 function App() {
@@ -28,6 +30,7 @@ function App() {
       <Routes>
       <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={<LogIn/>} />
+        <Route path='/ForgotPassword' element={<ForgotPassword />} />
 
         <Route path="ideas" element={<RequireAuth allowedRoles={["dministrator"]}/>}>   
           <Route path='myideas' element={<ManageIdeas />} />
@@ -59,6 +62,7 @@ function App() {
           <Route path="view" element={<UserView />} />
           {/* <Route path="create" element={<AddDepartments/>} /> */}
           <Route path="edit/:Id" element={<UpdateUser />} />
+          <Route path="changePass" element={<ChangePassword />} />
         </Route>
       </Routes>
     </>

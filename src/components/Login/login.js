@@ -3,6 +3,8 @@ import './login.css';
 import { useNavigate, useLocation  } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginAsync } from '../../redux/loginSlice';
+import { Link } from 'react-router-dom'
+
 
 export function LogIn (){
     const dispatch = useDispatch()
@@ -86,15 +88,13 @@ return(
                     <i onClick={Eye} className={`fa ${eye ? "fa-eye-slash" : "fa-eye"}`}></i>
                 </div>
                
-                <div className="rem_pass">
-                    <div className="remember">
-                    <a href="#">Forgot your password?</a>
-                    </div>
-                </div>
                 <div className="button">
                     <button type="submit">Login</button>
                 </div>
                  </form>
+                <div className="register">
+                    <p>Didn't have an account? <Link to={`/ForgotPassword`}>Forgot Password</Link></p>
+                </div>
            </div>
         </div>
     </div>
