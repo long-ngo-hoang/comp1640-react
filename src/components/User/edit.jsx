@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateProfilesById } from '../../redux/usersSlice.js';
+import { updateProfile } from '../../redux/usersSlice.js';
 import { useParams, useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { selectAllUsers } from '../../redux/usersSlice.js'
 
 export default function UpdateUser() {
 
-    const { Id } = useParams()
+    const { id } = useParams()
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const user = useSelector(selectAllUsers)
 
     const [users, setUsers] = useState({
-        id: Id,
+        id: id,
         avatarUrl: user?.avatarUrl,
         fullName: user?.fullName,
         address: user?.address,
@@ -46,7 +46,7 @@ export default function UpdateUser() {
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(updateProfilesById(users)
+        dispatch(updateProfile(users)
         ) 
         navigate(`/profile/view`)
     }

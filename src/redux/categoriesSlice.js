@@ -1,80 +1,125 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './api';
 
-const initialState = {
-  loading: false,
-  categories: [],
-  error: ''
-}
-
-export const getCategories = createAsyncThunk('categories/getCategories', async () => {
+export const getCategories = createAsyncThunk('categoryList/getCategories', async () => {
   const response = await instance
     .get('/Categories');
   return response.data;
-})
+    })
 
-export const addCategoryAsync = createAsyncThunk('categories/addCategoryAsync', async (initialIdea) => {
+export const getCategoryById = createAsyncThunk('categoryList/getCategoryById', async (initialData) => {
+  const id = initialData;
   const response = await instance
-    .post(`/Categories`, initialIdea);
+    .get(`/Categories/${id}`);
+  return response.data;
+    })
+    
+export const addCategory = createAsyncThunk('categoryList/addCategory', async (initialData) => {
+  const response = await instance
+    .post(`/Categories`, initialData);
   return response.data;
 })
 
-export const updateCategoryAsync = createAsyncThunk('categories/updateCategoryAsync', async (initialIdea) => {
-  const {id} = initialIdea;
-  try{
+export const updateCategory = createAsyncThunk('categoryList/updateCategory', async (initialData) => {
+  const {id} = initialData;
   const response = await instance
-    .put(`/Categories/${id}`, initialIdea);
+    .put(`/Categories/${id}`, initialData);
   return response.data;
-  }catch(err)
-  {
-    return initialIdea;
-  }
 })
 
-export const deleteCategoryAsync = createAsyncThunk('categories/deleteCategoryAsync', async (initialIdea) => {
-  const  id  = initialIdea;
+export const deleteCategory = createAsyncThunk('categoryList/deleteCategoryAsync', async (initialData) => {
+  const  id  = initialData;
   const response = await instance
     .delete(`/Categories/${id}`);
-    if (response?.status === 200) return initialIdea;   
   return response.data;
 })
 
 const categoriesSlice = createSlice({
-  name: 'categorie',
-  initialState,
+  name: 'categoryList', 
+  initialState:{
+    loading: false,
+    status: "idle",
+    categories: []
+  },
   reducers:{
   },
   extraReducers: builder => {
-    builder.addCase(getCategories.fulfilled, (state, action) => {
-      state.loading = false
+    builder
+    .addCase(getCategories.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(getCategories.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle"
       state.categories = action.payload
-      state.error = ''
     })
-    builder.addCase(addCategoryAsync.fulfilled, (state, action) => {
-      state.loading = false
+    .addCase(getCategories.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(getCategoryById.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(getCategoryById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle"
+      state.categories[0] = action.payload
+    })
+    .addCase(getCategoryById.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(addCategory.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(addCategory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle";
       state.categories.push(action.payload)
-      state.error = ''
     })
-    builder.addCase(updateCategoryAsync.fulfilled, (state, action) => {
-      // state.loading = false
-      // state.categories.push(action.payload)
-      // state.error = ''
-     state.loading = false
-      const  {id}  = action.payload;
-      const category = state.categories.filter((category)=> category.id !== id);
-      state.categories = [...category, action.payload];
-      state.error = ''
+    .addCase(addCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
-    builder.addCase(deleteCategoryAsync.fulfilled, (state, action) => {
-      const id = action.payload;
-      state.categories = state.categories.filter((item)=> item.id !== id)
+
+    .addCase(updateCategory.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(updateCategory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle";
+      let currentCategory = state.categories.filter((category)=> category.id !== action.payload.id);
+      currentCategory = action.payload;
+    })
+    .addCase(updateCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(deleteCategory.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(deleteCategory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle";
+      state.categories = state.categories.filter((item)=> item.id !== action.payload.id)
+    })
+    .addCase(deleteCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
   }
 })
 
 export const selectAllCategories = (state) => state.categories.categories;
 
-export const selectCategoryById = (state, Id) =>
-    state.categories.categories.find((category) => category.id === Id);
-
+export const selectCategoryById = (state, id) => state.categories.categories[0];
+    
 export default categoriesSlice.reducer

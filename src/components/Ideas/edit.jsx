@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import SelectedBox from './selectedBox';
-import { updateIdeaAsync } from '../../redux/ideasSlice';
+import { updateIdea, getIdeaById } from '../../redux/ideasSlice';
 import { selectIdeaById } from '../../redux/ideasSlice';
-import { useParams, useNavigate  } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import {
   MDBContainer,
@@ -24,12 +24,17 @@ import './addIdea.css'
      const navigate = useNavigate()
      const ideaInDb = useSelector((state) => selectIdeaById(state, id))
 
+      useEffect(() => {
+          dispatch(getIdeaById(id))     
+        }, [])
+     
+    console.log(selectIdeaById)
         const [idea, setIdea] = useState({
         id : id,
-        categoryId: ideaInDb.categoryId,
-        name: ideaInDb.name,
-        description: ideaInDb.description,
-        isAnonymous: ideaInDb.isAnonymous
+        categoryId: ideaInDb?.categoryId,
+        name: ideaInDb?.name,
+        description: ideaInDb?.description,
+        isAnonymous: ideaInDb?.isAnonymous
     });
   
 
@@ -68,7 +73,7 @@ import './addIdea.css'
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(updateIdeaAsync(idea)
+        dispatch(updateIdea(idea)
         ) 
     }
 
@@ -79,6 +84,14 @@ import './addIdea.css'
     const removeFile = (filename) => {
         setFiles(files.filter(file => file.name !== filename))
     }
+
+    if (!ideaInDb) {
+      
+        return <div className="loader" />;
+      
+  }
+
+  else{
         return (
           <>
           <Navbar1 />
@@ -87,6 +100,8 @@ import './addIdea.css'
         <MDBCard>
           <MDBCardBody className='px-4'>
             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Idea</h3>
+            <h4>{idea.name}</h4>
+
              <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} />
               <br />
             <MDBRow>
@@ -100,17 +115,17 @@ import './addIdea.css'
             /> */}
            
               <MDBCol md='12'>
-                <label className="mb-0">Name</label>
+                <h5 className="mb-0">Name : </h5>
                 <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={idea.name}/>
               </MDBCol>
 
               <MDBCol md='12'>
-                <label className="mb-0">Description</label>
+                <h5 className="mb-0">Description : </h5>
                 <MDBTextArea wrapperClass='mb-4'  id='textAreaExample' rows={8} onChange={onChangeDescription} value={idea.description}/>
               </MDBCol>
 
               <MDBCol md='12'>
-              <label className="mb-0">Category</label>
+              <h5 className="mb-0">Category : </h5>
                     <select  disabled={false} value={slectedCategories} onChange={onChangeSelected}>
                       <SelectedBox/>
                     </select>
@@ -126,4 +141,5 @@ import './addIdea.css'
 </MDBContainer>
           </>
         )
+          }
 }

@@ -3,8 +3,8 @@ import { useSelector, useDispatch  } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
 import { deleteCommentAsync } from '../../redux/commentsSlice'
-import { getIdeaByID } from '../../redux/ideasSlice'
-import {selectAllIdeas} from '../../redux/ideasSlice'
+import { getIdeaById } from '../../redux/ideasSlice'
+import {selectIdeaById} from '../../redux/ideasSlice'
 import {
     MDBContainer,
     MDBRow,
@@ -14,10 +14,11 @@ import {
     MDBInput,
   } from 'mdb-react-ui-kit';
   import Navbar1 from '../navbar/navbar1';
+  
 export default function DetailIdea() {
 
     const { id } = useParams()
-    const idea = useSelector(selectAllIdeas)
+    const idea = useSelector(selectIdeaById)
     const [showCommet, setShowComment] = useState(true)
     const dispatch = useDispatch()
 
@@ -28,7 +29,7 @@ export default function DetailIdea() {
     }
 
     useEffect(() => {
-        dispatch(getIdeaByID(id))     
+        dispatch(getIdeaById(id))     
       }, [])
     // const renderListComment = idea.comments?.map((item) =>
     //  <li key={item.id}>{item.content}</li> );
@@ -49,17 +50,17 @@ export default function DetailIdea() {
             <MDBCard>
               <MDBCardBody className='px-4'>
                 <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Details Idea</h3>
-                <p>Anonymous is : {idea.isAnonymous}</p>
+                <h6>Anonymous is : {idea.isAnonymous}</h6>
                   <br />
                 <MDBRow>
                
                   <MDBCol md='12'>
-                    <label className="mb-0">Name</label>
+                    <h6 className="mb-0">Name : </h6>
                     <p>{idea.name}</p>
                   </MDBCol>
       
                   <MDBCol md='12'>
-                    <label className="mb-0">Description</label>
+                    <h6 className="mb-0">Description : </h6>
                     <p>{idea.description}</p>
                   </MDBCol>
                 </MDBRow>           

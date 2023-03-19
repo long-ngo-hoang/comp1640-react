@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changePasswordAsync } from '../../redux/usersSlice.js';
+import { changePassword } from '../../redux/usersSlice.js';
 import { useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { selectAllUsers } from '../../redux/usersSlice.js'
@@ -44,7 +44,7 @@ export default function ChangePassword() {
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(changePasswordAsync(users)
+        dispatch(changePassword(users)
         ) 
         navigate(`/profile/view`)
     }

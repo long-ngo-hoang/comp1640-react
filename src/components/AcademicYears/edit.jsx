@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {updateDepartment} from '../../redux/departmentsSlice'
 import {  useParams, useNavigate  } from 'react-router-dom';
-import { selectDepartmentById} from '../../redux/departmentsSlice'
-import {getDepartmentById} from '../../redux/departmentsSlice'
-import { selectUser } from '../../redux/departmentsSlice';
-import {removeUserFromDepartment} from '../../redux/departmentsSlice';
-import { Link } from 'react-router-dom'
+import { addAcademicYear, selectAcademicYearById, getAcademicYearById} from '../../redux/academicYearsSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -19,41 +14,33 @@ import {
   MDBTable,
   MDBTableHead,MDBTableBody
 } from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom'
 
 import Navbar1 from '../navbar/navbar1';
 
-export default function UpdateDepartments() {
-  const { id } = useParams()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const department = useSelector((state) => selectDepartmentById(state))
-  
-  const [departmentName, setDepartmentName] = useState(department?.name);
+export default function UpdateAcademicYear() {
+    const { id } = useParams();
+    console.log(id);
+    const academicYear = useSelector((state) => selectAcademicYearById(state))
+     const dispatch = useDispatch()
+     const navigate = useNavigate()
+    const [name, setName] = useState(academicYear?.name);
     
-  const onChangeName = (e) =>{
-    setDepartmentName(e.target.value);
-  }
+    const onChangeName = (e) =>{
+        setName(e.target.value);
+    }
+    useEffect(() => {
+      dispatch(getAcademicYearById(id))     
+    }, [])
 
-  const handleUpdate = (event )=> {
-      event.preventDefault();
-      dispatch(updateDepartment({id: department.id ,name: departmentName})
-  ) 
-   navigate(`/departments/view`)
-}
+   const handleSubmit = (event )=> {
+        event.preventDefault();
+        dispatch(addAcademicYear({name})
+        ) 
+        navigate(`/academicYears/view`)
+  }  
 
-  useEffect(() => {
-    dispatch(getDepartmentById(id))     
-  }, [])
-
-  const handleRemove = (id )=> {
-    
-    dispatch(removeUserFromDepartment(id)
-    ) 
-  navigate(`/departments/view`)
-}  
-
-  const renderUser = (
+  const renderIdeas = (
     <>
             <MDBContainer fluid >
               <MDBRow className='justify-content-center align-items-center m-5'>
@@ -62,7 +49,7 @@ export default function UpdateDepartments() {
                         <div>
                         <h5 className="mb-0">
                           <MDBIcon fas icon="tasks" className="me-2" />
-                          User
+                          Ideas
                         </h5>
                         </div>
                       </MDBCardHeader>
@@ -71,31 +58,25 @@ export default function UpdateDepartments() {
                             <MDBTableHead>
                               <tr>
                                 <th scope="col">Name</th> 
-                                <th scope="col">Actions</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">View</th>
                               </tr>
                             </MDBTableHead>
                             <MDBTableBody>
-                          {department === null 
+                          {academicYear === null 
                             ? <h1> page not have data</h1> :
-                            department?.allUsers?.map(item =>
+                            academicYear?.allIdeas?.ideas?.map(item =>
                               (   
                               <tr className="fw-normal" key={item.id}>
                                 <td className="align-middle">
-                                  <span>{item.userName}</span>
+                                  <span>{item.name}</span>
                                 </td>  
                                 <td className="align-middle">
-
-                                  <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
-                                    <MDBIcon
-                                      fas
-                                      icon="trash-alt"
-                                      color="danger"
-                                      size="lg"
-                                      className="me-3"
-                                    />
-                                    </button>
-
-                                </td>
+                                  <span>{item.author}</span>
+                                </td>  
+                                <td className="align-middle">
+                                  <span>{item.viewCount}</span>
+                                </td>  
                               </tr>
                              ))}
                             </MDBTableBody>
@@ -106,6 +87,7 @@ export default function UpdateDepartments() {
                 </MDBContainer>
     </>
   );
+
         return (
           <>
             <Navbar1 />
@@ -113,23 +95,22 @@ export default function UpdateDepartments() {
               <MDBRow className='justify-content-center align-items-center m-5'>
               <MDBCard>
                 <MDBCardBody className='px-4'>
-                  <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Departments</h3>
+                  <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Academic Year</h3>
                   <MDBRow>   
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={departmentName}/>
+                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={name}/>
                     </MDBCol>
                   </MDBRow>  
                     <MDBCol md='12'>
-                      <button className="btn btn-primary" onClick={handleUpdate}>Update Departments</button>
+                      <button className="btn btn-primary" onClick={handleSubmit}>Update Academic Year</button>
                     </MDBCol>        
                 </MDBCardBody>
               </MDBCard>
               </MDBRow>
             </MDBContainer>
-
-                  {renderUser}
-
+            {renderIdeas}
           </>
         )
+      
 }

@@ -7,29 +7,29 @@ const initialState = {
   error: ''
 }
 
-export const addCommentAsync = createAsyncThunk('comments/addCommentsAsync', async (initialIdea) => {
+export const addCommentAsync = createAsyncThunk('comments/addCommentsAsync', async (initialData) => {
   const response = await instance
-    .post(`/Comments` , initialIdea);
+    .post(`/Comments` , initialData);
   return response.data;
 })
 
-export const updateCommentAsync = createAsyncThunk('comments/updateCommentsAsync', async (initialIdea) => {
-  const {id} = initialIdea;
+export const updateCommentAsync = createAsyncThunk('comments/updateCommentsAsync', async (initialData) => {
+  const {id} = initialData;
   try{
   const response = await instance
-    .put(`/Comments/${id}`, initialIdea);
+    .put(`/Comments/${id}`, initialData);
   return response.data;
   }catch(err)
   {
-    return initialIdea;
+    return initialData;
   }
 })
 
-export const deleteCommentAsync = createAsyncThunk('comments/deleteCommentAsync', async (initialIdea) => {
-  const  id  = initialIdea;
+export const deleteCommentAsync = createAsyncThunk('comments/deleteCommentAsync', async (initialData) => {
+  const  id  = initialData;
   const response = await instance
     .delete(`/Comments/${id}`);
-    if (response?.status === 200) return initialIdea;   
+    if (response?.status === 200) return initialData;   
   return response.data;
 })
 

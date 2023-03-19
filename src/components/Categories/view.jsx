@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {getCategories} from '../../redux/categoriesSlice'
 import {selectAllCategories} from '../../redux/categoriesSlice'
-import {deleteCategoryAsync} from '../../redux/categoriesSlice'
+import {deleteCategory} from '../../redux/categoriesSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -19,17 +19,19 @@ import {
 import Navbar1 from "../navbar/navbar1";
 
 const ViewCategories = () => {
-  const categoriesInDb = useSelector(selectAllCategories)
- 
-  const dispatch = useDispatch()
 
-  function handleRemove(id) {
-    dispatch(deleteCategoryAsync(id));
-  }
-
-  useEffect(() => {
+ const dispatch = useDispatch()
+  
+ useEffect(() => {
     dispatch(getCategories())     
   }, [])
+  
+  const categoriesInDb = useSelector(selectAllCategories)
+ 
+  function handleRemove(id) {
+    dispatch(deleteCategory(id));
+  }
+
 
   return (
     <>
@@ -48,7 +50,7 @@ const ViewCategories = () => {
                               </h5>
                               </div>
                               <div>
-                              <Link type="button" className="btn btn-primary" to={`/category/create`}>
+                              <Link type="button" className="btn btn-primary" to={`/categories/create`}>
                                   Create Categories
                               </Link>
                               </div>
@@ -73,7 +75,7 @@ const ViewCategories = () => {
                                       <td className="align-middle">
 
                                       <button style={{background: "none", border: "none"}}>
-                                        <Link to={`/category/edit/${item.id}`}>
+                                        <Link to={`/categories/edit/${item.id}`}>
                                           <MDBIcon
                                             fas
                                             icon="edit"
@@ -83,7 +85,6 @@ const ViewCategories = () => {
                                           />
                                           </Link>
                                         </button>
-
                                         <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
                                           <MDBIcon
                                             fas
@@ -93,7 +94,6 @@ const ViewCategories = () => {
                                             className="me-3"
                                           />
                                           </button>
-
                                       </td>
                                     </tr>
                                    ))}

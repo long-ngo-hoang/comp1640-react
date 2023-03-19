@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {getAcademicYears} from '../../redux/academicYearsSlice'
 import {selectAllAcademicYears} from '../../redux/academicYearsSlice'
-import {deleteAcademicYearsAsync} from '../../redux/academicYearsSlice'
+import {deleteAcademicYear} from '../../redux/academicYearsSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -14,12 +14,11 @@ import {
   MDBTable,
   MDBTableBody,
   MDBTableHead,
-  MDBTooltip,
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 
-const ViewAcademicYears = () => { 
+const EditAcademicYears = () => { 
 
   useEffect(() => {
     dispatch(getAcademicYears())     
@@ -29,7 +28,7 @@ const ViewAcademicYears = () => {
 
   const dispatch = useDispatch()
   function handleRemove(id) {
-    dispatch(deleteAcademicYearsAsync(id));
+    dispatch(deleteAcademicYear(id));
   }
  
   return (
@@ -49,7 +48,7 @@ const ViewAcademicYears = () => {
                                   </h5>
                                   </div>
                                   <div>
-                                  <Link type="button" className="btn btn-primary" to={`/academicyear/create`}>
+                                  <Link type="button" className="btn btn-primary" to={`/academicyears/create`}>
                                       Create Idea
                                   </Link>
                                   </div>
@@ -85,11 +84,8 @@ const ViewAcademicYears = () => {
                                             <span>{item.finalClosureDate}</span>
                                           </td>
                                           <td className="align-middle">
-                                            <MDBTooltip
-                                              tag="a"
-                                              wrapperProps={{ href: "#!" }}
-                                              title="Done"
-                                            >
+                                          <button style={{background: "none", border: "none"}}>
+                                            <Link to={`/academicYears/edit/${item.id}`}>
                                               <MDBIcon
                                                 fas
                                                 icon="edit"
@@ -97,7 +93,8 @@ const ViewAcademicYears = () => {
                                                 size="lg"
                                                 className="me-3"
                                               />
-                                            </MDBTooltip>
+                                            </Link>
+                                        </button>
                                             <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
                                               <MDBIcon
                                                 fas
@@ -121,4 +118,4 @@ const ViewAcademicYears = () => {
     </>
   )
 }
-export default ViewAcademicYears;
+export default EditAcademicYears;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addDepartmentsAsync} from '../../redux/departmentsSlice'
+import {addDepartment} from '../../redux/departmentsSlice'
 import {  useNavigate  } from 'react-router-dom';
 import {
   MDBContainer,
@@ -21,7 +21,7 @@ export default function AddDepartments() {
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addDepartmentsAsync({name})
+        dispatch(addDepartment({name})
         ) 
         navigate(`/departments/view`)
     }  

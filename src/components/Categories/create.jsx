@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addCategoryAsync} from '../../redux/categoriesSlice'
+import { addCategory } from '../../redux/categoriesSlice'
 import {  useNavigate  } from 'react-router-dom';
 import {
   MDBCol,
@@ -11,23 +11,21 @@ import {
 import Navbar1 from '../navbar/navbar1';
 
 export default function AddCategories() {
-  
     const dispatch = useDispatch();
     const navigate = useNavigate()
+
     const [categories, setCategories] = useState('');
     
     const onChangeName = (e) =>{
         setCategories(e.target.value);
     }
 
-    const handleSubmit = (event )=> {
-        event.preventDefault();
-        dispatch(addCategoryAsync({name: categories}))
-         
-        navigate(`/category/view`)
+    const handleSubmit = (e)=> {
+        dispatch(addCategory({name: categories}))
+        e.preventDefault();
+        navigate(`/categories/view`)
     }  
-
-        return (
+    return (
       <>
         <Navbar1/>
         <MDBContainer fluid>
@@ -56,6 +54,5 @@ export default function AddCategories() {
           </MDBRow>
         </MDBContainer>
       </>
-        )
-      
+    )   
 }
