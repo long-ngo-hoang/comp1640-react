@@ -4,12 +4,19 @@ import instance from './api';
 const initialState = {
   loading: false,
   departments: [],
+  pageindex: 1,
   error: ''
 }
 
 export const getDepartments = createAsyncThunk('department/getDepartments', async () => {
   const response = await instance
     .get('/Departments');
+  return response.data;
+})
+
+export const getDepartmentsById = createAsyncThunk('department/getDepartmentsById', async (id) => {
+  const response = await instance
+    .get(`/Departments/${id}?pageIndex=1`);
   return response.data;
 })
 
@@ -39,15 +46,40 @@ export const deleteDepartmentsAsync = createAsyncThunk('department/deleteDepartm
   return response.data;
 })
 
+export const removeUserFromDepartment = createAsyncThunk('department/removeUserFromDepartment', async (initialIdea) => {
+  const  id  = initialIdea;
+  const response = await instance
+    .put(`/Departments/RemoveUserFromDepartment/${id}`);
+    if (response?.status === 200) return initialIdea;   
+  return response.data;
+})
+
 const departmentsSlice = createSlice({
   name: 'departments',
   initialState,
   reducers:{
   },
   extraReducers: builder => {
-    
+    builder.addCase(getDepartments.pending, (state, action) => {
+      state.status = 'loading'
+      state.error = ''
+    })
     builder.addCase(getDepartments.fulfilled, (state, action) => {
+      state.status = 'Success'
       state.loading = false
+      state.departments = action.payload
+      state.error = ''
+    })
+
+    builder.addCase(getDepartmentsById.pending, (state, action) => {
+      state.status = 'loading'
+      state.loading = true
+      state.error = ''
+    })
+    builder.addCase(getDepartmentsById.fulfilled, (state, action) => {
+      state.status = 'Success'
+      state.loading = false
+      console.log("a",action.payload)
       state.departments = action.payload
       state.error = ''
     })
@@ -73,11 +105,17 @@ const departmentsSlice = createSlice({
       const id = action.payload;
       state.departments = state.departments.filter((item)=> item.id !== id)
     })
+
+    builder.addCase(removeUserFromDepartment.fulfilled, (state, action) => {
+      // const id = action.payload;
+      // state.departments = state.departments.filter((item)=> item.id !== id)
+
+    })
   }
 })
 
 export const selectAllDepartments = (state) => state.departments.departments;
-
+export const selectUser = (state) => state.departments;
 // export const selectDepartmentById = (state, Id) =>
 //     state.departments.departments.find((item) => item.id === Id);
 

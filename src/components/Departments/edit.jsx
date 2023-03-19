@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {addDepartmentsAsync} from '../../redux/departmentsSlice'
 import {  useParams, useNavigate  } from 'react-router-dom';
-import { selectCategoryById} from '../../redux/departmentsSlice'
+import { selectAllDepartments} from '../../redux/departmentsSlice'
+import {getDepartmentsById} from '../../redux/departmentsSlice'
+import { selectUser } from '../../redux/departmentsSlice';
+import {removeUserFromDepartment} from '../../redux/departmentsSlice';
+
 import {
   MDBContainer,
   MDBRow,
@@ -13,24 +17,55 @@ import {
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 
+
+
 export default function UpdateDepartments() {
     const { Id } = useParams()
-    const department = useSelector((state) => selectCategoryById(state, Id))
      const dispatch = useDispatch()
      const navigate = useNavigate()
+
+
+
+    const department = useSelector(selectAllDepartments)
+    const users = useSelector(selectUser)
+    
+    const {loading,error} =  useSelector(
+      (state) => state.departments
+      );
     const [name, setName] = useState(department?.name);
     
     const onChangeName = (e) =>{
         setName(e.target.value);
     }
 
-   const handleSubmit = (event )=> {
-        event.preventDefault();
-        dispatch(addDepartmentsAsync({name})
+
+    useEffect(() => {
+      dispatch(getDepartmentsById(Id))     
+    }, [])
+
+    const handleRemove = (id )=> {
+      dispatch(removeUserFromDepartment(id)
+      ) 
+      navigate(`/departments/view`)
+}  
+
+
+   const handleSubmit = (id )=> {
+        dispatch(addDepartmentsAsync({id})
         ) 
         navigate(`/departments/view`)
   }  
 
+  const renderUser = (
+    <div className="userlist-container">
+      {department?.allUsers?.map((item) => (
+        <div className="user-container" key={item.id}>
+            <p>{item.userName} </p>   
+            <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => handleRemove(item.id)} >Delete</button> 
+          </div>
+      ))}
+    </div>
+  );
         return (
           <>
             <Navbar1 />
@@ -48,6 +83,17 @@ export default function UpdateDepartments() {
                     <MDBCol md='12'>
                       <button className="btn btn-primary" onClick={handleSubmit}>Update Departments</button>
                     </MDBCol>        
+                </MDBCardBody>
+              </MDBCard>
+              </MDBRow>
+            </MDBContainer>
+            <MDBContainer fluid>
+              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBCard>
+                <MDBCardBody className='px-4'>
+                  {loading ?(
+                    <h2>page loadding</h2>
+                  ) :renderUser}
                 </MDBCardBody>
               </MDBCard>
               </MDBRow>
