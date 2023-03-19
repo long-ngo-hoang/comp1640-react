@@ -18,12 +18,13 @@ import departmentsSlice from "./departmentsSlice.js";
 import loginSlice from "./loginSlice.js";
 // import userSlice from "./usersSclice.js";
 import usersSlice from "./usersSlice.js";
-
+import notificationSlice from "./notificationSlice.js";
+import roleSlice from "./roleSlice.js";
 // import thunk from 'redux-thunk'
 const persistCongig = {
     key: 'root',
     storage,
-    blacklist: ['ideas']
+    blacklist: ['ideas', 'departments']
    
 };
 
@@ -34,6 +35,8 @@ const reducer = combineReducers({
     academicYears: academicYearsSlice,
     departments: departmentsSlice,
     login: loginSlice,
+    notification: notificationSlice,
+    roles : roleSlice,
     user: usersSlice,
 });
 

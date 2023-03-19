@@ -48,7 +48,7 @@ function ViewIdeas(){
               ideas?.map(item =>
                  (   
                   
-                 <MDBCard className="shadow-0 border rounded-3 mt-5 mb-3" >
+                 <MDBCard className="shadow-0 border rounded-3 mt-5 mb-3" key={item.id} >
             <MDBCardBody>
               <MDBRow>
                 <MDBCol md="9">

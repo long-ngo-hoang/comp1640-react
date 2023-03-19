@@ -21,8 +21,11 @@ import ViewAcademicYears from './components/AcademicYears/view';
 import AddAcademicYears from './components/AcademicYears/create';
 import ChangePassword from './components/User/resetPass';
 import ForgotPassword from './components/Login/forgotPass';
+import ViewNotification from './components/Notifications/view';
+import ViewRoles from './components/Role/view';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
+
 function App() {
   return (
     <>     
@@ -63,6 +66,14 @@ function App() {
           {/* <Route path="create" element={<AddDepartments/>} /> */}
           <Route path="edit/:Id" element={<UpdateUser />} />
           <Route path="changePass" element={<ChangePassword />} />
+        </Route>
+
+        <Route path="notification">
+          <Route path="view" element={<ViewNotification />} />
+        </Route>
+
+        <Route path="role">
+          <Route path="view" element={<ViewRoles />} />
         </Route>
       </Routes>
     </>
