@@ -1,120 +1,138 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './api';
 
-const initialState = {
-  status: 'loading',// 'loading' | 'succeeded' | 'failed'
-  pageindex: 1,
-  totalpage: 1,
-  ideas: [],
-  error: ''
-}
-
-
-
-export const fetchIdeas = createAsyncThunk('ideas/fetchIdeas', async () => {
+export const getIdeas = createAsyncThunk('ideaList/getIdeas', async () => {
   const response = await instance
     .get('/Ideas?pageIndex=1');
   return response.data;
 })
 
-export const fetchIdeasByUserId = createAsyncThunk('ideas/fetchIdeasByUserId', async () => {
+export const getIdeasByUserId = createAsyncThunk('ideaList/getIdeasByUserId', async () => {
   const response = await instance
     .get('/Ideas/UserId?pageIndex=1');
   return response.data;
 })
 
-export const addIdeaAsync = createAsyncThunk('ideas/addIdeaAsync', async (initialIdea) => {
+export const addIdea = createAsyncThunk('ideaList/addIdea', async (initialData) => {
   const response = await instance
-    .post(`/Ideas` , initialIdea);
+    .post(`/Ideas` , initialData);
   return response.data;
 })
 
-export const getIdeaByID = createAsyncThunk('ideas/getIdeaByID', async (initialIdea) => {
-  const  id  = initialIdea;
+export const getIdeaById = createAsyncThunk('ideaList/getIdeaById', async (initialData) => {
+  const  id  = initialData;
   const response = await instance
     .get(`/Ideas/${id}`);
   return response.data;
+  
 })
 
-export const updateIdeaAsync = createAsyncThunk('ideas/updateIdeaAsync', async (initialIdea) => {
-  const {id} = initialIdea;
+export const updateIdea = createAsyncThunk('ideaList/updateIdea', async (initialData) => {
+  const {id} = initialData;
   
   try{
   const response = await instance
-    .put(`/Ideas/${id}`, initialIdea);
+    .put(`/Ideas/${id}`, initialData);
   return response.data;
   }catch(err)
   {
-    return initialIdea;
+    return initialData;
   }
 })
 
-export const deleteIdeaAsync = createAsyncThunk('ideas/deleteIdeaAsync', async (initialIdea) => {
-  const  id  = initialIdea;
+export const deleteIdea = createAsyncThunk('ideaList/deleteIdea', async (initialData) => {
+  const  id  = initialData;
   const response = await instance
     .delete(`/Ideas/${id}`);
-    if (response?.status === 200) return initialIdea;   
+    if (response?.status === 200) return initialData;   
   return response.data;
 })
 
 const ideasSlice = createSlice({
-  name: 'ideas',
-  initialState,
+  name: 'ideaList',
+  initialState : {
+      status: 'idle',
+      loading: false,
+      pageindex: 1,
+      totalpage: 1,
+      ideas: [],
+  },
   reducers:{
   },
   extraReducers: builder => {
-    builder.addCase(fetchIdeas.pending, (state, action) => {
-      state.status = 'loading'
-      state.error = ''
+    builder
+    .addCase(getIdeas.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
     })
 
-    builder.addCase(fetchIdeas.fulfilled, (state, action) => {
-      state.status = 'succeeded'
+    .addCase(getIdeas.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      state.pageindex = action.payload.pageIndex;
+      state.totalpage = action.payload.totalPage;
       state.ideas = action.payload.ideas
-      state.error = ''
     })
 
-    builder.addCase(fetchIdeasByUserId.fulfilled, (state, action) => {
-      state.status = 'succeeded'
+    .addCase(getIdeasByUserId.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(getIdeasByUserId.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      state.pageindex = action.payload.pageIndex;
+      state.totalpage = action.payload.totalPage;
       state.ideas = action.payload.ideas
-      state.error = ''
     })
 
-    builder.addCase(getIdeaByID.fulfilled, (state, action) => {
-      state.status = 'succeeded'
-      state.ideas = action.payload
-      state.error = ''
+    .addCase(getIdeaById.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(getIdeaById.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      state.ideas[0] = action.payload
+      console.log(action.payload)
     })
 
-    builder.addCase(addIdeaAsync.fulfilled, (state, action) => {
-      state.status = 'succeeded'
+    .addCase(addIdea.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(addIdea.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
       state.ideas.ideas.push(action.payload)
-      state.error = ''
     })
 
-    builder.addCase(updateIdeaAsync.fulfilled, (state, action) => {
-      // if (!action.payload?.id) {
-      //   return;
-      // } 
-      state.status = 'succeeded'
-      const  {id}  = action.payload;
-      const idea = state.ideas.filter((item)=> item.id !== id);
-      state.ideas = [...idea, action.payload];
-      state.error = ''
+    .addCase(updateIdea.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(updateIdea.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      let currentIdea = state.ideas.filter((item)=> item.id !== action.payload.id);
+      currentIdea = action.payload;
     })
 
-    builder.addCase(deleteIdeaAsync.fulfilled, (state, action) => {
-      const id = action.payload;
-      state.ideas = state.ideas.filter((item)=> item.id !== id
-      )
+    .addCase(deleteIdea.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
     })
-
+    .addCase(deleteIdea.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      state.ideas = state.ideas.filter((item)=> item.id !== action.payload.id)
+    })
   }
 })
 
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
-export const selectIdeaById = (state, Id) => state.ideas.ideas.find((idea) => idea.id === Id);
+export const selectIdeaById = (state) => state.ideas.ideas[0]
 
 export const selectIdea = (state) => state.ideas;
 

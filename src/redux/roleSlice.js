@@ -7,32 +7,32 @@ const initialState = {
   error: ''
 }
 
-export const getRole = createAsyncThunk('role/getRole', async () => {
+export const getRole = createAsyncThunk('roleList/getRole', async () => {
   const response = await instance
     .get('/Roles');
   return response.data;
 })
 
-export const getRoleById = createAsyncThunk('role/getRoleById', async (id) => {
+export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id) => {
     const response = await instance
       .get(`/Roles/${id}`);
     return response.data;
   })
-  export const updateRoleAsync = createAsyncThunk('role/updateRoleAsync', async (initialIdea) => {
-    const id = initialIdea;
+  export const updateRole = createAsyncThunk('roleList/updateRole', async (initialData) => {
+    const id = initialData;
     try{
     const response = await instance
-      .put(`/Roles/${id}`, initialIdea);
+      .put(`/Roles/${id}`, initialData);
     return response.data;
     }catch(err)
     {
-      return initialIdea;
+      return initialData;
     }
   })
 
 
 const roleSlice = createSlice({
-  name: 'role',
+  name: 'roleList',
   initialState,
   reducers:{
   },

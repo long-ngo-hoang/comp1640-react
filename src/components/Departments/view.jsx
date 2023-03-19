@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {getDepartments} from '../../redux/departmentsSlice'
 import {selectAllDepartments} from '../../redux/departmentsSlice'
-import {deleteDepartmentsAsync} from '../../redux/departmentsSlice'
+import {deleteDepartment} from '../../redux/departmentsSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -23,7 +23,7 @@ const ViewDepartments = () => {
   const dispatch = useDispatch()
 
   function handleRemove(id) {
-    dispatch(deleteDepartmentsAsync(id));
+    dispatch(deleteDepartment(id));
   }
 
   useEffect(() => {

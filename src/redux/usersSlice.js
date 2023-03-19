@@ -17,46 +17,46 @@ const initialState = {
 //      headers: { Authorization: `Bearer ${token}` }
 //  };
 
-export const getProfiles = createAsyncThunk('users/getProfiles', async () => {
+export const getProfiles = createAsyncThunk('userList/getProfiles', async () => {
   const response = await instance
     .get('/Profiles');
   return response.data;
 })
 
-export const getProfilesById = createAsyncThunk('users/getProfilesById', async (initialIdea) => {
-    const {id} = initialIdea;
+export const getProfileById = createAsyncThunk('userList/getProfilesById', async (initialData) => {
+    const {id} = initialData;
     const response = await instance
       .get(`/Profiles/GetProfileByUserId/${id}`);
     return response.data;
   })
 
 
-export const updateProfilesById = createAsyncThunk('users/updateProfilesById', async (initialIdea) => {
-  const {id} = initialIdea;
+export const updateProfile = createAsyncThunk('userList/updateProfilesById', async (initialData) => {
+  const {id} = initialData;
   try{
   const response = await instance
-    .put(`/Profiles/UpdateProfileByUserId/${id}`, initialIdea);
+    .put(`/Profiles/UpdateProfileByUserId/${id}`, initialData);
   return response.data;
   }catch(err)
   {
-    return initialIdea;
+    return initialData;
   }
 })
 
-export const changePasswordAsync = createAsyncThunk('users/changePasswordAsync', async(initialIdea) => {
+export const changePassword = createAsyncThunk('userList/changePasswordAsync', async(initialData) => {
   try{
     const response = await instance
-      .post(`/api/Auth/ChangePassword`, initialIdea);
+      .post(`/api/Auth/ChangePassword`, initialData);
     return response.data;
     }catch(err)
     {
-      return initialIdea;
+      return initialData;
     }
 })
 
 
 const userSlice = createSlice({
-  name: 'users',
+  name: 'userList',
   initialState,
   reducers:{
   },
@@ -66,16 +66,13 @@ const userSlice = createSlice({
       state.users = action.payload
       state.error = ''
     })
-    builder.addCase(getProfilesById.fulfilled, (state, action) => {
+    builder.addCase(getProfileById.fulfilled, (state, action) => {
       state.loading = false
      
       state.users.push(action.payload)
       state.error = ''
     })
-    builder.addCase(updateProfilesById.fulfilled, (state, action) => {
-      // state.loading = false
-      // state.categories.push(action.payload)
-      // state.error = ''
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
      state.loading = false
       const  {id}  = action.payload;
       const user = state.categories.filter((category)=> category.id !== id);

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchIdeas } from "../../redux/ideasSlice";
-import { deleteIdeaAsync } from "../../redux/ideasSlice";
+import { getIdeas } from "../../redux/ideasSlice";
+import { deleteIdea } from "../../redux/ideasSlice";
 import {selectAllIdeas} from "../../redux/ideasSlice";
 import {  useNavigate  } from 'react-router-dom'
 import {
@@ -9,33 +9,25 @@ import {
   MDBRow,
   MDBCol,
   MDBCard,
-  MDBCardBody,
+  MDBCardBody,MDBIcon
 } from "mdb-react-ui-kit";
-import './view.css';
+
 import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 
 function ViewIdeas(){  
   useEffect(() => {
-    dispatch(fetchIdeas())     
+    dispatch(getIdeas())     
   }, [])
   
   const ideas = useSelector(selectAllIdeas)
 
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  
-  function handleRemove(id) {
-    dispatch(deleteIdeaAsync(id));
-  }
 
   // function handleLogout() {
   //   dispatch(logout());
   // }
-
-
-
   return (
     <>
     <Navbar1/>
@@ -62,24 +54,28 @@ function ViewIdeas(){
                 <MDBCol
                   md="2"
                   lg="3"
-                  className="border-sm-start-none border-start"
-                 style={{display: "flex"}}>
-                  <div style={{width: "30%"}}>
-                        <div className="container">                  
-                          <FaThumbsUp icon="fa-regular fa-thumbs-up" style={{display:"flex"}} />      
-                          <p>200</p>      
+                  className="border-sm-start-none border-start" style={{display: "block", justifyContent: "center"}}>
+                  <div style={{ height: "50%"}}>
+                    <div style={{display: "flex", width: "50%", alignItems: "center", height: "50%", margin: "10px"}}>
+                        <div className="container">     
+                           <MDBIcon far icon="thumbs-up" />             
+                           <p>200</p>      
                         </div>
                         <div className="container"> 
-                          <FaThumbsDown icon="fa-regular fa-thumbs-down"  />  
-                          <p>18</p>
+                           <MDBIcon far icon="thumbs-down" />
+                           <p>18</p>
                         </div>
+                    </div>
+                    <div style={{width: "50%"}}>
+                      <Link style={{widows: "100%"}} type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link>
+                    </div>  
                  </div>
-                 <div style={{width: "70%", margin: "auto"}}>
-                  <p>Written by: {item.author}</p>
-                  <Link type="button" className="btn btn-primary" to={`/idea/detail/${item.id}`}>View More</Link>
+                 <div style={{display: "flex", alignItems: "center", height: "50%"}}>
+                 <p>Written by: {item.author}</p>
 
                  </div>
                 </MDBCol>
+                
               </MDBRow>
             </MDBCardBody> 
             </MDBCard>
@@ -88,6 +84,7 @@ function ViewIdeas(){
         </MDBCol>
       </MDBRow>
     </MDBContainer>
+    
     </>
   );
 }

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {updateCategoryAsync} from '../../redux/categoriesSlice'
+import {updateCategory, selectCategoryById} from '../../redux/categoriesSlice'
 import { useParams, useNavigate  } from 'react-router-dom';
-import {selectCategoryById} from '../../redux/categoriesSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -12,29 +11,50 @@ import {
   MDBInput,
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
+import {getCategoryById} from '../../redux/categoriesSlice'
+
 
 export default function UpdateCategories() {
-    const { Id } = useParams()
-    const dispatch = useDispatch();
+    const { id } = useParams()
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const category = useSelector((state) => selectCategoryById(state,Id))
 
-    const [nameCategories, setNameCategories] = useState(category?.name);
   
+     
+    const category = useSelector((state) => selectCategoryById(state, id))
+
+    const [nameCategory, setNameCategory] = useState(category?.name);
+
+    useEffect(() => {
+       dispatch(getCategoryById(id))     
+     }, [])
+
     const onChangeName = (e) =>{
-        setNameCategories(e.target.value)
+      setNameCategory(e.target.value)
     }
 
-   const handleSubmit = (event )=> {
-        event.preventDefault();
-        dispatch(updateCategoryAsync({id: category.id ,name: nameCategories})
+   const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(updateCategory({id: category.id ,name: nameCategory})
         ) 
-        navigate(`/category/view`)
+        navigate(`/categories/view`)
     }  
+
+    if (!category) {
+      return (
+          <section>
+              <h2>category not found!</h2>
+          </section>
+      )
+  }
+
         return (
           <>
             <Navbar1 />
+            <form onSubmit={handleSubmit}>
+
             <MDBContainer fluid>
               <MDBRow className='justify-content-center align-items-center m-5'>
               <MDBCard>
@@ -43,16 +63,18 @@ export default function UpdateCategories() {
                   <MDBRow>   
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={nameCategories}/>
+                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName}  value={nameCategory}/>
                     </MDBCol>
                   </MDBRow>  
                     <MDBCol md='12'>
-                      <button className="btn btn-primary" onClick={handleSubmit}>Update Category</button>
+                      <button className="btn btn-primary" type="submit" value="Submit">Update Category</button>
                     </MDBCol>        
                 </MDBCardBody>
               </MDBCard>
               </MDBRow>
             </MDBContainer>
+            </form>
+
           </>
         )
 }

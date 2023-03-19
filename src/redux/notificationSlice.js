@@ -7,13 +7,13 @@ const initialState = {
   error: ''
 }
 
-export const getNotifications = createAsyncThunk('notification/getNotifications', async () => {
+export const getNotifications = createAsyncThunk('notificationList/getNotifications', async () => {
   const response = await instance
     .get('/Notifications');
   return response.data;
 })
 
-export const getNotificationsByID = createAsyncThunk('notification/getNotificationsByID', async () => {
+export const getNotificationsByID = createAsyncThunk('notificationList/getNotificationsByID', async () => {
     const response = await instance
       .get('/Notifications');
     return response.data;
@@ -22,7 +22,7 @@ export const getNotificationsByID = createAsyncThunk('notification/getNotificati
 
 
 const notificationsSlice = createSlice({
-  name: 'notification',
+  name: 'notificationList',
   initialState,
   reducers:{
   },

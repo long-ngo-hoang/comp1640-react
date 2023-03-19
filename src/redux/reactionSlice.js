@@ -7,13 +7,13 @@ const initialState = {
   error: ''
 }
 
-export const addReaction = createAsyncThunk('reaction/addReaction', async (initialReaction) => {
+export const addReaction = createAsyncThunk('reactionList/addReaction', async (initialReaction) => {
   const response = await instance
     .get('/Reactions', initialReaction);
   return response.data;
 })
 
-export const deleteReaction = createAsyncThunk('reaction/deleteReaction', async (initialReaction) => {
+export const deleteReaction = createAsyncThunk('reactionList/deleteReaction', async (initialReaction) => {
     const response = await instance
       .get('/Reactions', initialReaction);
     return response.data;
@@ -22,7 +22,7 @@ export const deleteReaction = createAsyncThunk('reaction/deleteReaction', async 
 
 
 const reactionsSlice = createSlice({
-  name: 'reaction',
+  name: 'reactionList',
   initialState,
   reducers:{
   },

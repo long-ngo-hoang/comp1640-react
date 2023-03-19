@@ -3,9 +3,20 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch } from 'react-redux';
 import SelectedBox from './selectedBox';
-import { addIdeaAsync } from '../../redux/ideasSlice';
+import { addIdea } from '../../redux/ideasSlice';
 import UploadFile from '../../APIs/uploadFile';
 import {  useNavigate  } from 'react-router-dom';
+import {
+    MDBContainer,
+    MDBRow,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBInput,
+    MDBSwitch,
+    MDBTextArea
+  } from 'mdb-react-ui-kit';
+  import Navbar1 from '../navbar/navbar1';
 export default function AddIdea() {
   
     const dispatch = useDispatch();
@@ -47,9 +58,9 @@ export default function AddIdea() {
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addIdeaAsync(idea)
+        dispatch(addIdea(idea)
         ) 
-        navigate(`/idea/view`)
+        navigate(`/ideas/view`)
     }
 
     const[files, setFiles] = useState([{
@@ -62,39 +73,51 @@ export default function AddIdea() {
     
         return (
           <>
-            <form>
-            <h1>Create Idea</h1>
-            <div className='switch-btn'>
-            <BootstrapSwitchButton 
+          <Navbar1 />
+          <MDBContainer fluid>
+      <MDBRow className='justify-content-center align-items-center m-5'>
+        <MDBCard>
+          <MDBCardBody className='px-4'>
+            <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Create Idea</h3>
+            <h4>{idea.name}</h4>
+
+             <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} />
+              <br />
+            <MDBRow>
+              {/* <BootstrapSwitchButton
                 checked={idea.isAnonymous}
                 width={100}
                 onstyle="success"
                 onlabel='Anonymous'
                 // offlabel='Regular User'
                 onChange={onChangeAnonymous} 
-            />
-            </div>
-                <label htmlFor="name">Name:</label>
-                <input onChange={onChangeName} value={idea.name}/>
-                <label htmlFor="name">Description:</label>
-                <textarea onChange={onChangeDescription} value={idea.description}/>
-                <label htmlFor="name">Description:</label>
-                <textarea onChange={onChangeDescription} value={idea.description}/>
-                <label htmlFor="cars">Choose categories:</label>
-                    <select
-                    disabled={false}
-                    value={slectedCategories}
-                    onChange={onChangeSelected} 
-                        >
-                            <SelectedBox/>
-                            </select>
-                <UploadFile/>
-                {/* <input onChange={onChangeDocument} value={idea.description}/> */}
-                <button className='button' onClick={handleSubmit}>Add Idea</button>
-                {/* <input onChange={onChangeDocument} value={idea.description}/> */}
-                <button className='button' onClick={handleSubmit}>Add Idea</button>
-            </form>
-            
+            /> */}
+           
+              <MDBCol md='12'>
+                <h5 className="mb-0">Name : </h5>
+                <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={idea.name}/>
+              </MDBCol>
+
+              <MDBCol md='12'>
+                <h5 className="mb-0">Description : </h5>
+                <MDBTextArea wrapperClass='mb-4'  id='textAreaExample' rows={8} onChange={onChangeDescription} value={idea.description}/>
+              </MDBCol>
+
+              <MDBCol md='12'>
+              <h5 className="mb-0">Category : </h5>
+                    <select  disabled={false} value={slectedCategories} onChange={onChangeSelected}>
+                      <SelectedBox/>
+                    </select>
+                </MDBCol>
+            </MDBRow>           
+          </MDBCardBody>
+
+          <MDBCol md='12'>
+            <button className="btn btn-primary" onClick={handleSubmit}>Create Idea</button>
+          </MDBCol>
+        </MDBCard>
+      </MDBRow>
+</MDBContainer>
           </>
         )
 }

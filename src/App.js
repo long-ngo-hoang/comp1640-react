@@ -17,6 +17,7 @@ import UpdateUser from './components/User/edit';
 import {LogIn} from './components/Login/login';
 import HomePage from './components/pages/homepage';
 import RequireAuth from './authorization';
+import UpdateAcademicYear from './components/AcademicYears/edit';
 import ViewAcademicYears from './components/AcademicYears/view';
 import AddAcademicYears from './components/AcademicYears/create';
 import ChangePassword from './components/User/resetPass';
@@ -35,36 +36,36 @@ function App() {
         <Route path='/login' element={<LogIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
 
-        <Route path="ideas" element={<RequireAuth allowedRoles={["dministrator"]}/>}>   
+        <Route path="ideas" >   
           <Route path='myideas' element={<ManageIdeas />} />
           <Route path="view" element={<ViewIdeas />} />
           <Route path="create" element={<AddIdea />} />
           <Route path="detail/:id" element={<DetailIdea />} />
           <Route path="edit/:id" element={<UpdateIdea />} />
-          <Route path="comment/edit/:Id" element={<EditComments />} />
+          <Route path="comment/edit/:id" element={<EditComments />} />
         </Route>
 
         <Route path="categories">
           <Route path="view" element={<ViewCategories />} />
           <Route path="create" element={<AddCategories/>} />
-          <Route path="edit/:Id" element={<UpdateCategories />} />
+          <Route path="edit/:id" element={<UpdateCategories />} />
         </Route>
 
         <Route path="departments">
           <Route path="view" element={<ViewDepartments />} />
           <Route path="create" element={<AddDepartments/>} />
-          <Route path="edit/:Id" element={<UpdateDepartments />} />
+          <Route path="edit/:id" element={<UpdateDepartments />} />
         </Route>
-        <Route path="academicyear">
+        <Route path="academicYears">
           <Route path="view" element={<ViewAcademicYears />} />
           <Route path="create" element={<AddAcademicYears/>} />
-          <Route path="edit/:Id" element={<UpdateDepartments />} />
+          <Route path="edit/:id" element={<UpdateAcademicYear />} />
         </Route>
 
         <Route path="profile">
           <Route path="view" element={<UserView />} />
           {/* <Route path="create" element={<AddDepartments/>} /> */}
-          <Route path="edit/:Id" element={<UpdateUser />} />
+          <Route path="edit/:id" element={<UpdateUser />} />
           <Route path="changePass" element={<ChangePassword />} />
         </Route>
 

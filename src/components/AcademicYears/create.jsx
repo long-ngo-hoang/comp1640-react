@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addAcademicYearsAsync} from '../../redux/academicYearsSlice'
+import {addAcademicYear} from '../../redux/academicYearsSlice'
 import {  useNavigate  } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -54,14 +54,14 @@ export default function AddAcademicYears() {
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addAcademicYearsAsync({
+        dispatch(addAcademicYear({
             name: academicYear.name,
            StartDate: startDate, 
            ClosureDate: closureDate, 
            FinalClosureDate: finalClosureDate
           })
         ) 
-        navigate(`/academicyear/view`)
+        navigate(`/academicyears/view`)
     }  
 
         return (
