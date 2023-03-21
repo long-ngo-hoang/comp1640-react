@@ -1,19 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api';
+import instance from './configApi';
 
-const initialState = {
-  loading: false,
-  comments: [],
-  error: ''
-}
-
-export const addCommentAsync = createAsyncThunk('comments/addCommentsAsync', async (initialData) => {
+export const addComment = createAsyncThunk('commentList/addComment', async (initialData) => {
   const response = await instance
     .post(`/Comments` , initialData);
   return response.data;
 })
 
-export const updateCommentAsync = createAsyncThunk('comments/updateCommentsAsync', async (initialData) => {
+export const updateComment = createAsyncThunk('comments/updateComment', async (initialData) => {
   const {id} = initialData;
   try{
   const response = await instance
@@ -25,7 +19,7 @@ export const updateCommentAsync = createAsyncThunk('comments/updateCommentsAsync
   }
 })
 
-export const deleteCommentAsync = createAsyncThunk('comments/deleteCommentAsync', async (initialData) => {
+export const deleteComment = createAsyncThunk('comments/deleteComment', async (initialData) => {
   const  id  = initialData;
   const response = await instance
     .delete(`/Comments/${id}`);
@@ -34,38 +28,57 @@ export const deleteCommentAsync = createAsyncThunk('comments/deleteCommentAsync'
 })
 
 const categoriesSlice = createSlice({
-  name: 'comment',
-  initialState,
-  reducers:{
-        //   addCategories: (state, action) => {
-        //     state.categories = action.payload;
-        //   }     
+  name: 'commentList',
+  initialState: {
+    loading: false,
+    comments: [],
+    error: ''
+  },
+  reducers:{   
   },
   extraReducers: builder => {
-    // builder.addCase(getCategories.fulfilled, (state, action) => {
-    //   state.loading = false
-    //   state.categories = action.payload
-    //   state.error = ''
-    // })
-    builder.addCase(addCommentAsync.fulfilled, (state, action) => {
-      state.loading = false
-      state.comments.push(action.payload)
-      state.error = ''
+    builder
+    .addCase(addComment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(addComment.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle"
+      state.categories = action.payload
+    })
+    .addCase(addComment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
 
-    builder.addCase(updateCommentAsync.fulfilled, (state, action) => {
-      // state.loading = false
-      // state.categories.push(action.payload)
-      // state.error = ''
+    .addCase(updateComment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(updateComment.fulfilled, (state, action) => {
      state.loading = false
       const  {id}  = action.payload;
       const comment = state.comments.filter((comment)=> comment.id !== id);
       state.comments = [...comment, action.payload];
       state.error = ''
     })
-    builder.addCase(deleteCommentAsync.fulfilled, (state, action) => {
+    .addCase(updateComment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(deleteComment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(deleteComment.fulfilled, (state, action) => {
       const id = action.payload;
       state.comments = state.comments.filter((item)=> item.id !== id)
+    })
+    .addCase(deleteComment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
   }
 })

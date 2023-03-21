@@ -1,19 +1,12 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-const initialState = {
-    loading: false,
-    token: null,
-    error: ''
-}
-
-const token = localStorage.getItem('token');
 const instance = axios.create({
     baseURL: 'https://localhost:7044',
     // headers: { Authorization: `Bearer ${token}` }
   });
  
-  export const loginAsync = createAsyncThunk('login/loginAsync', async (initialIdea ,{rejectWithValue}) => {   
+  export const login = createAsyncThunk('accountList/login', async (initialIdea ,{rejectWithValue}) => {   
     try{
     const response = await instance
       .post(`/api/Auth/Login` , initialIdea);
@@ -28,7 +21,7 @@ const instance = axios.create({
     }
   })
 
-  export const refreshToken = createAsyncThunk('login/refreshToken', async (initialToken,{rejectWithValue}) => {   
+  export const refreshToken = createAsyncThunk('accountList/refreshToken', async (initialToken,{rejectWithValue}) => {   
     try{     
     const response = await instance
       .post(`/api/Auth/RefreshToken?refreshToken=${encodeURIComponent(initialToken)}`);
@@ -44,7 +37,7 @@ const instance = axios.create({
     }    
   })
 
-  export const forgotPasswordAsync = createAsyncThunk('login/forgotPasswordAsync', async (email,{rejectWithValue}) => {   
+  export const forgotPassword = createAsyncThunk('accountList/forgotPassword', async (email,{rejectWithValue}) => {   
     
     try{     
     const response = await instance
@@ -60,54 +53,77 @@ const instance = axios.create({
     }    
   })
 
-  const loginSlice = createSlice({
-    name: 'login',
-    initialState,
+  const accountsSlice = createSlice({
+    name: 'accountList',
+    initialState : {
+      loading: false,
+      token: null,
+      error: '',
+      status: 'idle'
+    },
     reducers:{
-      logout:(state,action)=>{
+      logout:(state, action)=>{
         state.token = null
         localStorage.removeItem('token')
         localStorage.removeItem('rftoken')
+        localStorage.removeItem('persist:root')
+
       }
     },
     extraReducers: builder => {
-      // builder.addCase(getCategories.fulfilled, (state, action) => {
-      //   state.loading = false
-      //   state.categories = action.payload
-      //   state.error = ''
-      // })
-    //   builder.addCase(loginAsync.pending, (state, action) => {
-    //     state.loading = true
-    //     state.error = 'null'
-    //   })
-      builder.addCase(loginAsync.fulfilled, (state, action) => {
+      builder
+      .addCase(login.pending, (state, action) => {
+        state.loading = true
+        state.error = 'null'
+        state.status = 'loading';
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false
+        state.token = action.payload
+        state.status = 'success';
+        localStorage.setItem('token', state.token.token)
+        localStorage.setItem('rftoken', state.token.refreshToken)
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false
+        state.error = 'null'
+      })
+
+      .addCase(refreshToken.pending, (state, action) => {
+        state.loading = true
+        state.error = 'null'
+        state.status = 'loading';
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
         state.loading = false
         state.token = action.payload
         localStorage.setItem('token', state.token.token)
         localStorage.setItem('rftoken', state.token.refreshToken)
         state.error = ''
       })
-      builder.addCase(refreshToken.fulfilled, (state, action) => {
+      .addCase(refreshToken.rejected, (state, action) => {
         state.loading = false
-        state.token = action.payload
-        localStorage.setItem('token', state.token.token)
-        localStorage.setItem('rftoken', state.token.refreshToken)
-        state.error = ''
+        state.error = 'null'
       })
-      builder.addCase(forgotPasswordAsync.fulfilled, (state, action) => {
+
+      .addCase(forgotPassword.pending, (state, action) => {
+        state.loading = true
+        state.error = 'null'
+        state.status = 'loading';
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
         state.loading = true
         state.error = 'Success'
       })
-    //   builder.addCase(loginAsync.rejected, (state, action) => {
-    //     state.loading = false
-    //     state.error = 'null'
-    //   })
-
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false
+        state.error = 'null'
+      })
     }
   })
   
-export const {logout}  = loginSlice.actions
+export const {logout}  = accountsSlice.actions
 
-export const selectToken = (state) => state.login.token.token;
+export const selectToken = (state) => state.accountList.token.token;
 
-export default loginSlice.reducer
+export default accountsSlice.reducer

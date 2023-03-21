@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch  } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
-import { deleteCommentAsync } from '../../redux/commentsSlice'
+import { deleteComment } from '../../redux/commentsSlice'
 import { getIdeaById } from '../../redux/ideasSlice'
 import {selectIdeaById} from '../../redux/ideasSlice'
 import {
@@ -25,7 +25,7 @@ export default function DetailIdea() {
     const onClickShowComment = () => setShowComment(!showCommet)
 
     function handleRemove(id) {
-         dispatch(deleteCommentAsync(id));
+         dispatch(deleteComment(id));
     }
 
     useEffect(() => {

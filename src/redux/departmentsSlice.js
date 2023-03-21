@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api';
+import instance from './configApi';
 
 export const getDepartments = createAsyncThunk('departmentList/getDepartments', async () => {
   const response = await instance
@@ -63,6 +63,10 @@ const departmentsSlice = createSlice({
       state.departments = action.payload
       state.error = ''
     })
+    .addCase(getDepartments.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
 
     builder.addCase(getDepartmentById.pending, (state, action) => {
       state.status = 'loading'
@@ -122,16 +126,17 @@ const departmentsSlice = createSlice({
       state.status = "rejected"
     })
 
+    .addCase(removeUserFromDepartment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
     builder.addCase(removeUserFromDepartment.fulfilled, (state, action) => {
       const id = action.payload;
       state.departments = state.departments.filter((item)=> item.id !== id)
-
     })
-
-    builder.addCase(removeUserFromDepartment.rejected, (state, action) => {
-      // const id = action.payload;
-      // state.departments = state.departments.filter((item)=> item.id !== id)
-
+    .addCase(removeUserFromDepartment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
   }
 })
@@ -139,9 +144,7 @@ const departmentsSlice = createSlice({
 export const selectAllDepartments = (state) => state.departments.departments;
 export const selectUser = (state) => state.departments;
 
-
 export const selectDepartmentById = (state) =>
   state.departments.departments[0]
-
 
 export default departmentsSlice.reducer

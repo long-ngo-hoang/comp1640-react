@@ -9,8 +9,10 @@ import {
   MDBRow,
   MDBCol,
   MDBCard,
-  MDBCardBody,MDBIcon
+  MDBCardBody,MDBIcon,
+  MDBSpinner 
 } from "mdb-react-ui-kit";
+import { logout } from "../../redux/accountsSlice";
 
 import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import Navbar1 from "../navbar/navbar1";
@@ -20,22 +22,34 @@ function ViewIdeas(){
   useEffect(() => {
     dispatch(getIdeas())     
   }, [])
-  
-  const ideas = useSelector(selectAllIdeas)
+  const navigate = useNavigate()
 
+  const ideas = useSelector(selectAllIdeas)
+  const {loading} = useSelector((state) => state.ideas)
+  console.log(ideas)
   const dispatch = useDispatch()
 
-  // function handleLogout() {
-  //   dispatch(logout());
-  // }
+  function handleLogout() {
+    dispatch(logout());
+    navigate('/') 
+
+  }
+  if(loading){
+    return (
+    <>
+    <MDBSpinner color='primary'>
+        <span className='visually-hidden'>Loading...</span>
+      </MDBSpinner>
+    </>)
+  }
   return (
     <>
     <Navbar1/>
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-9">
         <MDBCol md="12" xl="10">
-          
-          {ideas === null 
+          {!loading && ideas.length ? 
+          ideas === null 
             ? <h1> page not have data</h1> :
               ideas?.map(item =>
                  (   
@@ -79,7 +93,7 @@ function ViewIdeas(){
               </MDBRow>
             </MDBCardBody> 
             </MDBCard>
-                       ))}     
+                       )) : null}     
          
         </MDBCol>
       </MDBRow>

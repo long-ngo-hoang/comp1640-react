@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api';
+import instance from './configApi';
 
 export const getIdeas = createAsyncThunk('ideaList/getIdeas', async () => {
   const response = await instance
@@ -71,7 +71,12 @@ const ideasSlice = createSlice({
       state.loading = false;
       state.pageindex = action.payload.pageIndex;
       state.totalpage = action.payload.totalPage;
-      state.ideas = action.payload.ideas
+      const ideas =  action.payload.ideas
+      state.ideas = ideas
+    })
+    .addCase(getIdeas.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
 
     .addCase(getIdeasByUserId.pending, (state, action) => {
@@ -83,7 +88,9 @@ const ideasSlice = createSlice({
       state.loading = false;
       state.pageindex = action.payload.pageIndex;
       state.totalpage = action.payload.totalPage;
-      state.ideas = action.payload.ideas
+      // state.ideas = action.payload.ideas
+      const ideas =  action.payload.ideas
+      state.ideas = ideas
     })
 
     .addCase(getIdeaById.pending, (state, action) => {
@@ -93,8 +100,7 @@ const ideasSlice = createSlice({
     .addCase(getIdeaById.fulfilled, (state, action) => {
       state.status = 'idle';
       state.loading = false;
-      state.ideas[0] = action.payload
-      console.log(action.payload)
+      state.ideas[0] = action.payload;
     })
 
     .addCase(addIdea.pending, (state, action) => {
@@ -102,9 +108,9 @@ const ideasSlice = createSlice({
       state.loading = true;
     })
     .addCase(addIdea.fulfilled, (state, action) => {
-      state.status = 'idle';
+      state.status = 'success';
       state.loading = false;
-      state.ideas.ideas.push(action.payload)
+      state.ideas.push(action.payload)
     })
 
     .addCase(updateIdea.pending, (state, action) => {
@@ -132,7 +138,7 @@ const ideasSlice = createSlice({
 
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
-export const selectIdeaById = (state) => state.ideas.ideas[0]
+export const selectIdeaById = (state, id) => state.ideas.ideas[0];
 
 export const selectIdea = (state) => state.ideas;
 

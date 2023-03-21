@@ -27,10 +27,6 @@ export default function UpdateCategories() {
 
     const [nameCategory, setNameCategory] = useState(category?.name);
 
-    useEffect(() => {
-       dispatch(getCategoryById(id))     
-     }, [])
-
     const onChangeName = (e) =>{
       setNameCategory(e.target.value)
     }

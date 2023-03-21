@@ -6,7 +6,6 @@ import UpdateIdea from './components/Ideas/edit';
 import ViewCategories from './components/Categories/view';
 import AddCategories from './components/Categories/create';
 import UpdateCategories from './components/Categories/edit';
-// import IdeasView from './components/Ideas/view';
 import EditComments from './components/Comments/edit';
 import ViewDepartments from './components/Departments/view';
 import AddDepartments from './components/Departments/create';
@@ -36,7 +35,7 @@ function App() {
         <Route path='/login' element={<LogIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
 
-        <Route path="ideas" >   
+        <Route path="ideas" element={<RequireAuth allowedRoles={["Staff"]} />}>   
           <Route path='myideas' element={<ManageIdeas />} />
           <Route path="view" element={<ViewIdeas />} />
           <Route path="create" element={<AddIdea />} />
@@ -56,7 +55,7 @@ function App() {
           <Route path="create" element={<AddDepartments/>} />
           <Route path="edit/:id" element={<UpdateDepartments />} />
         </Route>
-        <Route path="academicYears">
+        <Route path="academicYears" element={<RequireAuth allowedRoles={["Administrator"]} />}>
           <Route path="view" element={<ViewAcademicYears />} />
           <Route path="create" element={<AddAcademicYears/>} />
           <Route path="edit/:id" element={<UpdateAcademicYear />} />

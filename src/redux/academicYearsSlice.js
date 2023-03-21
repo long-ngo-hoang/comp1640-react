@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api';
+import instance from './configApi';
 
 export const getAcademicYears = createAsyncThunk('academicYearList/getAcademicYears', async () => {
   const response = await instance

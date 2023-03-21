@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SelectedBox from './selectedBox';
 import { addIdea } from '../../redux/ideasSlice';
 import UploadFile from '../../APIs/uploadFile';
@@ -17,17 +17,19 @@ import {
     MDBTextArea
   } from 'mdb-react-ui-kit';
   import Navbar1 from '../navbar/navbar1';
+import { useEffect } from 'react';
 export default function AddIdea() {
   
     const dispatch = useDispatch();
     const navigate = useNavigate()
+
     const [idea, setIdea] = useState({
         categoryId: "",
         name: "",
         description: "",
         isAnonymous: false
     });
-
+    const {status} = useSelector((state => state.ideas))
     const [slectedCategories, setSelectedCategories] = useState('');
     const [optionList, setOptionList] = useState([]);
     
@@ -50,19 +52,22 @@ export default function AddIdea() {
         })
     }
 
-    const onChangeAnonymous = (value) => {
+    const onChangeAnonymous = (e) => {
         setIdea((preV) => {
-            return{...preV, isAnonymous: value}
+            return{...preV, isAnonymous: !idea.isAnonymous}
         }) 
     }
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addIdea(idea)
-        ) 
-        navigate(`/ideas/view`)
+        dispatch(addIdea(idea))  
     }
 
+    useEffect(() => {
+      if(status === 'success'){
+        navigate('/ideas/view') 
+      }
+    })
     const[files, setFiles] = useState([{
         name: 'myFile.pdf'
     }])
@@ -70,29 +75,17 @@ export default function AddIdea() {
     const removeFile = (filename) => {
         setFiles(files.filter(file => file.name !== filename))
     }
-    
-        return (
-          <>
-          <Navbar1 />
-          <MDBContainer fluid>
+    return (
+      <>
+        <Navbar1 />
+        <MDBContainer fluid>
       <MDBRow className='justify-content-center align-items-center m-5'>
         <MDBCard>
           <MDBCardBody className='px-4'>
             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Create Idea</h3>
-            <h4>{idea.name}</h4>
-
-             <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} />
+             <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} value={idea.isAnonymous} />
               <br />
             <MDBRow>
-              {/* <BootstrapSwitchButton
-                checked={idea.isAnonymous}
-                width={100}
-                onstyle="success"
-                onlabel='Anonymous'
-                // offlabel='Regular User'
-                onChange={onChangeAnonymous} 
-            /> */}
-           
               <MDBCol md='12'>
                 <h5 className="mb-0">Name : </h5>
                 <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={idea.name}/>

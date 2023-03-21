@@ -7,7 +7,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import commentsSlice from "./commentsSlice.js";
 import academicYearsSlice from "./academicYearsSlice.js";
 import departmentsSlice from "./departmentsSlice.js";
-import loginSlice from "./loginSlice.js";
+import accountsSlice from "./accountsSlice.js";
 // import userSlice from "./usersSclice.js";
 import usersSlice from "./usersSlice.js";
 import notificationSlice from "./notificationSlice.js";
@@ -16,7 +16,7 @@ import roleSlice from "./roleSlice.js";
 const persistCongig = {
     key: 'root',
     storage,
-   
+   blacklist: ['comments']
 };
 
 const reducer = combineReducers({
@@ -25,7 +25,7 @@ const reducer = combineReducers({
     comments : commentsSlice,
     academicYears: academicYearsSlice,
     departments: departmentsSlice,
-    login: loginSlice,
+    accounts: accountsSlice,
     notification: notificationSlice,
     roles : roleSlice,
     user: usersSlice,
