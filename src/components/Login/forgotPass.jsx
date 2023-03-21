@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { forgotPasswordAsync } from '../../redux/loginSlice';
+import { forgotPassword } from '../../redux/accountsSlice';
 import { useNavigate  } from 'react-router-dom';
 
 
@@ -20,7 +20,7 @@ export default function ForgotPassword() {
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(forgotPasswordAsync(email)
+        dispatch(forgotPassword(email)
         ) 
         // navigate(`/profile/view`)
     }

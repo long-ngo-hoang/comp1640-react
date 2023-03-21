@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api';
+import instance from './configApi';
 
 export const getCategories = createAsyncThunk('categoryList/getCategories', async () => {
   const response = await instance
@@ -120,6 +120,7 @@ const categoriesSlice = createSlice({
 
 export const selectAllCategories = (state) => state.categories.categories;
 
-export const selectCategoryById = (state, id) => state.categories.categories[0];
+export const selectCategoryById = (state, Id) =>
+    state.categories.categories.find((category) => category.id === Id);
     
 export default categoriesSlice.reducer

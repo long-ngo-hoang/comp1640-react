@@ -1,21 +1,5 @@
-// import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import instance from './api'
-
-const initialState = {
-  loading: false,
-  users: [],
-  error: ''
-}
-// const instance = axios.create({
-//     baseURL: 'https://localhost:7044'
-//   });
-
-// const token = localStorage.getItem('token');
-
-// const config = {
-//      headers: { Authorization: `Bearer ${token}` }
-//  };
+import instance from './configApi'
 
 export const getProfiles = createAsyncThunk('userList/getProfiles', async () => {
   const response = await instance
@@ -54,34 +38,62 @@ export const changePassword = createAsyncThunk('userList/changePasswordAsync', a
     }
 })
 
-
 const userSlice = createSlice({
   name: 'userList',
-  initialState,
+  initialState: {
+    loading: false,
+    users: [],
+    error: ''},
   reducers:{
   },
   extraReducers: builder => {
-    builder.addCase(getProfiles.fulfilled, (state, action) => {
+    builder
+    .addCase(getProfiles.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(getProfiles.fulfilled, (state, action) => {
       state.loading = false
       state.users = action.payload
       state.error = ''
     })
-    builder.addCase(getProfileById.fulfilled, (state, action) => {
+    .addCase(getProfiles.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(getProfileById.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(getProfileById.fulfilled, (state, action) => {
       state.loading = false
      
       state.users.push(action.payload)
       state.error = ''
     })
-    builder.addCase(updateProfile.fulfilled, (state, action) => {
+    .addCase(getProfileById.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(updateProfile.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(updateProfile.fulfilled, (state, action) => {
      state.loading = false
       const  {id}  = action.payload;
       const user = state.categories.filter((category)=> category.id !== id);
       state.users = [...user, action.payload];
       state.error = ''
     })
+    .addCase(updateProfile.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
   }
 })
-
 
 export const selectAllUsers = (state) => state.user.users;
 
