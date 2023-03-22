@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUser } from '../../redux/roleSlice'
 import { Link } from 'react-router-dom'
-  const ViewRoles = () => { 
+  const ViewUser = () => { 
   
     const dispatch = useDispatch()
     const {loading,error, users }=  useSelector(
@@ -21,8 +21,7 @@ import { Link } from 'react-router-dom'
           <div key={item.id}>
             <p>{item.id} </p>  
               <p>{item.userName} </p>   
-              <Link type="button" className="btn btn-primary" to={`/role/detail/${item.id}`}>View More</Link>
-              <Link type="button" className="btn btn-primary" to={`/role/create/${item.id}`}>Add Role</Link>
+              <Link type="button" className="btn btn-primary" to={`/departments/addDepartment/${item.id}`}>Add Department</Link>
           </div>
           )) : null 
        }
@@ -30,4 +29,4 @@ import { Link } from 'react-router-dom'
     )
   }
 
-  export default ViewRoles;
+  export default ViewUser;

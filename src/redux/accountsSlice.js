@@ -16,7 +16,8 @@ const instance = axios.create({
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message)
         } else {
-            return rejectWithValue(error.message)
+          console.log("a", error)
+            return rejectWithValue(error.response.data)
         }
     }
   })
@@ -45,7 +46,7 @@ const instance = axios.create({
       return response;
     }
       catch(error){     
-        if (error.response && error.response.data.message) {
+        if (error.response && error.response.data.message) {         
             return rejectWithValue(error.response.data.message)
         } else {
             return rejectWithValue(error.message)
@@ -94,7 +95,7 @@ const instance = axios.create({
         state.error = 'null'
         state.status = 'loading';
       })
-      .addCase(refreshToken.fulfilled, (state, action) => {
+      builder.addCase(refreshToken.fulfilled, (state, action) => {
         state.loading = false
         state.token = action.payload
         localStorage.setItem('token', state.token.token)

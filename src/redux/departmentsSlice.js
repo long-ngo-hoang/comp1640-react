@@ -34,6 +34,16 @@ export const deleteDepartment = createAsyncThunk('departmentList/deleteDepartmen
   return response.data;
 })
 
+export const addUserToDepartment = createAsyncThunk('department/addUserToDepartment', async (initialData) => {
+  const  {userId}  = initialData;
+  const  {departmentID}  = initialData;
+  const response = await instance
+    .put(`/Departments/AddUserToDepartment/${userId}?DepartmentID=${departmentID}`);
+    if (response?.status === 200) return initialData;   
+  return response.data;
+})
+
+
 export const removeUserFromDepartment = createAsyncThunk('departmentList/removeUserFromDepartment', async (initialData) => {
   const  id  = initialData; 
    console.log(id);
@@ -133,6 +143,12 @@ const departmentsSlice = createSlice({
     builder.addCase(removeUserFromDepartment.fulfilled, (state, action) => {
       const id = action.payload;
       state.departments = state.departments.filter((item)=> item.id !== id)
+    })
+
+    builder.addCase(addUserToDepartment.fulfilled, (state, action) => {
+      // const id = action.payload;
+      // state.departments = state.departments.filter((item)=> item.id !== id)
+
     })
     .addCase(removeUserFromDepartment.rejected, (state, action) => {
       state.loading = false;

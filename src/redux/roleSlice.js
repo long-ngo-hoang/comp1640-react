@@ -4,6 +4,7 @@ import instance from './configApi';
 const initialState = {
   loading: false,
   role: [],
+  users: [],
   error: ''
 }
 
@@ -13,16 +14,35 @@ export const getRole = createAsyncThunk('roleList/getRole', async () => {
   return response.data;
 })
 
+export const getUserByID = createAsyncThunk('roleList/getUserByID', async (id) => {
+  const response = await instance
+    .get(`/UserRoles/${id}`);
+  return response.data;
+})
+
+export const getUser = createAsyncThunk('roleList/getUser', async () => {
+  const response = await instance
+    .get('/User');
+  return response.data;
+})
+
+
+
+
 export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id) => {
     const response = await instance
-      .get(`/Roles/${id}`);
+      .get(`/UserRoles/${id}`);
     return response.data;
   })
-  export const updateRole = createAsyncThunk('roleList/updateRole', async (initialData) => {
-    const id = initialData;
+
+
+
+  export const updateRoleAsync = createAsyncThunk('role/updateRoleAsync', async (initialData) => {
+    const {userId} = initialData
+    const {roleId} = initialData
     try{
     const response = await instance
-      .put(`/Roles/${id}`, initialData);
+      .put(`/UserRoles/${userId}?roleId=${roleId}`);
     return response.data;
     }catch(err)
     {
@@ -45,7 +65,30 @@ const roleSlice = createSlice({
     builder.addCase(getRole.fulfilled, (state, action) => {
       state.loading = false
       state.status = 'Success'
+      console.log("A", action.payload)
       state.role = action.payload
+      state.error = ''
+    })
+    builder.addCase(getUser.pending, (state, action) => {
+      state.status = 'loading'
+      state.loading = true
+      state.error = ''
+    })
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      state.loading = false
+      state.status = 'Success'
+      state.users = action.payload
+      state.error = ''
+    })
+    builder.addCase(getUserByID.pending, (state, action) => {
+      state.status = 'loading'
+      state.loading = true
+      state.error = ''
+    })
+    builder.addCase(getUserByID.fulfilled, (state, action) => {
+      state.loading = false
+      state.status = 'Success'
+      state.users = action.payload
       state.error = ''
     })
     builder.addCase(getRoleById.pending, (state, action) => {

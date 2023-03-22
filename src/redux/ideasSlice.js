@@ -1,15 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './configApi';
 
+const initialState = {
+  status: 'loading',// 'loading' | 'succeeded' | 'failed'
+  loading: true,
+  pageindex: 1,
+  totalpage: [],
+  ideas: [],
+  error: ''
+}
+
+
+
 export const getIdeas = createAsyncThunk('ideaList/getIdeas', async () => {
   const response = await instance
     .get('/Ideas?pageIndex=1');
   return response.data;
 })
 
-export const getIdeasByUserId = createAsyncThunk('ideaList/getIdeasByUserId', async () => {
+export const getIdeasByUserId = createAsyncThunk('ideaList/getIdeasByUserId', async (page) => {
   const response = await instance
-    .get('/Ideas/UserId?pageIndex=1');
+    .get(`/Ideas/UserId?pageIndex=${page}`);
   return response.data;
 })
 
