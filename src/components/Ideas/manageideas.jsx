@@ -15,19 +15,38 @@ import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 
 import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
+import { useState } from 'react'
+import PaddingPage from './paginationPage'
+import { useParams } from 'react-router-dom'
 
 function ManageIdeas(){
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-      dispatch(getIdeasByUserId())     
-    }, [])
-
+ 
+  const {page} = useParams({page: true})
+  
  const ideas = useSelector(selectAllIdeas)
+ const {loading,error, totalpage} =  useSelector(
+  (state) => state.ideas
+  );
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     
-  function handleRemove(id) {
+    const [currentPage, setCurrentPage] = useState(1)
+
+    function handleRemove(id) {
       dispatch(deleteIdea(id));
-  }
+    }
+    
+    useEffect(() => {
+      dispatch(getIdeasByUserId(currentPage))     
+    }, [currentPage])
+
+    useEffect(() => {
+      if (page !== undefined)
+      {
+        setCurrentPage(page)  
+      }           
+    }, [page])
 
   return (
     <>
@@ -36,6 +55,7 @@ function ManageIdeas(){
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-9">
         <MDBCol md="12" xl="10">
+          <h1>{page}</h1>
           {ideas === null 
             ? <h1> page not have data</h1> :
               ideas?.map(item =>
@@ -77,6 +97,7 @@ function ManageIdeas(){
                   ))}    
         </MDBCol>
       </MDBRow>
+     {<PaddingPage/>}
     </MDBContainer>
     </>
   );

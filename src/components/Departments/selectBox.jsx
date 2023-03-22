@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react'
   import { useSelector, useDispatch } from 'react-redux'
-    import { getRole } from '../../redux/roleSlice'
+    import { getDepartments } from '../../redux/departmentsSlice'
 
-  const SelectedRole = () => { 
-    const optionList = useSelector(state => state.roles)
+  const SelectedDepartment = () => { 
+    const optionList = useSelector(state => state.departments)
     const dispatch = useDispatch()
 
-    console.log(optionList)
     
     useEffect(()=>{
-        dispatch(getRole(),[]);
+        dispatch(getDepartments(),[]);
     },[])
 
     return (
       <>
         <option disabled = {false} >Default</option> 
-          {optionList?.role?.map((item) => (                                                       
+          {optionList?.departments?.map((item) => (                                                       
             <option key={item.id} value={item.id}>                           
               {item.name}                                    
             </option>                                                            
@@ -25,4 +24,4 @@ import React, { useEffect } from 'react'
     )
   }
 
-  export default SelectedRole;
+  export default SelectedDepartment;
