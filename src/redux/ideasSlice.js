@@ -12,9 +12,9 @@ const initialState = {
 
 
 
-export const getIdeas = createAsyncThunk('ideaList/getIdeas', async () => {
+export const getIdeas = createAsyncThunk('ideaList/getIdeas', async (page) => {
   const response = await instance
-    .get('/Ideas?pageIndex=1');
+    .get(`/Ideas?pageIndex=${page}`);
   return response.data;
 })
 
@@ -56,6 +56,18 @@ export const deleteIdea = createAsyncThunk('ideaList/deleteIdea', async (initial
   const response = await instance
     .delete(`/Ideas/${id}`);
     if (response?.status === 200) return initialData;   
+  return response.data;
+})
+
+export const getMostPopularIdeas = createAsyncThunk('ideaList/getMostPopularIdeas', async (page) => {
+  const response = await instance
+    .get(`/Ideas/GetMostPopularIdeas?pageIndex=${page}`);
+  return response.data;
+})
+
+export const getMostViewedIdeas = createAsyncThunk('ideaList/getMostViewedIdeas', async (page) => {
+  const response = await instance
+    .get(`/Ideas/GetMostViewedIdeas?pageIndex=${page}`);
   return response.data;
 })
 
@@ -143,6 +155,41 @@ const ideasSlice = createSlice({
       state.status = 'idle';
       state.loading = false;
       state.ideas = state.ideas.filter((item)=> item.id !== action.payload.id)
+    })
+
+      //GetMostPopularIdeas
+    .addCase(getMostPopularIdeas.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+
+    .addCase(getMostPopularIdeas.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      const ideas =  action.payload.ideas
+      state.ideas = ideas
+    })
+
+    .addCase(getMostPopularIdeas.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+      //GetMostViewedIdeas
+    .addCase(getMostViewedIdeas.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+
+    .addCase(getMostViewedIdeas.fulfilled, (state, action) => {
+      state.status = 'idle';
+      state.loading = false;
+      const ideas =  action.payload.ideas
+      state.ideas = ideas
+    })
+
+    .addCase(getMostViewedIdeas.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
     })
   }
 })

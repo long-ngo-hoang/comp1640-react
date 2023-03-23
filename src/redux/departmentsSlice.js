@@ -14,6 +14,12 @@ export const getDepartmentById = createAsyncThunk('departmentList/getDepartmentB
   return response.data;
 })
 
+export const getStatisticalAnalysis = createAsyncThunk('departmentList/getStatisticalAnalysis', async () => {
+  const response = await instance
+    .get(`/Departments/GetStatisticalAnalysis`);
+  return response.data;
+})
+
 export const addDepartment = createAsyncThunk('departmentList/addDepartment', async (initialData) => {
   const response = await instance
     .post(`/Departments` , initialData);
@@ -53,12 +59,20 @@ export const removeUserFromDepartment = createAsyncThunk('departmentList/removeU
   return response.data;
 })
 
+export const Invitations = createAsyncThunk('departmentList/Invitations', async (userID) => {
+  const response = await instance
+    .post(`/Invitations?inviteUserId=${userID}`);
+  return response.data;
+})
+
+
 const departmentsSlice = createSlice({
   name: 'departmentList',
   initialState:{
     loading: false,
     status: "idle",
-    departments: []
+    departments: [],
+    analysis: []
   },
   reducers:{
   },
@@ -154,7 +168,14 @@ const departmentsSlice = createSlice({
       state.loading = false;
       state.status = "rejected"
     })
+
+    builder.addCase(getStatisticalAnalysis.fulfilled, (state, action) => {
+      state.loading = false
+      state.analysis = action.payload
+      state.error = ''
+    })
   }
+
 })
 
 export const selectAllDepartments = (state) => state.departments.departments;

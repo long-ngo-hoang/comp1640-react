@@ -1,11 +1,18 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
+import { PURGE } from "redux-persist";
 const instance = axios.create({
     baseURL: 'https://localhost:7044',
     // headers: { Authorization: `Bearer ${token}` }
   });
  
+  const initialState = {
+    loading: false,
+    token: null,
+    error: '',
+    status: 'idle'
+  }
+
   export const login = createAsyncThunk('accountList/login', async (initialIdea ,{rejectWithValue}) => {   
     try{
     const response = await instance
@@ -33,7 +40,7 @@ const instance = axios.create({
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message)
         } else {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.response.data)
         }
     }    
   })
@@ -56,26 +63,22 @@ const instance = axios.create({
 
   const accountsSlice = createSlice({
     name: 'accountList',
-    initialState : {
-      loading: false,
-      token: null,
-      error: '',
-      status: 'idle'
-    },
+    initialState,
     reducers:{
       logout:(state, action)=>{
-        state.token = null
+        // state.token = null
+        // state.error = ''
         localStorage.removeItem('token')
         localStorage.removeItem('rftoken')
-        localStorage.removeItem('persist:root')
-
+   
       }
     },
     extraReducers: builder => {
       builder
+      .addCase(PURGE, () => initialState)
       .addCase(login.pending, (state, action) => {
         state.loading = true
-        state.error = 'null'
+        state.error = ''
         state.status = 'loading';
       })
       .addCase(login.fulfilled, (state, action) => {
@@ -87,7 +90,8 @@ const instance = axios.create({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false
-        state.error = 'null'
+        state.error = ''
+        state.error = action.payload
       })
 
       .addCase(refreshToken.pending, (state, action) => {
@@ -118,7 +122,7 @@ const instance = axios.create({
       })
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false
-        state.error = 'null'
+        state.error = ''
       })
     }
   })

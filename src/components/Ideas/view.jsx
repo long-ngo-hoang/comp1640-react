@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { getIdeas } from "../../redux/ideasSlice";
 import { deleteIdea } from "../../redux/ideasSlice";
@@ -13,27 +13,62 @@ import {
   MDBSpinner 
 } from "mdb-react-ui-kit";
 import { logout } from "../../redux/accountsSlice";
+import store, {persistor} from '../../redux/store';
 
 import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
+import { useParams } from "react-router-dom";
+import PaddingPage from './paginationPage'
+import { getMostPopularIdeas } from '../../redux/ideasSlice'
+import { getMostViewedIdeas } from "../../redux/ideasSlice";
 
 function ViewIdeas(){  
+  const {page} = useParams({page: true})
+  const [currentPage, setCurrentPage] = useState(1)
+  const [sendRequest, setSendRequest] = useState(false);
+  const [sendMostView, setSendMostView] = useState(false);
+
   useEffect(() => {
-    dispatch(getIdeas())     
-  }, [])
+    dispatch(getIdeas(currentPage))     
+  }, [currentPage])
+
+  useEffect(() => {
+    if (page !== undefined)
+    {
+      setCurrentPage(page)  
+    }           
+  }, [page])
+
   const navigate = useNavigate()
 
   const ideas = useSelector(selectAllIdeas)
   const {loading} = useSelector((state) => state.ideas)
-  console.log(ideas)
   const dispatch = useDispatch()
+  //GetPolulation
+  useEffect(() => {
+    if(sendRequest){
+       dispatch(getMostPopularIdeas(currentPage))
+       setSendRequest(false);
+    }
+  },
+  [sendRequest]);
+
+//getMostView
+  useEffect(() => {
+    if(sendMostView){
+       dispatch(getMostViewedIdeas(currentPage))
+       setSendMostView(false);
+    }
+  },
+  [sendMostView]);
 
   function handleLogout() {
     dispatch(logout());
-    navigate('/') 
-
+    navigate('/login') 
+    persistor.purge()
   }
+
   if(loading){
     return (
     <>
@@ -96,7 +131,21 @@ function ViewIdeas(){
                        )) : null}     
          
         </MDBCol>
+
+        <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendRequest(true)} >getMostPopularIdeas</button>
+
+        <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendMostView(true)} >getMostViewIdeas</button>
+        <button style={{background: "none", border: "none"}} onClick={() => handleLogout()}>
+                                    <MDBIcon
+                                      fas
+                                      icon="trash-alt"
+                                      color="danger"
+                                      size="lg"
+                                      className="me-3"
+                                    />
+                                    </button>
       </MDBRow>
+      {<PaddingPage/>}
     </MDBContainer>
     
     </>
