@@ -7,16 +7,29 @@ import { combineReducers } from "@reduxjs/toolkit";
 import commentsSlice from "./commentsSlice.js";
 import academicYearsSlice from "./academicYearsSlice.js";
 import departmentsSlice from "./departmentsSlice.js";
-import accountsSlice from "./accountsSlice.js";
+import accountsSlice, { logout } from "./accountsSlice.js";
 // import userSlice from "./usersSclice.js";
 import usersSlice from "./usersSlice.js";
 import notificationSlice from "./notificationSlice.js";
 import roleSlice from "./roleSlice.js";
+import createFilter from 'redux-persist-transform-filter';
+import {
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER
+  } from "redux-persist";
+
+
+const saveSubsetFilter = createFilter('accounts', ['token']);
 
 const persistCongig = {
     key: 'root',
     storage,
-   blacklist: ['comments']
+   blacklist: ['comments'],
+   transforms: [saveSubsetFilter]
 };
 
 const reducer = combineReducers({
@@ -35,6 +48,12 @@ const persistedReducer = persistReducer(persistCongig,reducer);
 
 const store = configureStore({
     reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
 });
 
 export const persistor = persistStore(store);

@@ -29,6 +29,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import ViewUser from './components/Departments/userView';
 import AddDepartmentToUser from './components/Departments/addDepartment';
+import LineChart from './components/Departments/analysys';
 function App() {
   return (
     <>     
@@ -42,6 +43,7 @@ function App() {
           <Route path='myideas' element={<ManageIdeas />} />
           <Route path='myideas/:page' element={<ManageIdeas />} />
           <Route path="view" element={<ViewIdeas />} />
+          <Route path='view/:page' element={<ViewIdeas />} />
           <Route path="create" element={<AddIdea />} />
           <Route path="detail/:id" element={<DetailIdea />} />
           <Route path="edit/:id" element={<UpdateIdea />} />
@@ -60,6 +62,7 @@ function App() {
           <Route path="create" element={<AddDepartments/>} />
           <Route path="addDepartment/:id" element={<AddDepartmentToUser/>} />
           <Route path="edit/:Id" element={<UpdateDepartments />} />
+          <Route path="linechart" element={<LineChart />} />
         </Route>
         <Route path="academicYears" element={<RequireAuth allowedRoles={["Administrator"]} />}>
           <Route path="view" element={<ViewAcademicYears />} />

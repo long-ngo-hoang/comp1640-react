@@ -36,7 +36,7 @@ export function LogIn (){
         dispatch(login(account), 10000)
     }
 
-    const {status} = useSelector((state => state.accounts))
+    const {status , error} = useSelector((state => state.accounts))
 
     useEffect(() => {
         if(status === 'success'){
@@ -73,6 +73,7 @@ return(
           <MDBCardBody className='p-5 w-100 d-flex flex-column'>
             <h2 className="fw-bold mb-2 text-center">Sign in</h2>
             <p className="text-white-50 mb-3">Please enter your login and password!</p>
+            {error? <div>error {error}</div> : null}
 
             <h6>Email: </h6>
             <MDBInput wrapperClass='mb-4 w-100'  id='formControlLg1' type='email'  value={account.email} onChange={handleEmail}  size="lg"/>

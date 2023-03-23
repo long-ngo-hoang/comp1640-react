@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {  useNavigate  } from 'react-router-dom'
+import {  useMatch, useNavigate  } from 'react-router-dom'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+
 
 
 
@@ -10,13 +12,15 @@ function PaddingPage(){
     const {loading,error, totalpage} =  useSelector(
     (state) => state.ideas
     );
-
+   
+  const location = useLocation();
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState("")
+  const pathname = location.pathname.split("/")[2]
 
   const handleClick = (e) => {
     setCurrentPage(e.target.id) 
-    navigate(`/ideas/myideas/${e.target.id}`)
+    navigate(`/ideas/${pathname}/${e.target.id}`)
   }
 
 
