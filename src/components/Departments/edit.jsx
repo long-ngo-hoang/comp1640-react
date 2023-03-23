@@ -21,6 +21,7 @@ import {
 } from 'mdb-react-ui-kit';
 
 import Navbar1 from '../navbar/navbar1';
+import { async } from 'q';
 
 export default function UpdateDepartments() {
   const { id } = useParams()
@@ -36,23 +37,20 @@ export default function UpdateDepartments() {
     setDepartmentName(e.target.value);
   }
 
-  const handleUpdate = (event )=> {
+  const handleUpdate = async (event )=> {
       event.preventDefault();
-      dispatch(updateDepartment({id: department.id ,name: departmentName})
-  ) 
-   navigate(`/departments/view`)
+      await dispatch(updateDepartment({id: department.id ,name: departmentName})) 
+      window.location.reload(false)
 }
 
   useEffect(() => {
     dispatch(getDepartmentById(id))     
   }, [])
 
-  const handleRemove = (id )=> {
-    
-    dispatch(removeUserFromDepartment(id)
-    ) 
-  navigate(`/departments/view`)
-}  
+  const handleRemove = async (id )=> {
+    await dispatch(removeUserFromDepartment(id))
+    window.location.reload(false)
+  } 
 
   const renderUser = (
     <>

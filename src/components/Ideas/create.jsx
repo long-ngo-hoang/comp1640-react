@@ -69,8 +69,7 @@ export default function AddIdea() {
     }
 
     const handleRemove = async (event )=> {
-      console.log(event)
-     dispatch(deleteFile(event))
+     await dispatch(deleteFile(event))
   }
 
     const handleUploadFile = async (e)  =>{
@@ -102,7 +101,7 @@ export default function AddIdea() {
             <MDBRow>
               <MDBCol md='12'>
                 <h5 className="mb-0">Name : </h5>
-                <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={idea.name}/>
+                <MDBInput wrapperClass='mb-4'   id='form2' type='text' onChange={onChangeName} value={idea.name}/>
               </MDBCol>
 
               <MDBCol md='12'>

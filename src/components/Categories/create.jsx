@@ -20,9 +20,8 @@ export default function AddCategories() {
         setCategories(e.target.value);
     }
 
-    const handleSubmit = (e)=> {
+    const handleSubmit = async (e)=> {
         dispatch(addCategory({name: categories}))
-        e.preventDefault();
         navigate(`/categories/view`)
     }  
     return (
@@ -41,7 +40,7 @@ export default function AddCategories() {
                     <div className="form-outline mb-4">
                       <MDBCol md='12'>
                         <label className="mb-2" >Name</label>
-                        <MDBInput  size='lg' id='form2' type='text' onChange={onChangeName} value={categories.name}/>
+                        <MDBInput  id='form2' type='text' onChange={onChangeName} value={categories.name}/>
                       </MDBCol>
                     </div>
                     <MDBCol md='12'>

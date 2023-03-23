@@ -13,8 +13,12 @@ import {
     MDBCardBody,
     MDBInput,MDBCardImage,
     MDBIcon,
-    MDBSwitch
+    MDBSwitch,
+    
   } from 'mdb-react-ui-kit';
+  import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
   import Navbar1 from '../navbar/navbar1';
 import { addComment } from '../../redux/ideasSlice';
 
@@ -52,8 +56,10 @@ export default function DetailIdea() {
     ) 
   }
 
-    function handleRemove(id) {
-         dispatch(deleteComment(id));
+    const handleRemove = async(id) => {
+        await dispatch(deleteComment(id));
+        window.location.reload(false)
+
     }
 
     useEffect(()  => {
@@ -114,11 +120,20 @@ export default function DetailIdea() {
           >
             <MDBCardBody className='px-4'>
             <h3 >Comments</h3>
-              <MDBInput   onChange={onChangeContent}  value={comment.content}  placeholder="Type comment..." />
-              <div style={{display: "flex"}}>
-                <MDBSwitch wrapperClass="mb-4"  id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={comment.isAnonymous} value={comment.isAnonymous}  />
-                <MDBIcon fas icon="check"  onClick={handleSubmit} />
+              
+              <div >                
+                <MDBSwitch  id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={comment.isAnonymous} value={comment.isAnonymous}  />
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    aria-label="Example text with button addon"
+                    aria-describedby="basic-addon1" onChange={onChangeContent}  value={comment.content}   placeholder="Type comment..."
+                  />
+                  <Button variant="outline-secondary" id="button-addon1" onClick={handleSubmit} >
+                    Send
+                  </Button>
+                </InputGroup>
               </div>
+
               {idea.comments?.map(item=> (
               <MDBCard className="mb-4" key={item.id}>
                 <MDBCardBody>

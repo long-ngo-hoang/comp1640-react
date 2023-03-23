@@ -52,8 +52,6 @@ export const addUserToDepartment = createAsyncThunk('department/addUserToDepartm
 
 export const removeUserFromDepartment = createAsyncThunk('departmentList/removeUserFromDepartment', async (initialData) => {
   const  id  = initialData; 
-   console.log(id);
-
   const response = await instance
     .put(`/Departments/RemoveUserFromDepartment/${id}`);
   return response.data;
@@ -157,8 +155,8 @@ const departmentsSlice = createSlice({
       state.status = "loading";
     })
     builder.addCase(removeUserFromDepartment.fulfilled, (state, action) => {
-      const id = action.payload;
-      state.departments = state.departments.filter((item)=> item.id !== id)
+      state.loading = false;
+      state.status = "idle";
     })
 
     builder.addCase(addUserToDepartment.fulfilled, (state, action) => {

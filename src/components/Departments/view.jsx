@@ -22,8 +22,9 @@ const ViewDepartments = () => {
   const departmentsInDb = useSelector(selectAllDepartments)
   const dispatch = useDispatch()
 
-  function handleRemove(id) {
-    dispatch(deleteDepartment(id));
+  const handleRemove = async (id) =>  {
+    await dispatch(deleteDepartment(id));
+    window.location.reload(false)
   }
 
   useEffect(() => {

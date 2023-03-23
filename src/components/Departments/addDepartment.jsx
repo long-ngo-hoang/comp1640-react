@@ -13,10 +13,8 @@ import SelectedDepartment from './selectBox'
     const navigate = useNavigate()
 
     const [selectDepartment, setSelectDepartment] = useState('');
-    const {loading,error, users }=  useSelector(
-        (state) => state.roles
-        )
-
+    const {loading }=  useSelector((state) => state.roles)
+        
     const onChangeSelected = (e) => {
         setSelectDepartment(e.target.value);
     }
@@ -28,7 +26,6 @@ import SelectedDepartment from './selectBox'
 
     const handleSubmit = (event )=> {
         event.preventDefault();
-    
         dispatch(addUserToDepartment({userId: id, departmentID: selectDepartment })
         ) 
         navigate(`/departments/viewUser`)

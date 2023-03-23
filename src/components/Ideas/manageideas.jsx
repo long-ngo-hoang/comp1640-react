@@ -13,12 +13,13 @@ import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import PaddingPage from './paginationPage'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 function ManageIdeas(){
  
   const {page} = useParams({page: true})
-  
+  const navigate = useNavigate()
+
  const ideas = useSelector(selectAllIdeas)
  const {loading,error, totalpage} =  useSelector(
   (state) => state.ideas
@@ -28,8 +29,9 @@ function ManageIdeas(){
     
     const [currentPage, setCurrentPage] = useState(1)
 
-    function handleRemove(id) {
-      dispatch(deleteIdea(id));
+    const handleRemove = async (id) =>  {
+      await dispatch(deleteIdea(id));
+      window.location.reload(false);
     }
     
     useEffect(() => {

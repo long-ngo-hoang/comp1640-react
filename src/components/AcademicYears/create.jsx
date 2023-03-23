@@ -68,7 +68,7 @@ export default function AddAcademicYears() {
           <>
           <Navbar1/>
           <MDBContainer fluid>
-          <MDBRow className='justify-content-center align-items-center m-5'>
+          <MDBRow className='justify-content-center align-items-center m-1'>
 
             <div className="container" >
               <div className="card mb-4">
@@ -82,12 +82,14 @@ export default function AddAcademicYears() {
                     <div className="form-outline mb-4">
                       <MDBCol md='12'>
                         <label className="mb-2" >Name</label>
-                        <MDBInput  size='lg' id='form2' type='text' onChange={onChangeName} value={academicYear.name}/>
+                        <MDBInput   id='form2' type='text' onChange={onChangeName} value={academicYear.name}/>
                       </MDBCol>
-                      <MDBCol md='12'>
+                      <br/>
+
+                      <MDBCol md='12' >
                         <span className="text-danger"></span>
                         <label  className="control-label">Start Time</label>
-                        <DatePicker
+                        <DatePicker 
                           selected={academicYear.startDate}
                           onChange={onChangeStartDate}
                           showTimeSelect
@@ -97,7 +99,7 @@ export default function AddAcademicYears() {
                           dateFormat="dd-MM-yyyy HH:mm"
                         />
                       </MDBCol>
-
+                      <br/>
                       <MDBCol md='12'>
                         <span className="text-danger"></span>
                         <label className="mb-2">Closure Date</label>
@@ -111,6 +113,8 @@ export default function AddAcademicYears() {
                           dateFormat="dd-MM-yyyy HH:mm"
                         />
                       </MDBCol>
+                      <br/>
+
                       <MDBCol md='12'>
                         <span className="text-danger"></span>
                         <label  className="mb-2">Final Closure Date</label>

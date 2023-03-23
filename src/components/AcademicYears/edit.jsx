@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  useParams, useNavigate  } from 'react-router-dom';
-import { addAcademicYear, selectAcademicYearById, getAcademicYearById} from '../../redux/academicYearsSlice'
+import { updateAcademicYear, selectAcademicYearById, getAcademicYearById} from '../../redux/academicYearsSlice'
 import {
   MDBContainer,
   MDBRow,
@@ -36,7 +36,7 @@ export default function UpdateAcademicYear() {
 
    const handleSubmit = (event )=> {
         event.preventDefault();
-        dispatch(addAcademicYear({name})
+        dispatch(updateAcademicYear({id: id, name: name})
         ) 
         navigate(`/academicYears/view`)
   }  
@@ -100,7 +100,7 @@ export default function UpdateAcademicYear() {
                   <MDBRow>   
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={name}/>
+                      <MDBInput wrapperClass='mb-4'  id='form2' type='text' onChange={onChangeName} value={name}/>
                     </MDBCol>
                   </MDBRow>  
                     <MDBCol md='12'>

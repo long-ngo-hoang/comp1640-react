@@ -85,7 +85,8 @@ export default function UpdateIdea() {
     }
 
     const handleRemove = async (event )=> {
-      dispatch(deleteFile({id: event, ideaId:  id}))
+      await dispatch(deleteFile({id: event, ideaId:  id}))
+      window.location.reload(false);
   }
 
   if (!ideaInDb) {

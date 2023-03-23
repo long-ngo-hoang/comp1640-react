@@ -8,8 +8,10 @@ import {
   MDBRow,
   MDBCol,
   MDBIcon,
-  MDBSpinner 
+  MDBSpinner ,
+  
 } from "mdb-react-ui-kit";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
@@ -71,8 +73,19 @@ function ViewIdeas(){
     <>
     <Navbar1/>
     <MDBContainer fluid>
+    <Dropdown>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Get Ideas
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1" onClick={() => setSendRequest(true)}>Most Popular Ideas</Dropdown.Item>
+        <Dropdown.Item href="#/action-2"  onClick={() => setSendMostView(true)} >Most View Ideas</Dropdown.Item>
+      </Dropdown.Menu>
+      </Dropdown>
       <MDBRow className="justify-content-center mb-9">
+        
         <MDBCol md="12" xl="10">
+          
           {!loading && ideas.length ? 
           ideas === null 
             ? <h1> page not have data</h1> :
@@ -109,10 +122,6 @@ function ViewIdeas(){
                        )) : null}     
          
         </MDBCol>
-
-        <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendRequest(true)} >getMostPopularIdeas</button>
-
-        <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendMostView(true)} >getMostViewIdeas</button>
       </MDBRow>
       {<PaddingPage/>}
     </MDBContainer>

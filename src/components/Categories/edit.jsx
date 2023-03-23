@@ -31,10 +31,9 @@ export default function UpdateCategories() {
       setNameCategory(e.target.value)
     }
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(updateCategory({id: category.id ,name: nameCategory})
-        ) 
+        await dispatch(updateCategory({id: category.id ,name: nameCategory}))
         navigate(`/categories/view`)
     }  
 
@@ -59,7 +58,7 @@ export default function UpdateCategories() {
                   <MDBRow>   
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName}  value={nameCategory}/>
+                      <MDBInput wrapperClass='mb-4'   id='form2' type='text' onChange={onChangeName}  value={nameCategory}/>
                     </MDBCol>
                   </MDBRow>  
                     <MDBCol md='12'>

@@ -82,10 +82,10 @@ return(
             {error? <div>error {error}</div> : null}
 
             <h6>Email: </h6>
-            <MDBInput wrapperClass='mb-4 w-100'  id='formControlLg1' type='email'  value={account.email} onChange={handleEmail}  size="lg"/>
+            <MDBInput wrapperClass='mb-4 w-100'  id='formControlLg1' type='email'  value={account.email} onChange={handleEmail}  />
 
             <h6>Password: </h6>
-            <MDBInput wrapperClass='mb-4 w-100' id='formControlLg2' type='password' size="lg" value={account.password} onChange={handlePassword}/>
+            <MDBInput wrapperClass='mb-4 w-100' id='formControlLg2' type='password'  value={account.password} onChange={handlePassword}/>
 
             <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4' label='Remember password' />
             <hr className="my-4" />

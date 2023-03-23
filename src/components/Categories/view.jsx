@@ -28,8 +28,9 @@ const ViewCategories = () => {
   
   const categoriesInDb = useSelector(selectAllCategories)
  
-  function handleRemove(id) {
-    dispatch(deleteCategory(id));
+  const handleRemove = async (id) => {
+   await dispatch(deleteCategory(id));
+   window.location.reload(false)
   }
 
 

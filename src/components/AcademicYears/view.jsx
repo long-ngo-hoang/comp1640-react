@@ -27,8 +27,9 @@ const EditAcademicYears = () => {
   const academicYearsInDb = useSelector(selectAllAcademicYears)
 
   const dispatch = useDispatch()
-  function handleRemove(id) {
-    dispatch(deleteAcademicYear(id));
+  const handleRemove = async (id) =>  {
+   await dispatch(deleteAcademicYear(id));
+   window.location.reload(false)
   }
  
   return (
@@ -49,7 +50,7 @@ const EditAcademicYears = () => {
                                   </div>
                                   <div>
                                   <Link type="button" className="btn btn-primary" to={`/academicyears/create`}>
-                                      Create Idea
+                                      Create Academic Years
                                   </Link>
                                   </div>
                                   
