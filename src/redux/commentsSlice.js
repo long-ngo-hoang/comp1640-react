@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './configApi';
 
-export const addComment = createAsyncThunk('commentList/addComment', async (initialData) => {
-  const response = await instance
-    .post(`/Comments` , initialData);
-  return response.data;
-})
+// export const addComment = createAsyncThunk('commentList/addComment', async (initialData) => {
+//   const response = await instance
+//     .post(`/Comments` , initialData);
+//   return response.data;
+// })
 
-export const updateComment = createAsyncThunk('comments/updateComment', async (initialData) => {
+export const updateComment = createAsyncThunk('commentList/updateComment', async (initialData) => {
   const {id} = initialData;
   try{
   const response = await instance
@@ -19,7 +19,7 @@ export const updateComment = createAsyncThunk('comments/updateComment', async (i
   }
 })
 
-export const deleteComment = createAsyncThunk('comments/deleteComment', async (initialData) => {
+export const deleteComment = createAsyncThunk('commentList/deleteComment', async (initialData) => {
   const  id  = initialData;
   const response = await instance
     .delete(`/Comments/${id}`);
@@ -38,19 +38,19 @@ const categoriesSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-    .addCase(addComment.pending, (state, action) => {
-      state.loading = true;
-      state.status = "loading";
-    })
-    .addCase(addComment.fulfilled, (state, action) => {
-      state.loading = false;
-      state.status = "idle"
-      state.categories = action.payload
-    })
-    .addCase(addComment.rejected, (state, action) => {
-      state.loading = false;
-      state.status = "rejected"
-    })
+    // .addCase(addComment.pending, (state, action) => {
+    //   state.loading = true;
+    //   state.status = "loading";
+    // })
+    // .addCase(addComment.fulfilled, (state, action) => {
+    //   state.loading = false;
+    //   state.status = "idle"
+    //   state.comments.push(action.payload)
+    // })
+    // .addCase(addComment.rejected, (state, action) => {
+    //   state.loading = false;
+    //   state.status = "rejected"
+    // })
 
     .addCase(updateComment.pending, (state, action) => {
       state.loading = true;

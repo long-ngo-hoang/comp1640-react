@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 // import RequireAuth from '../../authorization';
 import {MDBContainer, MDBCol, MDBRow, MDBInput, MDBCheckbox, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import jwt_decode from "jwt-decode";
+import { forgotPassword } from '../../redux/accountsSlice';
 
 
 export function LogIn (){
@@ -31,6 +32,11 @@ export function LogIn (){
             return{...preV, password: e.target.value}
         })
     }
+    const handleSubmit = (event )=> {
+      event.preventDefault();
+      dispatch(forgotPassword(account.email)
+      ) 
+    }
 
     const handleLogin = () =>{
         dispatch(login(account), 10000)
@@ -47,7 +53,7 @@ export function LogIn (){
 
           
           if (decodedToken.Roles === "Staff"){
-
+              
               navigate('/ideas/view') 
           }
           else if (decodedToken.Roles === "Administrator"){
@@ -89,7 +95,7 @@ return(
             </button>
 
 
-             <Link className='btn btn-primary' to={`/ForgotPassword`}>Forgot Password</Link>
+             <Link className='btn btn-primary' onClick={handleSubmit}>Forgot Password</Link>
           </MDBCardBody>
         </MDBCard>
 

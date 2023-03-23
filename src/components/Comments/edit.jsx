@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addComment} from '../../redux/commentsSlice'
+// import {addComment} from '../../redux/commentsSlice'
 import { useNavigate  } from 'react-router-dom';
 
 export default function EditComments() {
@@ -23,10 +23,10 @@ export default function EditComments() {
     }
 
    const handleSubmit = (event )=> {
-        event.preventDefault();
-        dispatch(addComment(Comments)
-        ) 
-        navigate(`/idea/view`)
+        // event.preventDefault();
+        // // dispatch(addComment(Comments)
+        // ) 
+        // navigate(`/idea/view`)
     }  
 
         return (

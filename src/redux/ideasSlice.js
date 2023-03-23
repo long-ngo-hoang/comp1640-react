@@ -10,7 +10,11 @@ const initialState = {
   error: ''
 }
 
-
+export const addComment = createAsyncThunk('ideaList/addComment', async (initialData) => {
+  const response = await instance
+    .post(`/Comments` , initialData);
+  return response.data;
+})
 
 export const getIdeas = createAsyncThunk('ideaList/getIdeas', async (page) => {
   const response = await instance
@@ -71,24 +75,39 @@ export const getMostViewedIdeas = createAsyncThunk('ideaList/getMostViewedIdeas'
   return response.data;
 })
 
+export const deleteFile = createAsyncThunk('ideaList/deleteFile', async (initialData) => {
+  const {id, ideaId} = initialData
+  const response = await instance
+    .delete(`Documents/${id}`);
+  return ideaId;
+})
+
 const ideasSlice = createSlice({
   name: 'ideaList',
-  initialState : {
-      status: 'idle',
-      loading: false,
-      pageindex: 1,
-      totalpage: 1,
-      ideas: [],
-  },
+  initialState,
   reducers:{
   },
   extraReducers: builder => {
     builder
+    .addCase(addComment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(addComment.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "success"
+      const currentIdea = state.ideas.find((item)=> item.id === action.payload.ideaId);
+      currentIdea.comments.splice(0, 0, action.payload)
+    })
+    .addCase(addComment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
     .addCase(getIdeas.pending, (state, action) => {
       state.status = 'loading';
       state.loading = true;
     })
-
     .addCase(getIdeas.fulfilled, (state, action) => {
       state.status = 'idle';
       state.loading = false;
@@ -123,7 +142,8 @@ const ideasSlice = createSlice({
     .addCase(getIdeaById.fulfilled, (state, action) => {
       state.status = 'idle';
       state.loading = false;
-      state.ideas[0] = action.payload;
+      const currentIdea = state.ideas.filter((item)=> item.id !==  action.payload.id);
+      state.ideas = [...currentIdea, action.payload];
     })
 
     .addCase(addIdea.pending, (state, action) => {
@@ -186,8 +206,20 @@ const ideasSlice = createSlice({
       const ideas =  action.payload.ideas
       state.ideas = ideas
     })
-
     .addCase(getMostViewedIdeas.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+    })
+
+    .addCase(deleteFile.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(deleteFile.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "idle"
+    })
+    .addCase(deleteFile.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
     })
@@ -196,9 +228,10 @@ const ideasSlice = createSlice({
 
 export const selectAllIdeas = (state) => state.ideas.ideas;
 
-export const selectIdeaById = (state, id) => state.ideas.ideas[0];
+export const selectIdeaById = (state, id) =>  
+      state.ideas.ideas.find((item) => item.id === id)
+
 
 export const selectIdea = (state) => state.ideas;
-
 
 export default ideasSlice.reducer

@@ -20,10 +20,11 @@ import Navbar1 from '../navbar/navbar1';
 
 export default function UpdateAcademicYear() {
     const { id } = useParams();
-    console.log(id);
-    const academicYear = useSelector((state) => selectAcademicYearById(state))
-     const dispatch = useDispatch()
-     const navigate = useNavigate()
+
+    const academicYear = useSelector((state) => selectAcademicYearById(state, id))
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [name, setName] = useState(academicYear?.name);
     
     const onChangeName = (e) =>{

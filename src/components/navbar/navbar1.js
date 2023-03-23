@@ -1,10 +1,15 @@
 import './navbar1.css';
 import React from 'react';
-// import Notifications from 'react-notifications-menu';
+import {  useNavigate ,Link } from 'react-router-dom'
 import { useState } from 'react';
 
+import {persistor} from '../../redux/store';
+import { logout } from "../../redux/accountsSlice";
+import { useDispatch } from 'react-redux'
 
 function Navbar1()  {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const DEFAULT_NOTIFICATION = {
     image:
@@ -16,7 +21,11 @@ function Navbar1()  {
   const [data, setData] = useState([DEFAULT_NOTIFICATION]);
   const [clicked, setClicked] = React.useState(false);
 
-
+  const handleLogout = async () =>  {
+   await dispatch(logout());
+    navigate('/') 
+    persistor.purge()
+  }
   const handleClick = () =>{
     setClicked(!clicked)
 }
@@ -54,6 +63,8 @@ function Navbar1()  {
       </div>
       <div className="fas">
         <i className="fas fa-user"></i>
+        <Link  onClick={() => handleLogout()} className="fa fa-sign-out"> 
+        </Link>
       </div>
       </div>
     </nav>

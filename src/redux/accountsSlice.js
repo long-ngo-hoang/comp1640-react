@@ -3,7 +3,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { PURGE } from "redux-persist";
 const instance = axios.create({
     baseURL: 'https://localhost:7044',
-    // headers: { Authorization: `Bearer ${token}` }
   });
  
   const initialState = {
@@ -49,7 +48,7 @@ const instance = axios.create({
     
     try{     
     const response = await instance
-      .post(`/api/Auth/ForgotPassword?email=${email}`);
+      .post(`/api/Auth/ForgotPassword?email=${encodeURIComponent(email)}`);
       return response;
     }
       catch(error){     

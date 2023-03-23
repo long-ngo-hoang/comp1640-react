@@ -8,7 +8,6 @@ import commentsSlice from "./commentsSlice.js";
 import academicYearsSlice from "./academicYearsSlice.js";
 import departmentsSlice from "./departmentsSlice.js";
 import accountsSlice, { logout } from "./accountsSlice.js";
-// import userSlice from "./usersSclice.js";
 import usersSlice from "./usersSlice.js";
 import notificationSlice from "./notificationSlice.js";
 import roleSlice from "./roleSlice.js";
@@ -21,6 +20,7 @@ import {
     PURGE,
     REGISTER
   } from "redux-persist";
+import filesSlice from "./filesSlice.js";
 
 
 const saveSubsetFilter = createFilter('accounts', ['token']);
@@ -28,7 +28,7 @@ const saveSubsetFilter = createFilter('accounts', ['token']);
 const persistCongig = {
     key: 'root',
     storage,
-   blacklist: ['comments'],
+   blacklist: ['files'],
    transforms: [saveSubsetFilter]
 };
 
@@ -42,6 +42,7 @@ const reducer = combineReducers({
     notification: notificationSlice,
     roles : roleSlice,
     user: usersSlice,
+    files: filesSlice
 });
 
 const persistedReducer = persistReducer(persistCongig,reducer);

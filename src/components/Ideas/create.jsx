@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import './addIdea.css'
 import { useDispatch, useSelector } from 'react-redux';
 import SelectedBox from './selectedBox';
 import { addIdea } from '../../redux/ideasSlice';
-import UploadFile from '../../APIs/uploadFile';
-import {  useNavigate  } from 'react-router-dom';
+import {  useNavigate, Link  } from 'react-router-dom';
 import {
     MDBContainer,
     MDBRow,
@@ -14,12 +12,16 @@ import {
     MDBCardBody,
     MDBInput,
     MDBSwitch,
-    MDBTextArea
+    MDBTextArea,
+    MDBCardImage,
+    MDBIcon,
   } from 'mdb-react-ui-kit';
-  import Navbar1 from '../navbar/navbar1';
+import Navbar1 from '../navbar/navbar1';
 import { useEffect } from 'react';
+import { uploadFileToS3 } from '../../redux/filesSlice';
+import { getS3PreSignedUrl } from '../../redux/filesSlice';
+import { uploadFile, deleteFile } from '../../redux/filesSlice';
 export default function AddIdea() {
-  
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -31,8 +33,8 @@ export default function AddIdea() {
     });
     const {status} = useSelector((state => state.ideas))
     const [slectedCategories, setSelectedCategories] = useState('');
-    const [optionList, setOptionList] = useState([]);
-    
+    const {files} = useSelector((state => state.files))
+    console.log(files)
     const onChangeName = (e) =>{
         setIdea((preV) => {     
             return{...preV, name: e.target.value}
@@ -58,9 +60,27 @@ export default function AddIdea() {
         }) 
     }
 
-   const handleSubmit = (event )=> {
+   const handleSubmit = async (event )=> {
         event.preventDefault();
-        dispatch(addIdea(idea))  
+        const newIdea = await dispatch(addIdea(idea))  
+        files.forEach(element =>  {
+          dispatch(uploadFile({ideaId: newIdea.payload.id, documentUrl: element }))
+        });
+    }
+
+    const handleRemove = async (event )=> {
+      console.log(event)
+     dispatch(deleteFile(event))
+  }
+
+    const handleUploadFile = async (e)  =>{
+      await dispatch(getS3PreSignedUrl())  
+      const url = localStorage.getItem('url')
+
+      if(url !== null){
+        dispatch(uploadFileToS3({url: url, data:  e.target.files[0]}))      
+        localStorage.removeItem('url')
+      }
     }
 
     useEffect(() => {
@@ -68,19 +88,13 @@ export default function AddIdea() {
         navigate('/ideas/view') 
       }
     })
-    const[files, setFiles] = useState([{
-        name: 'myFile.pdf'
-    }])
 
-    const removeFile = (filename) => {
-        setFiles(files.filter(file => file.name !== filename))
-    }
     return (
       <>
-        <Navbar1 />
-        <MDBContainer fluid>
+      <Navbar1 />
+      <MDBContainer fluid >
       <MDBRow className='justify-content-center align-items-center m-5'>
-        <MDBCard>
+        <MDBCard style={{backgroundColor: "#eee"}}>
           <MDBCardBody className='px-4'>
             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Create Idea</h3>
              <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} value={idea.isAnonymous} />
@@ -97,20 +111,34 @@ export default function AddIdea() {
               </MDBCol>
 
               <MDBCol md='12'>
-              <h5 className="mb-0">Category : </h5>
+                <h5 className="mb-0">Category : </h5>
                     <select  disabled={false} value={slectedCategories} onChange={onChangeSelected}>
                       <SelectedBox/>
                     </select>
-                </MDBCol>
+                <input type="file" id="files" style={{display: "none"}} onChange={handleUploadFile} />
+                <label className='btn btn-primary'  htmlFor="files">Select file</label>
+              </MDBCol>
+              <MDBCol  md="2" lg="2" xl="2" style={{display: "flex", width: "100%"}}>
+                  {files?.map(item=> (
+                    <div>
+                    <Link className="btn btn-outline-primary"  onClick={() => handleRemove(item)}> <MDBIcon icon="trash-alt" color="danger" /></Link> 
+                    <br/>
+                    <Link to={item}>
+                    <MDBCardImage style={{height: "150px"}}  onClick={item}  key={item} src={item} fluid className="rounded-3" alt="Cotton T-shirt" />
+                    </Link>
+                    </div>
+                  ))}
+               </MDBCol>
             </MDBRow>           
           </MDBCardBody>
-
           <MDBCol md='12'>
             <button className="btn btn-primary" onClick={handleSubmit}>Create Idea</button>
           </MDBCol>
+
+          
         </MDBCard>
       </MDBRow>
-</MDBContainer>
+      </MDBContainer>
           </>
         )
 }

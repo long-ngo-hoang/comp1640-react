@@ -39,7 +39,7 @@ function App() {
         <Route path='/login' element={<LogIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
 
-        <Route path="ideas" element={<RequireAuth allowedRoles={["Staff","Administrator"]}/>}>   
+        <Route path="ideas" element={<RequireAuth allowedRoles={["Staff", "Administrator", "Quality Assurance Coordinator"]} />}>   
           <Route path='myideas' element={<ManageIdeas />} />
           <Route path='myideas/:page' element={<ManageIdeas />} />
           <Route path="view" element={<ViewIdeas />} />
@@ -61,6 +61,7 @@ function App() {
           <Route path="viewUser" element={<ViewUser />} />
           <Route path="create" element={<AddDepartments/>} />
           <Route path="addDepartment/:id" element={<AddDepartmentToUser/>} />
+          <Route path="edit/:id" element={<UpdateDepartments />} />
           <Route path="edit/:Id" element={<UpdateDepartments />} />
           <Route path="linechart" element={<LineChart />} />
         </Route>

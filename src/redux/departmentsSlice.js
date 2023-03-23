@@ -10,7 +10,7 @@ export const getDepartments = createAsyncThunk('departmentList/getDepartments', 
 export const getDepartmentById = createAsyncThunk('departmentList/getDepartmentById', async (initialData) => {
   const id = initialData;
   const response = await instance
-    .get(`/Departments/${id}?pageIndex=1`);
+    .get(`/Departments/${id}`);
   return response.data;
 })
 
@@ -92,15 +92,17 @@ const departmentsSlice = createSlice({
       state.status = "rejected"
     })
 
-    builder.addCase(getDepartmentById.pending, (state, action) => {
+    .addCase(getDepartmentById.pending, (state, action) => {
       state.status = 'loading'
       state.loading = true
       state.error = ''
     })
-    builder.addCase(getDepartmentById.fulfilled, (state, action) => {
+    .addCase(getDepartmentById.fulfilled, (state, action) => {
       state.status = 'Success'
       state.loading = false
-      state.departments[0] = action.payload
+      console.log(action.payload)
+      const currentDepartments = state.departments.filter((item)=> item.id !==  action.payload.id);
+      state.departments = [...currentDepartments, action.payload];
     })
     .addCase(getDepartmentById.rejected, (state, action) => {
       state.loading = false;
@@ -181,7 +183,7 @@ const departmentsSlice = createSlice({
 export const selectAllDepartments = (state) => state.departments.departments;
 export const selectUser = (state) => state.departments;
 
-export const selectDepartmentById = (state) =>
-  state.departments.departments[0]
+export const selectDepartmentById = (state, id) =>
+  state.departments.departments.find((item) => item.id === id);
 
 export default departmentsSlice.reducer

@@ -27,7 +27,8 @@ export default function UpdateDepartments() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const department = useSelector((state) => selectDepartmentById(state))
+  console.log(id)
+  const department = useSelector((state) => selectDepartmentById(state, id))
   
   const [departmentName, setDepartmentName] = useState(department?.name);
     

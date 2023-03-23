@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {addComment} from '../../redux/commentsSlice'
+// import {addComment} from '../../redux/commentsSlice'
 import {  useNavigate  } from 'react-router-dom';
 
 export function AddComments() {
@@ -21,10 +21,10 @@ export function AddComments() {
     }
 
     const handleSubmit = (event )=> {
-        event.preventDefault();
-        dispatch(addComment(Comments)
-        ) 
-        navigate(`/idea/view`)
+        // event.preventDefault();
+        // dispatch(addComment(Comments)
+        // ) 
+        // navigate(`/idea/view`)
     }  
 
         return (
@@ -48,7 +48,6 @@ export function AddComments() {
 
         
         <div className="form-outline mb-4">
-        <button onClick={handleSubmit}>Add Comment</button>
           
         </div>
       </form>

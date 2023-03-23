@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { getIdeas } from "../../redux/ideasSlice";
-import { deleteIdea } from "../../redux/ideasSlice";
 import {selectAllIdeas} from "../../redux/ideasSlice";
 import {  useNavigate  } from 'react-router-dom'
 import {
   MDBContainer,
   MDBRow,
   MDBCol,
-  MDBCard,
-  MDBCardBody,MDBIcon,
+  MDBIcon,
   MDBSpinner 
 } from "mdb-react-ui-kit";
-import { logout } from "../../redux/accountsSlice";
-import store, {persistor} from '../../redux/store';
 
-import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
+import './view.css'
 import { useParams } from "react-router-dom";
 import PaddingPage from './paginationPage'
 import { getMostPopularIdeas } from '../../redux/ideasSlice'
@@ -40,8 +36,6 @@ function ViewIdeas(){
     }           
   }, [page])
 
-  const navigate = useNavigate()
-
   const ideas = useSelector(selectAllIdeas)
   const {loading} = useSelector((state) => state.ideas)
   const dispatch = useDispatch()
@@ -63,11 +57,7 @@ function ViewIdeas(){
   },
   [sendMostView]);
 
-  function handleLogout() {
-    dispatch(logout());
-    navigate('/login') 
-    persistor.purge()
-  }
+
 
   if(loading){
     return (
@@ -88,46 +78,34 @@ function ViewIdeas(){
             ? <h1> page not have data</h1> :
               ideas?.map(item =>
                  (   
-                  
-                 <MDBCard className="shadow-0 border rounded-3 mt-5 mb-3" key={item.id} >
-            <MDBCardBody>
-              <MDBRow>
-                <MDBCol md="9">
-                  <div style={{display: "flex", justifyContent: "center"}}> 
-                    <h5>{item.name}</h5> 
-                  </div>
-                  <p>
-                    {item.description}
-                  </p>
-                </MDBCol>
-                <MDBCol
-                  md="2"
-                  lg="3"
-                  className="border-sm-start-none border-start" style={{display: "block", justifyContent: "center"}}>
-                  <div style={{ height: "50%"}}>
-                    <div style={{display: "flex", width: "50%", alignItems: "center", height: "50%", margin: "10px"}}>
-                        <div className="container">     
-                           <MDBIcon far icon="thumbs-up" />             
-                           <p>200</p>      
-                        </div>
-                        <div className="container"> 
-                           <MDBIcon far icon="thumbs-down" />
-                           <p>18</p>
-                        </div>
-                    </div>
-                    <div style={{width: "50%"}}>
-                      <Link style={{widows: "100%"}} type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link>
-                    </div>  
-                 </div>
-                 <div style={{display: "flex", alignItems: "center", height: "50%"}}>
-                 <p>Written by: {item.author}</p>
 
-                 </div>
-                </MDBCol>
-                
-              </MDBRow>
-            </MDBCardBody> 
-            </MDBCard>
+            <div className="container mt-5 mb-5" key={item.id} >
+            <div className="d-flex justify-content-center row">
+                <div className="col-md-10">
+                    <div className="row p-2 bg-white border rounded">
+                        <div className="col-md-3 mt-1"><img className="img-fluid img-responsive rounded product-image" src="https://martech.org/wp-content/uploads/2015/11/idea_1920.jpg"/></div>
+                        <div className="col-md-6 mt-1">
+                            <h5>{item.name}</h5>
+                              <p >{item.description}<br/><br/></p>
+                        </div>
+                        <div className="align-items-center align-content-center col-md-3 border-left mt-1">
+                            <div className="d-flex flex-row align-items-center">
+                                <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span>
+                            </div>
+                            <h6 className="text-success">{item.author}</h6>
+                            <div className="d-flex flex-column mt-4"><Link style={{widows: "100%"}} type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link></div>
+                            <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
+                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/> */}
+                                <label className="btn btn-outline-primary" htmlFor="btnradio1"><MDBIcon far icon="thumbs-up" />    </label>
+
+                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/> */}
+                                <label className="btn btn-outline-primary" htmlFor="btnradio2"> <MDBIcon far icon="thumbs-down" /></label>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
                        )) : null}     
          
         </MDBCol>
@@ -135,15 +113,6 @@ function ViewIdeas(){
         <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendRequest(true)} >getMostPopularIdeas</button>
 
         <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => setSendMostView(true)} >getMostViewIdeas</button>
-        <button style={{background: "none", border: "none"}} onClick={() => handleLogout()}>
-                                    <MDBIcon
-                                      fas
-                                      icon="trash-alt"
-                                      color="danger"
-                                      size="lg"
-                                      className="me-3"
-                                    />
-                                    </button>
       </MDBRow>
       {<PaddingPage/>}
     </MDBContainer>

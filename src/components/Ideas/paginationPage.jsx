@@ -29,27 +29,24 @@ function PaddingPage(){
     pageNumbers.push(i);
   }
 
-
-  const renderPageNumbers = pageNumbers.map(number => {
     return (
-      <li
-        value={currentPage}
-        key={number}
-        id={number}
-        onClick={handleClick}
-      >
-        {number}
-      </li>
+      <>
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            {pageNumbers?.map(number =>
+              (
+                <li className ="page-item" >       
+                  <a className ="page-link" value={currentPage}
+                    key={number}
+                    id={number}
+                    onClick={handleClick}>{number}
+                  </a>
+                </li> 
+              ))}    
+            </ul>
+          </nav>
+      </>
     );
-  });
-
-return (
-  <>
-    <ul id="page-numbers">
-        {renderPageNumbers}
-      </ul>
-  </>
-);
 }
 
 export default PaddingPage;

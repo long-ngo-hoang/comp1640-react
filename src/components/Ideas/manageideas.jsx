@@ -3,18 +3,14 @@
   import { getIdeasByUserId } from '../../redux/ideasSlice'
   import { deleteIdea } from '../../redux/ideasSlice'
   import {selectAllIdeas} from '../../redux/ideasSlice'
-  import {  useNavigate  } from 'react-router-dom'
 import {
   MDBContainer,
   MDBRow,
   MDBCol,
-  MDBCard,
-  MDBCardBody,MDBIcon
+  MDBIcon
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
-
-import {FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import { useState } from 'react'
 import PaddingPage from './paginationPage'
 import { useParams } from 'react-router-dom'
@@ -28,7 +24,6 @@ function ManageIdeas(){
   (state) => state.ideas
   );
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     
     const [currentPage, setCurrentPage] = useState(1)
@@ -55,49 +50,49 @@ function ManageIdeas(){
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-9">
         <MDBCol md="12" xl="10">
-          <h1>{page}</h1>
           {ideas === null 
             ? <h1> page not have data</h1> :
               ideas?.map(item =>
                  (   
-          <MDBCard className="shadow-0 border rounded-3 mt-5 mb-3" key={item.id}>
-            <MDBCardBody>
-              <MDBRow>
-                <MDBCol md="9">
-                  <div style={{display: "flex", justifyContent: "center"}}> 
-                  <h5>{item.name} </h5> 
-                  </div>
-                  <text >
-                  {item.description}
-                  </text>
-                </MDBCol>
-                <MDBCol
-                  md="2"
-                  lg="3"
-                  className="border-sm-start-none border-start" style={{display: "block", justifyContent: "center"}}>
-                  <div style={{ height: "50%"}}>
-                    <div style={{display: "flex", width: "50%", alignItems: "center", height: "50%", margin: "10px"}}>
-                        <div className="container">     
-                           <MDBIcon far icon="thumbs-up" />             
-                           <p>200</p>      
+            <div className="container mt-5 mb-5" key={item.id} >
+            <div className="d-flex justify-content-center row">
+                <div className="col-md-10">
+                    <div className="row p-2 bg-white border rounded">
+                        <div className="col-md-3 mt-1">
+                          <img className="img-fluid img-responsive rounded product-image" src="https://martech.org/wp-content/uploads/2015/11/idea_1920.jpg"/>
                         </div>
-                        <div className="container"> 
-                           <MDBIcon far icon="thumbs-down" />
-                           <p>18</p>
+                        <div className="col-md-6 mt-1">
+                            <h5>{item.name}</h5>
+                              <p >{item.description}<br/><br/></p>
                         </div>
-                    </div>
-                    <button type="button" className="btn btn-danger" style={{marginRight: "5px"}} onClick={() => handleRemove(item.id)} >Delete</button>
-                    <Link type="button" className="btn btn-primary" to={`/ideas/edit/${item.id}`}>Update</Link>
-                 </div>
+                        <div className="align-items-center align-content-center col-md-3 border-left mt-1">
+                            <div className="d-flex flex-row align-items-center">
+                                <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span>
+                            </div>
+                            <h6 className="text-success">{item.author}</h6>
+                            <div className="btn-group d-flex mt-4">
+                              <Link  className="btn btn-outline-primary"   to={`/ideas/edit/${item.id}`}><MDBIcon icon="edit" color="success" /> 
+                              </Link>
+                              <Link className="btn btn-outline-primary"  onClick={() => handleRemove(item.id)}> <MDBIcon icon="trash-alt" color="danger" />
+                              </Link>
+                                            
+                              </div>
+                            <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
+                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/> */}
+                                <label className="btn btn-outline-primary" htmlFor="btnradio1"><MDBIcon far icon="thumbs-up" />    </label>
 
-                </MDBCol>
-              </MDBRow> 
-            </MDBCardBody>
-          </MDBCard>
+                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/> */}
+                                <label className="btn btn-outline-primary" htmlFor="btnradio2"> <MDBIcon far icon="thumbs-down" /></label>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
                   ))}    
         </MDBCol>
-      </MDBRow>
-     {<PaddingPage/>}
+      </MDBRow>   
+      {<PaddingPage/>}
     </MDBContainer>
     </>
   );

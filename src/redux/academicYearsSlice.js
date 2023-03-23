@@ -67,7 +67,8 @@ const academicYearsSlice = createSlice({
     .addCase(getAcademicYearById.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle"
-      state.academicYears[0] = action.payload
+      const currentAcademicYear = state.academicYears.filter((item)=> item.id !==  action.payload.id);
+      state.academicYears = [...currentAcademicYear, action.payload];
     })
     .addCase(getAcademicYearById.rejected, (state, action) => {
       state.loading = false;
@@ -120,6 +121,6 @@ const academicYearsSlice = createSlice({
 export const selectAllAcademicYears = (state) => state.academicYears.academicYears;
 
 export const selectAcademicYearById = (state, id) =>
-state.academicYears.academicYears[0];
+    state.academicYears.academicYears.find((item) => item.id === id);
 
 export default academicYearsSlice.reducer
