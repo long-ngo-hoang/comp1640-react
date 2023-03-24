@@ -8,7 +8,7 @@ nav{
   }
   #navbar{
     z-index: 100;
-    background-color: aliceblue;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
