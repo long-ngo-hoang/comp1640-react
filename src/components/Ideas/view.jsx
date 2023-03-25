@@ -20,12 +20,14 @@ import { useParams } from "react-router-dom";
 import PaddingPage from './paginationPage'
 import { getMostPopularIdeas } from '../../redux/ideasSlice'
 import { getMostViewedIdeas } from "../../redux/ideasSlice";
+import Alert from 'react-bootstrap/Alert'  
 
 function ViewIdeas(){  
   const {page} = useParams({page: true})
   const [currentPage, setCurrentPage] = useState(1)
   const [sendRequest, setSendRequest] = useState(false);
   const [sendMostView, setSendMostView] = useState(false);
+  const [show, setShow] = useState(true)
 
   useEffect(() => {
     dispatch(getIdeas(currentPage))     
@@ -39,7 +41,7 @@ function ViewIdeas(){
   }, [page])
 
   const ideas = useSelector(selectAllIdeas)
-  const {loading} = useSelector((state) => state.ideas)
+  const {loading, error} = useSelector((state) => state.ideas)
   const dispatch = useDispatch()
   //GetPolulation
   useEffect(() => {
@@ -58,6 +60,17 @@ function ViewIdeas(){
     }
   },
   [sendMostView]);
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      // After 3 seconds set the show value to false
+      setShow(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, []);
 
 
 
@@ -83,7 +96,7 @@ function ViewIdeas(){
       </Dropdown.Menu>
       </Dropdown>
       <MDBRow className="justify-content-center mb-9">
-        
+      {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
         <MDBCol md="12" xl="10">
           
           {!loading && ideas.length ? 

@@ -1,38 +1,95 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './configApi';
 
-export const getAcademicYears = createAsyncThunk('academicYearList/getAcademicYears', async () => {
+export const getAcademicYears = createAsyncThunk('academicYearList/getAcademicYears', async (_, {rejectWithValue}) => {
+  try{
   const response = await instance
     .get('/AcademicYears');
   return response.data;
+  } catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getAcademicYearById = createAsyncThunk('academicYearList/getAcademicYearById', async (initialData) => {
+export const getAcademicYearById = createAsyncThunk('academicYearList/getAcademicYearById', async (initialData, {rejectWithValue}) => {
+  try{
   const id = initialData;
   const response = await instance
     .get(`/AcademicYears/${id}?pageIndex=1`);
   return response.data;
+  }
+  catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const addAcademicYear = createAsyncThunk('academicYearList/addAcademicYear', async (initialData) => {
+export const addAcademicYear = createAsyncThunk('academicYearList/addAcademicYear', async (initialData, {rejectWithValue}) => {
+  try{
   const response = await instance
     .post(`/AcademicYears` , initialData);
   return response.data;
+  } catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const updateAcademicYear = createAsyncThunk('academicYearList/updateAcademicYear', async (initialData) => {
+export const updateAcademicYear = createAsyncThunk('academicYearList/updateAcademicYear', async (initialData, {rejectWithValue}) => {
+  try{
   const {id} = initialData;
   const response = await instance
     .put(`/AcademicYears/${id}`, initialData);
   return response.data;
+  }
+  catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const deleteAcademicYear= createAsyncThunk('academicYearList/deleteAcademicYear', async (initialData) => {
+export const deleteAcademicYear= createAsyncThunk('academicYearList/deleteAcademicYear', async (initialData, {rejectWithValue}) => {
+  try{
   const  id  = initialData;
   const response = await instance
     .delete(`/AcademicYears/${id}`);
     if (response?.status === 200) return initialData;   
   return response.data;
+  } catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
 const academicYearsSlice = createSlice({
@@ -41,6 +98,7 @@ const academicYearsSlice = createSlice({
     loading: false,
     status: "idle",
     academicYears: [],
+    error: ''
   },
   reducers:{
   },
@@ -54,10 +112,11 @@ const academicYearsSlice = createSlice({
       state.loading = false;
       state.status = "idle"
       state.academicYears = action.payload
+      state.error = ''
     })
     .addCase(getAcademicYears.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(getAcademicYearById.pending, (state, action) => {
@@ -69,10 +128,11 @@ const academicYearsSlice = createSlice({
       state.status = "idle"
       const currentAcademicYear = state.academicYears.filter((item)=> item.id !==  action.payload.id);
       state.academicYears = [...currentAcademicYear, action.payload];
+      state.error = ''
     })
     .addCase(getAcademicYearById.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(addAcademicYear.pending, (state, action) => {
@@ -83,10 +143,11 @@ const academicYearsSlice = createSlice({
       state.loading = false;
       state.status = "idle";
       state.academicYears.push(action.payload)
+      state.error = ''
     })
     .addCase(addAcademicYear.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(updateAcademicYear.pending, (state, action) => {
@@ -96,12 +157,13 @@ const academicYearsSlice = createSlice({
     .addCase(updateAcademicYear.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle";
-      const currentAcademicYear = state.academicYears.filter((item)=> item.id !== action.payload.academicYearsid);
-      currentAcademicYear = action.payload;
+      // let currentAcademicYear = state.academicYears.find((item)=> item.id !== action.payload.id)
+      // state.academicYears =[...currentAcademicYear, action.payload] 
+      state.error = ''
     })
     .addCase(updateAcademicYear.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.status = action.payload
     })
     
     .addCase(deleteAcademicYear.pending, (state, action) => {
@@ -110,10 +172,11 @@ const academicYearsSlice = createSlice({
     })
     .addCase(deleteAcademicYear.fulfilled, (state, action) => {
       state.academicYears = state.academicYears.filter((item)=> item.id !== action.payload.id)
+      state.error = ''
     })
     .addCase(deleteAcademicYear.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
   }
 })

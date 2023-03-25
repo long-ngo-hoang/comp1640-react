@@ -30,14 +30,26 @@ import { Routes, Route } from 'react-router-dom';
 import ViewUser from './components/Departments/userView';
 import AddDepartmentToUser from './components/Departments/addDepartment';
 import LineChart from './components/Departments/analysys';
+import Register from './components/Login/register';
+import { AxiosInterceptorsSetup } from './redux/configApi';
+import { useNavigate } from 'react-router-dom';
+
 function App() {
+  function AxiosInterceptorNavigate() {
+    let navigate = useNavigate();
+    AxiosInterceptorsSetup(navigate);
+    return <></>;
+}
   return (
     <>     
      <NavBar  />
+     <AxiosInterceptorNavigate/>
       <Routes>
       <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={<LogIn/>} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
+        <Route path='/register' element={<Register/>} />
+
 
         <Route path="ideas" element={<RequireAuth allowedRoles={["Staff", "Administrator", "Quality Assurance Coordinator"]} />}>   
           <Route path='myideas' element={<ManageIdeas />} />

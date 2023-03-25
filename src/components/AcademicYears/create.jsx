@@ -12,6 +12,7 @@ import {
   MDBRow
 } from "mdb-react-ui-kit";
 import Navbar1 from '../navbar/navbar1';
+
 export default function AddAcademicYears() {
   
     const dispatch = useDispatch();
@@ -55,7 +56,7 @@ export default function AddAcademicYears() {
     const handleSubmit = (event )=> {
         event.preventDefault();
         dispatch(addAcademicYear({
-            name: academicYear.name,
+          name: academicYear.name,
            StartDate: startDate, 
            ClosureDate: closureDate, 
            FinalClosureDate: finalClosureDate

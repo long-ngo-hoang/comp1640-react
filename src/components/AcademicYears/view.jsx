@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {getAcademicYears} from '../../redux/academicYearsSlice'
 import {selectAllAcademicYears} from '../../redux/academicYearsSlice'
@@ -17,26 +17,40 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
+import Alert from 'react-bootstrap/Alert'  
 
 const EditAcademicYears = () => { 
+  const {error} = useSelector((state) => state.academicYears)
+  const [show, setShow] = useState(true)
 
   useEffect(() => {
     dispatch(getAcademicYears())     
   }, [])
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      // After 3 seconds set the show value to false
+      setShow(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, []);
+  
 
   const academicYearsInDb = useSelector(selectAllAcademicYears)
 
   const dispatch = useDispatch()
   const handleRemove = async (id) =>  {
    await dispatch(deleteAcademicYear(id));
-   window.location.reload(false)
+  window.location.reload(false)
   }
  
   return (
     <>
         <Navbar1/>
             <section className="gradient-custom-2 vh-100">
-            
+            {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
                         <MDBContainer className="py-5 h-100">
                           <MDBRow className="d-flex justify-content-center align-items-center">
                             <MDBCol md="12" xl="10">

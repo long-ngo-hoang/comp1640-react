@@ -12,17 +12,26 @@ import {
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 import {getCategoryById} from '../../redux/categoriesSlice'
-
+import Alert from 'react-bootstrap/Alert'  
 
 export default function UpdateCategories() {
     const { id } = useParams()
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {status , error} = useSelector((state => state.categories))
+    const [show, setShow] = useState(true)
 
-
+    useEffect(() => {
+      const timeId = setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setShow(false)
+      }, 3000)
   
-     
+      return () => {
+        clearTimeout(timeId)
+      }
+    }, []); 
     const category = useSelector((state) => selectCategoryById(state, id))
 
     const [nameCategory, setNameCategory] = useState(category?.name);
@@ -49,7 +58,7 @@ export default function UpdateCategories() {
           <>
             <Navbar1 />
             <form onSubmit={handleSubmit}>
-
+            {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
             <MDBContainer fluid>
               <MDBRow className='justify-content-center align-items-center m-5'>
               <MDBCard>

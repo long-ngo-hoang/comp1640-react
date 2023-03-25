@@ -52,6 +52,7 @@ export default function UpdateDepartments() {
     window.location.reload(false)
   } 
 
+
   const renderUser = (
     <>
             <MDBContainer fluid >
@@ -93,7 +94,7 @@ export default function UpdateDepartments() {
                                       className="me-3"
                                     />
                                     </button>
-
+                                  <button><Link to={`/profile/edit/${item.id}`}>Edit User</Link></button>
                                 </td>
                               </tr>
                              ))}
