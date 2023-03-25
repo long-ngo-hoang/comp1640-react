@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React,  {useState,  useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {getCategories} from '../../redux/categoriesSlice'
@@ -17,15 +17,29 @@ import {
   MDBTableHead,
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import Alert from 'react-bootstrap/Alert'  
 
 const ViewCategories = () => {
+  const [show, setShow] = useState(true)
 
  const dispatch = useDispatch()
-  
+ const {status , error} = useSelector((state => state.categories))
  useEffect(() => {
     dispatch(getCategories())     
   }, [])
   
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      // After 3 seconds set the show value to false
+      setShow(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(timeId)
+    }
+  }, []);
+
   const categoriesInDb = useSelector(selectAllCategories)
  
   const handleRemove = async (id) => {
@@ -33,10 +47,16 @@ const ViewCategories = () => {
    window.location.reload(false)
   }
 
+  // const createNotification = ( error) => {
+  //   NotificationManager.error({error},"please", 3000, () => {
+  //     alert('callback')})
+  // }
+
 
   return (
     <>
         <Navbar1/>
+        {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
         <section className="gradient-custom-2 vh-100">
         
                     <MDBContainer className="py-5 h-100">

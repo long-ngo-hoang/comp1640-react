@@ -14,12 +14,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import PaddingPage from './paginationPage'
 import { useParams, useNavigate } from 'react-router-dom'
+import Alert from 'react-bootstrap/Alert'  
 
 function ManageIdeas(){
  
   const {page} = useParams({page: true})
   const navigate = useNavigate()
-
+  const [show, setShow] = useState(true)
  const ideas = useSelector(selectAllIdeas)
  const {loading,error, totalpage} =  useSelector(
   (state) => state.ideas
@@ -45,6 +46,16 @@ function ManageIdeas(){
       }           
     }, [page])
 
+    useEffect(() => {
+      const timeId = setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setShow(false)
+      }, 3000)
+  
+      return () => {
+        clearTimeout(timeId)
+      }
+    }, []);
   return (
     <>
     <Navbar1/>
@@ -52,6 +63,7 @@ function ManageIdeas(){
     <MDBContainer fluid>
       <MDBRow className="justify-content-center mb-9">
         <MDBCol md="12" xl="10">
+        {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
           {ideas === null 
             ? <h1> page not have data</h1> :
               ideas?.map(item =>

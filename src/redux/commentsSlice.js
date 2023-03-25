@@ -7,24 +7,41 @@ import instance from './configApi';
 //   return response.data;
 // })
 
-export const updateComment = createAsyncThunk('commentList/updateComment', async (initialData) => {
+export const updateComment = createAsyncThunk('commentList/updateComment', async (initialData, {rejectWithValue}) => {
   const {id} = initialData;
   try{
   const response = await instance
     .put(`/Comments/${id}`, initialData);
   return response.data;
-  }catch(err)
-  {
-    return initialData;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
   }
 })
 
-export const deleteComment = createAsyncThunk('commentList/deleteComment', async (initialData) => {
+export const deleteComment = createAsyncThunk('commentList/deleteComment', async (initialData, {rejectWithValue}) => {
+  try{
   const  id  = initialData;
   const response = await instance
     .delete(`/Comments/${id}`);
     if (response?.status === 200) return initialData;   
   return response.data;
+  } catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
 const categoriesSlice = createSlice({
@@ -65,7 +82,7 @@ const categoriesSlice = createSlice({
     })
     .addCase(updateComment.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(deleteComment.pending, (state, action) => {
@@ -75,10 +92,11 @@ const categoriesSlice = createSlice({
     .addCase(deleteComment.fulfilled, (state, action) => {
       const id = action.payload;
       state.comments = state.comments.filter((item)=> item.id !== id)
+      state.error = ''
     })
     .addCase(deleteComment.rejected, (state, action) => {
       state.loading = false;
-      state.status = "rejected"
+      state.error = action.payload
     })
   }
 })

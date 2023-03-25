@@ -10,76 +10,179 @@ const initialState = {
   error: ''
 }
 
-export const addComment = createAsyncThunk('ideaList/addComment', async (initialData) => {
+export const addComment = createAsyncThunk('ideaList/addComment', async (initialData, {rejectWithValue}) => {
+  try{
   const response = await instance
     .post(`/Comments` , initialData);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getIdeas = createAsyncThunk('ideaList/getIdeas', async (page) => {
+export const getIdeas = createAsyncThunk('ideaList/getIdeas', async (page, {rejectWithValue}) => {
+  try{
   const response = await instance
     .get(`/Ideas?pageIndex=${page}`);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getIdeasByUserId = createAsyncThunk('ideaList/getIdeasByUserId', async (page) => {
+export const getIdeasByUserId = createAsyncThunk('ideaList/getIdeasByUserId', async (page, {rejectWithValue}) => {
+  try{
   const response = await instance
     .get(`/Ideas/UserId?pageIndex=${page}`);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const addIdea = createAsyncThunk('ideaList/addIdea', async (initialData) => {
+export const addIdea = createAsyncThunk('ideaList/addIdea', async (initialData, {rejectWithValue}) => {
+  try{
   const response = await instance
     .post(`/Ideas` , initialData);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getIdeaById = createAsyncThunk('ideaList/getIdeaById', async (initialData) => {
+export const getIdeaById = createAsyncThunk('ideaList/getIdeaById', async (initialData, {rejectWithValue}) => {
+  try{
   const  id  = initialData;
   const response = await instance
     .get(`/Ideas/${id}`);
   return response.data;
-  
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const updateIdea = createAsyncThunk('ideaList/updateIdea', async (initialData) => {
+export const updateIdea = createAsyncThunk('ideaList/updateIdea', async (initialData, {rejectWithValue}) => {
   const {id} = initialData;
-  
   try{
   const response = await instance
     .put(`/Ideas/${id}`, initialData);
   return response.data;
-  }catch(err)
-  {
-    return initialData;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
   }
 })
 
-export const deleteIdea = createAsyncThunk('ideaList/deleteIdea', async (initialData) => {
+export const deleteIdea = createAsyncThunk('ideaList/deleteIdea', async (initialData, {rejectWithValue}) => {
+  try{
   const  id  = initialData;
   const response = await instance
     .delete(`/Ideas/${id}`);
     if (response?.status === 200) return initialData;   
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getMostPopularIdeas = createAsyncThunk('ideaList/getMostPopularIdeas', async (page) => {
+export const getMostPopularIdeas = createAsyncThunk('ideaList/getMostPopularIdeas', async (page,{rejectWithValue}) => {
+  try{
   const response = await instance
     .get(`/Ideas/GetMostPopularIdeas?pageIndex=${page}`);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const getMostViewedIdeas = createAsyncThunk('ideaList/getMostViewedIdeas', async (page) => {
+export const getMostViewedIdeas = createAsyncThunk('ideaList/getMostViewedIdeas', async (page, {rejectWithValue}) => {
+  try{
   const response = await instance
     .get(`/Ideas/GetMostViewedIdeas?pageIndex=${page}`);
   return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
-export const deleteFile = createAsyncThunk('ideaList/deleteFile', async (initialData) => {
+export const deleteFile = createAsyncThunk('ideaList/deleteFile', async (initialData, {rejectWithValue}) => {
+  try{
   const {id, ideaId} = initialData
   const response = await instance
     .delete(`Documents/${id}`);
   return ideaId;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
 })
 
 const ideasSlice = createSlice({
@@ -98,10 +201,12 @@ const ideasSlice = createSlice({
       state.status = "success"
       const currentIdea = state.ideas.find((item)=> item.id === action.payload.ideaId);
       currentIdea.comments.splice(0, 0, action.payload)
+      state.error = ''
     })
     .addCase(addComment.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(getIdeas.pending, (state, action) => {
@@ -115,10 +220,12 @@ const ideasSlice = createSlice({
       state.totalpage = action.payload.totalPage;
       const ideas =  action.payload.ideas
       state.ideas = ideas
+      state.error = ''
     })
     .addCase(getIdeas.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(getIdeasByUserId.pending, (state, action) => {
@@ -133,17 +240,30 @@ const ideasSlice = createSlice({
       // state.ideas = action.payload.ideas
       const ideas =  action.payload.ideas
       state.ideas = ideas
+      state.error = ''
+    })
+    .addCase(getIdeasByUserId.rejected, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+      state.error = action.payload
     })
 
     .addCase(getIdeaById.pending, (state, action) => {
       state.status = 'loading';
       state.loading = true;
+      state.error = action.payload
     })
     .addCase(getIdeaById.fulfilled, (state, action) => {
       state.status = 'idle';
       state.loading = false;
       const currentIdea = state.ideas.filter((item)=> item.id !==  action.payload.id);
       state.ideas = [...currentIdea, action.payload];
+      state.error = ''
+    })
+    .addCase(getIdeaById.rejected, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+      state.error = action.payload
     })
 
     .addCase(addIdea.pending, (state, action) => {
@@ -154,6 +274,12 @@ const ideasSlice = createSlice({
       state.status = 'success';
       state.loading = false;
       state.ideas.push(action.payload)
+      state.error = ''
+    })
+    .addCase(addIdea.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
+      state.error = action.payload
     })
 
     .addCase(updateIdea.pending, (state, action) => {
@@ -166,6 +292,11 @@ const ideasSlice = createSlice({
       let currentIdea = state.ideas.filter((item)=> item.id !== action.payload.id);
       currentIdea = action.payload;
     })
+    .addCase(updateIdea.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
+      state.error = action.payload
+    })
 
     .addCase(deleteIdea.pending, (state, action) => {
       state.status = 'loading';
@@ -176,7 +307,11 @@ const ideasSlice = createSlice({
       state.loading = false;
       state.ideas = state.ideas.filter((item)=> item.id !== action.payload.id)
     })
-
+    .addCase(deleteIdea.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
+      state.error = action.payload
+    })
       //GetMostPopularIdeas
     .addCase(getMostPopularIdeas.pending, (state, action) => {
       state.status = 'loading';
@@ -188,11 +323,13 @@ const ideasSlice = createSlice({
       state.loading = false;
       const ideas =  action.payload.ideas
       state.ideas = ideas
+      state.error = ''
     })
 
     .addCase(getMostPopularIdeas.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
+      state.action = action.payload
     })
       //GetMostViewedIdeas
     .addCase(getMostViewedIdeas.pending, (state, action) => {
@@ -205,10 +342,12 @@ const ideasSlice = createSlice({
       state.loading = false;
       const ideas =  action.payload.ideas
       state.ideas = ideas
+      state.error = ''
     })
     .addCase(getMostViewedIdeas.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
+      state.error = action.payload
     })
 
     .addCase(deleteFile.pending, (state, action) => {
@@ -218,10 +357,12 @@ const ideasSlice = createSlice({
     .addCase(deleteFile.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle"
+      state.error = ''
     })
     .addCase(deleteFile.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
+      state.error = action.payload
     })
   }
 })

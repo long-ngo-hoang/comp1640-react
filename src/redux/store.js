@@ -7,7 +7,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 import commentsSlice from "./commentsSlice.js";
 import academicYearsSlice from "./academicYearsSlice.js";
 import departmentsSlice from "./departmentsSlice.js";
-import accountsSlice, { logout } from "./accountsSlice.js";
+import accountsSlice from "./accountsSlice.js";
 import usersSlice from "./usersSlice.js";
 import notificationSlice from "./notificationSlice.js";
 import roleSlice from "./roleSlice.js";

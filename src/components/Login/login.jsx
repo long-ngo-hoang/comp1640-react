@@ -8,17 +8,28 @@ import { Link } from 'react-router-dom'
 import {MDBContainer, MDBCol, MDBRow, MDBInput, MDBCheckbox, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
 import jwt_decode from "jwt-decode";
 import { forgotPassword } from '../../redux/accountsSlice';
-
+import Alert from 'react-bootstrap/Alert' 
 
 export function LogIn (){
     const dispatch = useDispatch()   
      const navigate = useNavigate()
-
+     const [show, setShow] = useState(true)
     const [account, setAccount] = useState({
         email: "",
         password: "",
     });
 
+
+    useEffect(() => {
+      const timeId = setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setShow(false)
+      }, 3000)
+  
+      return () => {
+        clearTimeout(timeId)
+      }
+    }, []);
 
     const handleEmail = (e) =>{
         console.log(e.target.value)
@@ -74,7 +85,7 @@ return(
 
     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
       <MDBCol col='12'>
-
+      {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
         <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
           <MDBCardBody className='p-5 w-100 d-flex flex-column'>
             <h2 className="fw-bold mb-2 text-center">Sign in</h2>

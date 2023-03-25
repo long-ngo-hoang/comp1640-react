@@ -86,16 +86,16 @@ const instance = axios.create({
         state.status = 'success';
         localStorage.setItem('token', state.token.token)
         localStorage.setItem('rftoken', state.token.refreshToken)
+        state.error = ''
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false
-        state.error = ''
         state.error = action.payload
       })
 
       .addCase(refreshToken.pending, (state, action) => {
         state.loading = true
-        state.error = 'null'
+        state.error = ''
         state.status = 'loading';
       })
       builder.addCase(refreshToken.fulfilled, (state, action) => {
@@ -107,21 +107,22 @@ const instance = axios.create({
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.loading = false
-        state.error = 'null'
+        state.error = action.payload
       })
 
       .addCase(forgotPassword.pending, (state, action) => {
         state.loading = true
-        state.error = 'null'
+        state.error = ''
         state.status = 'loading';
       })
       .addCase(forgotPassword.fulfilled, (state, action) => {
         state.loading = true
-        state.error = 'Success'
+        state.status = 'succes'
+        state.error = ''
       })
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false
-        state.error = ''
+        state.error = action.payload
       })
     }
   })

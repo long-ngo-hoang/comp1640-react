@@ -12,6 +12,7 @@ export default function UpdateUser() {
     const navigate = useNavigate()
     const user = useSelector(selectAllUsers)
 
+    
     const [users, setUsers] = useState({
         id: id,
         avatarUrl: user?.avatarUrl,
@@ -56,13 +57,13 @@ export default function UpdateUser() {
             <form>
             <h1>Update User</h1>
                 <label htmlFor="name">avatarUrl</label>
-                <input onChange={onChangeAvatarUrl} value={user.avatarUrl}/>
+                <input type='text' onChange={onChangeAvatarUrl} value={users.avatarUrl}/>
                 <label htmlFor="name">fullName</label>
-                <input onChange={onChangeFullName} value={user.fullName}/>
+                <input onChange={onChangeFullName} value={users.fullName}/>
                 <label htmlFor="name">address</label>
-                <input onChange={onChangeAddress} value={user.address}/>
+                <input onChange={onChangeAddress} value={users.address}/>
                 <label htmlFor="name">phone</label>
-                <input onChange={onChangePhone} value={user.phone}/>
+                <input onChange={onChangePhone} value={users.phone}/>
                 <button onClick={handleSubmit}>Update User</button>
             </form>
           </>

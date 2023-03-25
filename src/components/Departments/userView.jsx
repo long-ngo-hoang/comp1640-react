@@ -1,24 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUser } from '../../redux/roleSlice'
 import { Link } from 'react-router-dom'
 import { Invitations } from '../../redux/departmentsSlice'
-
+import Alert from 'react-bootstrap/Alert' 
   const ViewUser = () => { 
   
     const dispatch = useDispatch()
     const {loading,error, users }=  useSelector(
         (state) => state.roles
         )
-      // console.log(users)
+    const [show, setShow] = useState(true)
     useEffect(()=>{
         dispatch(getUser(),[]);
     },[])
+    useEffect(() => {
+      const timeId = setTimeout(() => {
+        // After 3 seconds set the show value to false
+        setShow(false)
+      }, 3000)
+  
+      return () => {
+        clearTimeout(timeId)
+      }
+    }, []);
 
     function handleInvitations(id) {
       dispatch(Invitations(id));
     }
-
+    
     return (
       <>
        {loading && <h2>page loadding</h2>}
