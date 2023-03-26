@@ -2,31 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { getIdeas } from "../../redux/ideasSlice";
 import {selectAllIdeas} from "../../redux/ideasSlice";
-import {  useNavigate  } from 'react-router-dom'
 import {
   MDBContainer,
   MDBRow,
   MDBCol,
   MDBIcon,
   MDBSpinner ,
-  
 } from "mdb-react-ui-kit";
-import Dropdown from 'react-bootstrap/Dropdown';
-
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 import './view.css'
 import { useParams } from "react-router-dom";
 import PaddingPage from './paginationPage'
-import { getMostPopularIdeas } from '../../redux/ideasSlice'
-import { getMostViewedIdeas } from "../../redux/ideasSlice";
+import { addReaction } from "../../redux/reactionSlice";
+import { deleteReaction } from "../../redux/reactionSlice";
 import Alert from 'react-bootstrap/Alert'  
 
 function ViewIdeas(){  
   const {page} = useParams({page: true})
   const [currentPage, setCurrentPage] = useState(1)
-  const [sendRequest, setSendRequest] = useState(false);
-  const [sendMostView, setSendMostView] = useState(false);
   const [show, setShow] = useState(true)
 
   useEffect(() => {
@@ -43,23 +37,16 @@ function ViewIdeas(){
   const ideas = useSelector(selectAllIdeas)
   const {loading, error} = useSelector((state) => state.ideas)
   const dispatch = useDispatch()
-  //GetPolulation
-  useEffect(() => {
-    if(sendRequest){
-       dispatch(getMostPopularIdeas(currentPage))
-       setSendRequest(false);
-    }
-  },
-  [sendRequest]);
 
-//getMostView
-  useEffect(() => {
-    if(sendMostView){
-       dispatch(getMostViewedIdeas(currentPage))
-       setSendMostView(false);
-    }
-  },
-  [sendMostView]);
+  const handleLike = async (id) =>  {
+    await dispatch(deleteReaction(id));
+    await dispatch(addReaction({ideaId: id, name: "Like"}));
+  }
+
+  const handleDislike = async (id) =>  { 
+    await dispatch(deleteReaction(id));
+    await dispatch(addReaction({ideaId: id, name: "Dislike"}));
+  }
 
   useEffect(() => {
     const timeId = setTimeout(() => {
@@ -86,15 +73,7 @@ function ViewIdeas(){
     <>
     <Navbar1/>
     <MDBContainer fluid>
-    <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Get Ideas
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1" onClick={() => setSendRequest(true)}>Most Popular Ideas</Dropdown.Item>
-        <Dropdown.Item href="#/action-2"  onClick={() => setSendMostView(true)} >Most View Ideas</Dropdown.Item>
-      </Dropdown.Menu>
-      </Dropdown>
+
       <MDBRow className="justify-content-center mb-9">
       {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
         <MDBCol md="12" xl="10">
@@ -118,14 +97,11 @@ function ViewIdeas(){
                             <div className="d-flex flex-row align-items-center">
                                 <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span>
                             </div>
-                            <h6 className="text-success">{item.author}</h6>
+                            <h6 className="text-success">{!item.isAnonymous ? <div>{item.author}</div> : <div>Anoymouse</div>}</h6>
                             <div className="d-flex flex-column mt-4"><Link style={{widows: "100%"}} type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link></div>
                             <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
-                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/> */}
-                                <label className="btn btn-outline-primary" htmlFor="btnradio1"><MDBIcon far icon="thumbs-up" />    </label>
-
-                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/> */}
-                                <label className="btn btn-outline-primary" htmlFor="btnradio2"> <MDBIcon far icon="thumbs-down" /></label>
+                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
+                                <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" /></Link>
                             </div>
                         </div>
                     </div>  
@@ -133,12 +109,10 @@ function ViewIdeas(){
             </div>
         </div>
                        )) : null}     
-         
         </MDBCol>
       </MDBRow>
-      {<PaddingPage/>}
     </MDBContainer>
-    
+          {<PaddingPage/>}
     </>
   );
 }

@@ -4,8 +4,7 @@ import { useNavigate  } from 'react-router-dom';
 import { useDispatch ,useSelector} from 'react-redux';
 import { login } from '../../redux/accountsSlice';
 import { Link } from 'react-router-dom'
-// import RequireAuth from '../../authorization';
-import {MDBContainer, MDBCol, MDBRow, MDBInput, MDBCheckbox, MDBCard, MDBCardBody } from 'mdb-react-ui-kit';
+import {MDBContainer, MDBCol, MDBRow, MDBInput, MDBCheckbox, MDBCard, MDBCardBody, MDBValidation, MDBSpinner} from 'mdb-react-ui-kit';
 import jwt_decode from "jwt-decode";
 import { forgotPassword } from '../../redux/accountsSlice';
 import Alert from 'react-bootstrap/Alert' 
@@ -13,18 +12,18 @@ import Alert from 'react-bootstrap/Alert'
 export function LogIn (){
     const dispatch = useDispatch()   
      const navigate = useNavigate()
-     const [show, setShow] = useState(true)
-    const [account, setAccount] = useState({
+     const [show, setShow] = useState(true)   
+     const {status , error, loading} = useSelector((state => state.accounts))
+
+     const [account, setAccount] = useState({
         email: "",
         password: "",
     });
 
-
     useEffect(() => {
       const timeId = setTimeout(() => {
-        // After 3 seconds set the show value to false
         setShow(false)
-      }, 3000)
+      }, 10000)
   
       return () => {
         clearTimeout(timeId)
@@ -49,11 +48,12 @@ export function LogIn (){
       ) 
     }
 
-    const handleLogin = () =>{
-        dispatch(login(account), 10000)
+    const handleLogin = async() =>{
+      if(account.email && account.password){
+       await dispatch(login(account))
+      }
     }
 
-    const {status , error} = useSelector((state => state.accounts))
 
     useEffect(() => {
         if(status === 'success'){
@@ -74,7 +74,7 @@ export function LogIn (){
              navigate('/categories/view') 
           }
           else if(decodedToken.Roles === "Quality Assurance Coordinator"){
-              navigate('/ideas/view') 
+            navigate('/ideas/view') 
           }
         }  
         }
@@ -85,18 +85,25 @@ return(
 
     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
       <MDBCol col='12'>
-      {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
+      {error && show ? <div>  
+          <Alert variant="success">{error}</Alert>  
+          </div> : null
+      }
         <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
           <MDBCardBody className='p-5 w-100 d-flex flex-column'>
             <h2 className="fw-bold mb-2 text-center">Sign in</h2>
             <p className="text-white-50 mb-3">Please enter your login and password!</p>
-            {error? <div>error {error}</div> : null}
+            {error? <div style={{color: "red"}}> {error}, Please login again </div> : null}
+            {loading &&  
+                <span >Please use new password</span>
+              }
+            <MDBValidation className='row g-0'> 
 
             <h6>Email: </h6>
-            <MDBInput wrapperClass='mb-4 w-100'  id='formControlLg1' type='email'  value={account.email} onChange={handleEmail}  />
+            <MDBInput wrapperClass='mb-4 w-100'  id='formControlLg1' type='email'  value={account.email} onChange={handleEmail} required />
 
             <h6>Password: </h6>
-            <MDBInput wrapperClass='mb-4 w-100' id='formControlLg2' type='password'  value={account.password} onChange={handlePassword}/>
+            <MDBInput wrapperClass='mb-4 w-100' id='formControlLg2' type='password'  value={account.password} onChange={handlePassword} required/>
 
             <MDBCheckbox name='flexCheck' id='flexCheckDefault' className='mb-4' label='Remember password' />
             <hr className="my-4" />
@@ -104,6 +111,7 @@ return(
             <button className='btn btn-primary' style={{marginBottom: "10px"}} size='lg' onClick={handleLogin}>
               Login
             </button>
+          </MDBValidation>
 
 
              <Link className='btn btn-primary' onClick={handleSubmit}>Forgot Password</Link>

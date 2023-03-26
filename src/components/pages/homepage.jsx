@@ -2,7 +2,7 @@
 // import TodoList from "../../APIs/deleteIdea"
 // import AddIdea from "../../APIs/addIdea"
 import IdeasView from "../Ideas/view"
-import { LogIn } from "../Login/login"
+import { LogIn } from "../Accounts/login"
 import ViewCategories from "../Categories/view"
 import AddCategories from "../Categories/create"
 import AddIdea from "../Ideas/create"

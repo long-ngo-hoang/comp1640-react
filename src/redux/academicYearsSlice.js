@@ -157,8 +157,6 @@ const academicYearsSlice = createSlice({
     .addCase(updateAcademicYear.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle";
-      // let currentAcademicYear = state.academicYears.find((item)=> item.id !== action.payload.id)
-      // state.academicYears =[...currentAcademicYear, action.payload] 
       state.error = ''
     })
     .addCase(updateAcademicYear.rejected, (state, action) => {

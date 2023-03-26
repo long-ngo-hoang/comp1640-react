@@ -25,7 +25,7 @@ export const getRole = createAsyncThunk('roleList/getRole', async (_, {rejectWit
   }
 })
 
-export const getUserByID = createAsyncThunk('roleList/getUserByID', async (id, {rejectWithValue}) => {
+export const getUserById = createAsyncThunk('roleList/getUserById', async (id, {rejectWithValue}) => {
   try{
   const response = await instance
     .get(`/UserRoles/${id}`);
@@ -81,7 +81,7 @@ export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id, {
 
 
 
-  export const updateRoleAsync = createAsyncThunk('role/updateRoleAsync', async (initialData,{rejectWithValue}) => { 
+  export const updateRoleAsync = createAsyncThunk('roleList/updateRoleAsync', async (initialData,{rejectWithValue}) => { 
     const {userId} = initialData
     const {roleId} = initialData
     try{
@@ -140,18 +140,18 @@ const roleSlice = createSlice({
       state.loading = false
       state.error = action.payload      
     })
-    builder.addCase(getUserByID.pending, (state, action) => {
+    builder.addCase(getUserById.pending, (state, action) => {
       state.status = 'loading'
       state.loading = true
       state.error = ''
     })
-    builder.addCase(getUserByID.fulfilled, (state, action) => {
+    builder.addCase(getUserById.fulfilled, (state, action) => {
       state.loading = false
       state.status = 'Success'
       state.users = action.payload
       state.error = ''
     })
-    builder.addCase(getUserByID.rejected, (state, action) => {
+    builder.addCase(getUserById.rejected, (state, action) => {
       state.status = 'rejected'
       state.loading = false
       state.error = action.payload

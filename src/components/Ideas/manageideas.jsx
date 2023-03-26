@@ -15,6 +15,8 @@ import { useState } from 'react'
 import PaddingPage from './paginationPage'
 import { useParams, useNavigate } from 'react-router-dom'
 import Alert from 'react-bootstrap/Alert'  
+import { addReaction } from "../../redux/reactionSlice";
+import { deleteReaction } from "../../redux/reactionSlice";
 
 function ManageIdeas(){
  
@@ -35,6 +37,16 @@ function ManageIdeas(){
       window.location.reload(false);
     }
     
+  const handleLike = async (id) =>  {
+    await dispatch(deleteReaction(id));
+    await dispatch(addReaction({ideaId: id, name: "Like"}));
+  }
+
+  const handleDislike = async (id) =>  { 
+    await dispatch(deleteReaction(id));
+    await dispatch(addReaction({ideaId: id, name: "Dislike"}));
+  }
+
     useEffect(() => {
       dispatch(getIdeasByUserId(currentPage))     
     }, [currentPage])
@@ -92,11 +104,8 @@ function ManageIdeas(){
                                             
                               </div>
                             <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
-                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/> */}
-                                <label className="btn btn-outline-primary" htmlFor="btnradio1"><MDBIcon far icon="thumbs-up" />    </label>
-
-                                {/* <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/> */}
-                                <label className="btn btn-outline-primary" htmlFor="btnradio2"> <MDBIcon far icon="thumbs-down" /></label>
+                               <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
+                                <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" /></Link>
                             </div>
                         </div>
                     </div>  

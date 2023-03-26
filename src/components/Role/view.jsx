@@ -12,7 +12,7 @@ const ViewRoles = () => {
         )
       // console.log(users)
     useEffect(()=>{
-        dispatch(getUser(),[]);
+        dispatch(getUser());
     },[])
 
     useEffect(() => {
@@ -36,7 +36,6 @@ const ViewRoles = () => {
             <p>{item.id} </p>  
               <p>{item.userName} </p>   
               <Link type="button" className="btn btn-primary" to={`/role/detail/${item.id}`}>View More</Link>
-              <Link type="button" className="btn btn-primary" to={`/role/create/${item.id}`}>Add Role</Link>
           </div>
           )) : null 
        }

@@ -2,10 +2,16 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getUserByID } from '../../redux/roleSlice'
+import { getUserById } from '../../redux/roleSlice'
 import { addUserToDepartment } from '../../redux/departmentsSlice'
 import SelectedDepartment from './selectBox'
-
+import {
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+} from 'mdb-react-ui-kit';
 
   const AddDepartmentToUser = () => { 
     const { id } = useParams()
@@ -20,7 +26,7 @@ import SelectedDepartment from './selectBox'
     }
     
     useEffect(()=>{
-        dispatch(getUserByID(id),[]);
+        dispatch(getUserById(id),[]);
     },[])
 
 
@@ -28,33 +34,30 @@ import SelectedDepartment from './selectBox'
         event.preventDefault();
         dispatch(addUserToDepartment({userId: id, departmentID: selectDepartment })
         ) 
-        navigate(`/departments/viewUser`)
     }
 
     
     return (
       <>
-       {/* <h1>{users.id}</h1> */}
        {loading && <h2>page loadding</h2>}
-
-       <div>
-            <label htmlFor="Role-choose"> Choose Role</label>
-            <select
-            disabled={false}
-            value={selectDepartment}
-            onChange={onChangeSelected} 
-            >
-            <SelectedDepartment/>
-            </select>
-
-            <button className='button' onClick={handleSubmit}>Add Roles</button>
-         </div>
-     
-       {/* {!loading && users?
-       
-            
-          : null 
-       } */}
+       <MDBCard className="mb-4">
+            <MDBCardBody>
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Departments: </MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                  <select
+                    disabled={false}
+                    value={selectDepartment}
+                    onChange={onChangeSelected}>
+                    <SelectedDepartment/>
+                  </select>                
+                  </MDBCol>
+                </MDBRow>
+              </MDBCardBody>
+              </MDBCard>     
+         <button className='btn btn-primary' onClick={handleSubmit}>Add Department</button>
       </>
     )
   }

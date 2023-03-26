@@ -15,12 +15,19 @@ import {
     MDBTextArea,
     MDBCardImage,
     MDBIcon,
+    MDBAccordion,
+    MDBAccordionItem,
+    MDBValidation,
+    MDBSpinner,
+    MDBValidationItem,
+    MDBCheckbox
   } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 import { useEffect } from 'react';
 import { uploadFileToS3 } from '../../redux/filesSlice';
 import { getS3PreSignedUrl } from '../../redux/filesSlice';
 import { uploadFile, deleteFile } from '../../redux/filesSlice';
+
 export default function AddIdea() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -31,10 +38,11 @@ export default function AddIdea() {
         description: "",
         isAnonymous: false
     });
-    const {status} = useSelector((state => state.ideas))
+    const [termsAndContract, setTermsAndContract] = useState(false)
+
+    let {loading, status, error} = useSelector((state => state.ideas))
     const [slectedCategories, setSelectedCategories] = useState('');
     const {files} = useSelector((state => state.files))
-    console.log(files)
     const onChangeName = (e) =>{
         setIdea((preV) => {     
             return{...preV, name: e.target.value}
@@ -60,12 +68,18 @@ export default function AddIdea() {
         }) 
     }
 
-   const handleSubmit = async (event )=> {
+    const onChangeTermsAndContract = (e) => {
+      setTermsAndContract(!termsAndContract) 
+    }
+
+   const handleSubmit = async (event )=> {     
+    if(termsAndContract === true && idea.categoryId && idea.name && idea.description){
         event.preventDefault();
         const newIdea = await dispatch(addIdea(idea))  
         files.forEach(element =>  {
           dispatch(uploadFile({ideaId: newIdea.payload.id, documentUrl: element }))
         });
+      }  
     }
 
     const handleRemove = async (event )=> {
@@ -92,26 +106,24 @@ export default function AddIdea() {
       <>
       <Navbar1 />
       <MDBContainer fluid >
-      <MDBRow className='justify-content-center align-items-center m-5'>
-        <MDBCard style={{backgroundColor: "#eee"}}>
+      <MDBRow className='justify-content-center align-items-center m-3'>
+        <MDBCard >            
+            <MDBValidation className='row g-3'> 
+
           <MDBCardBody className='px-4'>
             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Create Idea</h3>
              <MDBSwitch id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={idea.isAnonymous} value={idea.isAnonymous} />
               <br />
+
             <MDBRow>
               <MDBCol md='12'>
-                <h5 className="mb-0">Name : </h5>
-                <MDBInput wrapperClass='mb-4'   id='form2' type='text' onChange={onChangeName} value={idea.name}/>
+                <MDBInput wrapperClass='mb-4'   id='form2' type='text' onChange={onChangeName} value={idea.name} placeholder="Name Idea" required/>
               </MDBCol>
-
               <MDBCol md='12'>
-                <h5 className="mb-0">Description : </h5>
-                <MDBTextArea wrapperClass='mb-4'  id='textAreaExample' rows={8} onChange={onChangeDescription} value={idea.description}/>
+                <MDBTextArea wrapperClass='mb-4'  id='textAreaExample' rows={8} onChange={onChangeDescription} value={idea.description}  placeholder="Descriptions Idea" required/>
               </MDBCol>
-
-              <MDBCol md='12'>
-                <h5 className="mb-0">Category : </h5>
-                    <select  disabled={false} value={slectedCategories} onChange={onChangeSelected}>
+              <MDBCol md='12' style={{display: "flex", justifyContent: "space-around"}}>
+                    <select  disabled={false} value={slectedCategories} onChange={onChangeSelected} style={{backgroundColor : "white"}} required> 
                       <SelectedBox/>
                     </select>
                 <input type="file" id="files" style={{display: "none"}} onChange={handleUploadFile} />
@@ -128,12 +140,34 @@ export default function AddIdea() {
                     </div>
                   ))}
                </MDBCol>
-            </MDBRow>           
+               
+               <MDBAccordion initialActive={1}>
+                  <MDBAccordionItem collapseId={1} headerTitle='Terms And Conditions'>
+                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse
+                    plugin adds the appropriate classes that we use to style each element. These classes control the overall
+                    appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with
+                    custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go
+                    within the <code>.accordion-body</code>, though the transition does limit overflow.    
+                    <hr class="hr" />
+                    <MDBValidationItem className='col-12' feedback='You must agree before submitting.' invalid>
+                        <MDBCheckbox label='Agree to terms and conditions' id='invalidCheck'  onChange={onChangeTermsAndContract} checked={termsAndContract} value={termsAndContract}  required />
+                    </MDBValidationItem>         
+                  </MDBAccordionItem>
+                </MDBAccordion>
+            </MDBRow>                 
+          <br/>  
+          {loading &&  <MDBSpinner role='status'>
+                <span className='visually-hidden'>Loading...</span>
+              </MDBSpinner>}
+              {error &&    
+                <p style={{color: "red"}}>{error}</p>
+              }   
+              <br/>
+            <button type='submit' className="btn btn-primary" onClick={handleSubmit}>Create Idea</button>
           </MDBCardBody>
-          <MDBCol md='12'>
-            <button className="btn btn-primary" onClick={handleSubmit}>Create Idea</button>
-          </MDBCol>
+          </MDBValidation>
 
+                      
           
         </MDBCard>
       </MDBRow>

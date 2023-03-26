@@ -166,7 +166,7 @@ const categoriesSlice = createSlice({
     })
     .addCase(updateCategory.fulfilled, (state, action) => {
       state.loading = false;
-      state.status = "idle";
+      state.status = "Success";
       let currentCategory = state.categories.filter((category)=> category.id !== action.payload.id);
       currentCategory = action.payload;
       state.error=''
@@ -183,13 +183,12 @@ const categoriesSlice = createSlice({
     .addCase(deleteCategory.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle";
-      let currentCategories = state.categories.filter((item)=> item.id !== action.payload.id)
-      state.categories = [...currentCategories,action.payload]
-      state.error = ''
-
+      state.categories = state.categories.filter((item)=> item.id !== action.meta.arg)
     })
     .addCase(deleteCategory.rejected, (state, action) => {
       state.loading = false;
+      state.error= action.payload
+
       state.status = action.payload
     })
   }

@@ -7,7 +7,8 @@ import {
   MDBCol,
   MDBInput,
   MDBContainer,
-  MDBRow
+  MDBRow,
+  MDBValidation
 } from "mdb-react-ui-kit";
 import Navbar1 from '../navbar/navbar1';
 import Alert from 'react-bootstrap/Alert'  
@@ -32,9 +33,12 @@ export default function AddCategories() {
       }
     }, []);
     const handleSubmit = async (e)=> {
+      if(categories){
+        e.preventDefault();
         dispatch(addCategory({name: categories}))
         navigate(`/categories/view`)
     }  
+  }
     return (
       <>
         <Navbar1/>
@@ -47,18 +51,21 @@ export default function AddCategories() {
                   <h2>Create Categories</h2>
                 </div>
                 <div className="card-body">
-                  <form >
+                    <MDBValidation className='row g-0'> 
+
                     <div className="text-danger"></div>
                     <div className="form-outline mb-4">
                       <MDBCol md='12'>
                         <label className="mb-2" >Name</label>
-                        <MDBInput  id='form2' type='text' onChange={onChangeName} value={categories.name}/>
-                      </MDBCol>
-                    </div>
-                    <MDBCol md='12'>
+                        <MDBInput  id='form2' type='text' onChange={onChangeName} value={categories.name} required/>
+                      </MDBCol> 
+                      <br/>
+                      <MDBCol md='12'>
                       <button className="btn btn-primary" onClick={handleSubmit}>Create Category</button>
                     </MDBCol>
-                  </form>
+                    </div>
+                   
+                    </MDBValidation>
                 </div>
               </div>
             </div>

@@ -1,22 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUser } from '../../redux/roleSlice'
-import { Link } from 'react-router-dom'
 import { Invitations } from '../../redux/departmentsSlice'
 import Alert from 'react-bootstrap/Alert' 
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardBody,
+  MDBCardHeader,
+  MDBIcon,
+  MDBTable,
+  MDBTableHead,
+  MDBTableBody
+} from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom'
+import Navbar1 from "../navbar/navbar1";
+
   const ViewUser = () => { 
   
     const dispatch = useDispatch()
-    const {loading,error, users }=  useSelector(
-        (state) => state.roles
-        )
+    const {loading, users }=  useSelector((state) => state.roles)
+
     const [show, setShow] = useState(true)
+
     useEffect(()=>{
         dispatch(getUser(),[]);
     },[])
+
     useEffect(() => {
       const timeId = setTimeout(() => {
-        // After 3 seconds set the show value to false
         setShow(false)
       }, 3000)
   
@@ -31,18 +44,70 @@ import Alert from 'react-bootstrap/Alert'
     
     return (
       <>
-       {loading && <h2>page loadding</h2>}
-       {!loading && users.length ? 
-          users?.map((item) => (
-          <div key={item.id}>
-            <p>{item.id} </p>  
-              <p>{item.userName} </p>   
-              <Link type="button" className="btn btn-primary" to={`/departments/addDepartment/${item.id}`}>Add Department</Link>
-              {/* <Link type="button" className="btn btn-primary" to={`/departments/addDepartment/${item.id}`}>Add Department</Link> */}
-              <button onClick={()=> handleInvitations(item.id)}> Invitations</button>
-          </div>
-          )) : null 
-       }
+      <Navbar1/>
+             <MDBContainer fluid >
+              
+              <MDBRow className='justify-content-center align-items-center m-5'>
+                    <MDBCard>
+                      <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
+                        <div style={{display: "flex", justifyContent: "space-beetwen"}}>
+                        <h5 className="mb-0">
+                          <MDBIcon fas icon="tasks" className="me-2" />
+                          User
+                        </h5>
+                        </div>
+                        <div>
+                        <Link type="button" className="btn btn-primary" to={`/departments/register`}>
+                            Create Account 
+                        </Link>
+                        </div>
+                      </MDBCardHeader>
+                        <MDBCardBody>
+                          <MDBTable className="mb-0">
+                            <MDBTableHead>
+                              <tr>
+                                <th scope="col">Name</th> 
+                                <th scope="col">Actions</th>
+                              </tr>
+                            </MDBTableHead>
+                            <MDBTableBody>
+                            {loading && <h2>page loadding</h2>}
+                              {!loading && users.length ? 
+                                users?.map((item) => (  
+                              <tr className="fw-normal" key={item.id}>
+                                <td className="align-middle">
+                                  <span>{item.userName}</span>
+                                </td>  
+                                <td className="align-middle">
+                                <button style={{background: "none", border: "none"}}>
+                                            <Link to={`/profile/edit/${item.id}`}>
+                                              <MDBIcon
+                                                fas
+                                                icon="edit"
+                                                color="success"
+                                                size="lg"
+                                                className="me-3"
+                                              />
+                                            </Link>
+                                        </button>
+                                  <button style={{background: "none", border: "none"}} onClick={()=> handleInvitations(item.id)}>
+                                    <MDBIcon
+                                      fas
+                                      icon="trash-alt"
+                                      color="danger"
+                                      size="lg"
+                                      className="me-3"
+                                    />
+                                    </button>
+                                </td>
+                              </tr>
+                             )): null}
+                            </MDBTableBody>
+                          </MDBTable>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBRow>
+                </MDBContainer>
       </>
     )
   }

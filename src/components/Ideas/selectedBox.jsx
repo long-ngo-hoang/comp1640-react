@@ -12,7 +12,7 @@ import React, { useEffect } from 'react'
 
     return (
       <>
-        <option disabled = {false} >Default</option> 
+        <option disabled = {false} >Categories</option> 
           {optionList.categories.map((item) => (                                                       
             <option key={item.id} value={item.id}>                           
               {item.name}                                    

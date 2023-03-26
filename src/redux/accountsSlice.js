@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { PURGE } from "redux-persist";
+
+const token = localStorage.getItem('token');
+
+
 const instance = axios.create({
     baseURL: 'https://localhost:7044',
+    headers: { Authorization: `Bearer ${token}` }
+
   });
  
   const initialState = {
@@ -22,7 +28,6 @@ const instance = axios.create({
         if (error.response && error.response.data.message) {
             return rejectWithValue(error.response.data.message)
         } else {
-          console.log("a", error)
             return rejectWithValue(error.response.data)
         }
     }
@@ -60,13 +65,43 @@ const instance = axios.create({
     }    
   })
 
+  export const changePassword = createAsyncThunk('accountList/changePasswordAsync', async(initialData, {rejectWithValue}) => {
+  try{
+    const response = await instance
+      .post(`/api/Auth/ChangePassword`, initialData);
+    return response.data;
+    }catch(error){
+      if (error.response && error.response.status == 401) {
+          return rejectWithValue("End of login sesion")
+      } if (error.response && error.response.status == 403){
+        console.log("a", error)
+        return rejectWithValue("Your accounts don't can't access")
+      }else {
+          return rejectWithValue(error.response.data)
+      }
+    }
+})
+
+export const registerUser = createAsyncThunk('accountList/registerUser', async(initialData, {rejectWithValue}) => {
+  try{
+    const response = await instance
+      .post(`/api/Auth/Register`, initialData);
+    return response.data;
+  }
+    catch(error){
+      if (error.response && error.response.data.message) {
+          return rejectWithValue(error.response.data.message)
+      } else {
+          return rejectWithValue(error.response.data)
+      }
+  }
+})
+
   const accountsSlice = createSlice({
     name: 'accountList',
     initialState,
     reducers:{
       logout:(state, action)=>{
-        // state.token = null
-        // state.error = ''
         localStorage.removeItem('token')
         localStorage.removeItem('rftoken')
    
@@ -124,6 +159,38 @@ const instance = axios.create({
         state.loading = false
         state.error = action.payload
       })
+
+      .addCase(changePassword.pending, (state, action) => {
+        state.loading = true
+        state.error = ''
+        state.status = 'loading';
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.loading = false
+        state.status = 'succes'
+        state.error = action.payload
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload
+      })
+
+          //register
+    .addCase(registerUser.pending, (state, action) => {
+      state.status = 'loading';
+      state.loading = true;
+    })
+    .addCase(registerUser.fulfilled, (state, action) => {
+     state.loading = false
+      state.status = 'Success'
+      state.error = ''
+
+    })
+    .addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+      state.error = action.payload
+    })
     }
   })
   

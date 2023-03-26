@@ -73,6 +73,7 @@ export const deleteFile = createAsyncThunk('ideaList/deleteFile', async (initial
   }
 })
 
+
 const filesSlice = createSlice({
   name: 'fileList',
   initialState:{

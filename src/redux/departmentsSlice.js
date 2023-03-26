@@ -185,6 +185,7 @@ const departmentsSlice = createSlice({
       state.loading = false
       state.departments = action.payload
       state.error = ''
+      state.status = 'idle'
     })
     .addCase(getDepartments.rejected, (state, action) => {
       state.loading = false;
@@ -198,9 +199,8 @@ const departmentsSlice = createSlice({
       state.error = ''
     })
     .addCase(getDepartmentById.fulfilled, (state, action) => {
-      state.status = 'Success'
+      state.status = 'idle'
       state.loading = false
-      console.log(action.payload)
       const currentDepartments = state.departments.filter((item)=> item.id !==  action.payload.id);
       state.departments = [...currentDepartments, action.payload];
       state.error = ''
@@ -233,7 +233,7 @@ const departmentsSlice = createSlice({
     })
     .addCase(updateDepartment.fulfilled, (state, action) => {
       state.loading = false;
-      state.status = "idle";
+      state.status = 'Success'
       const currentDepartment = state.departments.filter((item)=> item.id !==  action.payload.id);
       state.departments = [...currentDepartment,action.payload];
       state.error = ''
@@ -251,7 +251,7 @@ const departmentsSlice = createSlice({
     .addCase(deleteDepartment.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle";
-      state.departments = state.departments.filter((item)=> item.id !== action.payload.id)
+      state.departments = state.departments.filter((item)=> item.id !== action.meta.arg)
       state.error = ''
     })
     .addCase(deleteDepartment.rejected, (state, action) => {

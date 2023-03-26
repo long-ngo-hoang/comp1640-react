@@ -26,31 +26,29 @@ const EditAcademicYears = () => {
   useEffect(() => {
     dispatch(getAcademicYears())     
   }, [])
+
   useEffect(() => {
     const timeId = setTimeout(() => {
-      // After 3 seconds set the show value to false
       setShow(false)
-    }, 3000)
+    }, 10000)
 
     return () => {
       clearTimeout(timeId)
     }
   }, []);
   
-
   const academicYearsInDb = useSelector(selectAllAcademicYears)
 
   const dispatch = useDispatch()
   const handleRemove = async (id) =>  {
    await dispatch(deleteAcademicYear(id));
-  window.location.reload(false)
   }
  
   return (
     <>
         <Navbar1/>
             <section className="gradient-custom-2 vh-100">
-            {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
+            {error && show ? <div>    <Alert variant="success">Cannot delete academic year</Alert>  </div> : null}
                         <MDBContainer className="py-5 h-100">
                           <MDBRow className="d-flex justify-content-center align-items-center">
                             <MDBCol md="12" xl="10">

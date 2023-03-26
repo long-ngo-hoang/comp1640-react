@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import {  useMatch, useNavigate  } from 'react-router-dom'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-
+import {
+  MDBPagination,
+  MDBPaginationItem,
+  MDBPaginationLink,
+} from "mdb-react-ui-kit";
 
 
 
@@ -31,7 +35,18 @@ function PaddingPage(){
 
     return (
       <>
-        <nav aria-label="Page navigation example">
+       <nav aria-label='...'>
+      <MDBPagination size='sm' className='mb-0' style={{justifyContent: "center"}}>
+      {pageNumbers?.map(number =>
+              (
+        <MDBPaginationItem>
+          <MDBPaginationLink key={number}  id={number} onClick={handleClick}>{number}</MDBPaginationLink>
+        </MDBPaginationItem>
+        ))}    
+
+      </MDBPagination>
+    </nav>
+        {/* <nav aria-label="Page navigation example">
           <ul className="pagination">
             {pageNumbers?.map(number =>
               (
@@ -44,7 +59,7 @@ function PaddingPage(){
                 </li> 
               ))}    
             </ul>
-          </nav>
+          </nav> */}
       </>
     );
 }

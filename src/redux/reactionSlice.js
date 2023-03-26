@@ -10,7 +10,7 @@ const initialState = {
 export const addReaction = createAsyncThunk('reactionList/addReaction', async (initialReaction, {rejectWithValue}) => {
   try{
   const response = await instance
-    .get('/Reactions', initialReaction);
+    .post('/Reactions', initialReaction);
   return response.data;
   }catch(error){
     if (error.response && error.response.status == 401) {
@@ -27,7 +27,7 @@ export const addReaction = createAsyncThunk('reactionList/addReaction', async (i
 export const deleteReaction = createAsyncThunk('reactionList/deleteReaction', async (initialReaction, {rejectWithValue}) => {
   try{
     const response = await instance
-      .get('/Reactions', initialReaction);
+      .delete(`/Reactions/${initialReaction}`);
     return response.data;
   }catch(error){
     if (error.response && error.response.status == 401) {
@@ -40,8 +40,6 @@ export const deleteReaction = createAsyncThunk('reactionList/deleteReaction', as
     }
   }
   })
-
-
 
 const reactionsSlice = createSlice({
   name: 'reactionList',

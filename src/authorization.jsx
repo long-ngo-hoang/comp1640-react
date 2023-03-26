@@ -10,7 +10,7 @@ const RequireAuth = ({allowedRoles}) => {
      const decodedToken = jwt_decode(token);    
 
       return(
-         decodedToken.Roles === allowedRoles[0] || decodedToken.Roles ===  allowedRoles[1] || decodedToken.Roles ===  allowedRoles[2]
+         decodedToken.Roles === allowedRoles[0] || decodedToken.Roles ===  allowedRoles[1] || decodedToken.Roles ===  allowedRoles[2] || decodedToken.Roles ===  allowedRoles[3]
          ?<Outlet/>
          : token
              ?<Navigate to="/" state={{ from: location }} replace />

@@ -17,7 +17,7 @@ import {
   MDBTableHead,
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+// import {NotificationContainer, NotificationManager} from 'react-notifications';
 import Alert from 'react-bootstrap/Alert'  
 
 const ViewCategories = () => {
@@ -25,13 +25,13 @@ const ViewCategories = () => {
 
  const dispatch = useDispatch()
  const {status , error} = useSelector((state => state.categories))
+ 
  useEffect(() => {
     dispatch(getCategories())     
   }, [])
   
   useEffect(() => {
     const timeId = setTimeout(() => {
-      // After 3 seconds set the show value to false
       setShow(false)
     }, 3000)
 
@@ -44,19 +44,13 @@ const ViewCategories = () => {
  
   const handleRemove = async (id) => {
    await dispatch(deleteCategory(id));
-   window.location.reload(false)
+  //  window.location.reload(false)
   }
-
-  // const createNotification = ( error) => {
-  //   NotificationManager.error({error},"please", 3000, () => {
-  //     alert('callback')})
-  // }
-
 
   return (
     <>
         <Navbar1/>
-        {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
+        {error && show ? <div>    <Alert variant="success">Cannot delete categories</Alert>  </div> : null}
         <section className="gradient-custom-2 vh-100">
         
                     <MDBContainer className="py-5 h-100">

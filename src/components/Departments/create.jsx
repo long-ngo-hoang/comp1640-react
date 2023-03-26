@@ -7,6 +7,7 @@ import {
   MDBRow,
   MDBCol,
   MDBInput,
+  MDBValidation
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 
@@ -20,10 +21,12 @@ export default function AddDepartments() {
     }
 
    const handleSubmit = (event )=> {
+    if(name !== ''){
         event.preventDefault();
         dispatch(addDepartment({name})
         ) 
         navigate(`/departments/view`)
+    }
     }  
 
         return (
@@ -37,18 +40,22 @@ export default function AddDepartments() {
                       <h2>Create Departments</h2>
                     </div>
                     <div className="card-body">
-                      <form >
+                    <MDBValidation className='row g-0'> 
+
                         <div className="text-danger"></div>
                           <div className="form-outline mb-4">
                             <MDBCol md='12'>
                               <label className="mb-2" >Name</label>
-                              <MDBInput  size='lg' id='form2' type='text' onChange={onChangeName} value={name}/>
-                            </MDBCol>
-                          </div>
-                          <MDBCol md='12'>
-                            <button className="btn btn-primary" onClick={handleSubmit}>Create Departments</button>
+                              <MDBInput   id='form2' type='text' onChange={onChangeName} value={name} required/>
+                            </MDBCol> 
+                            <br/>
+                            <MDBCol md='12'>
+                            <button type='submit' className="btn btn-primary" onClick={handleSubmit}>Create Departments</button>
                           </MDBCol>
-                       </form>
+                          </div>
+                       
+                       </MDBValidation>
+
                     </div>
                   </div>
                 </div>

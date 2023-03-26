@@ -4,7 +4,6 @@ import {updateDepartment} from '../../redux/departmentsSlice'
 import {  useParams, useNavigate  } from 'react-router-dom';
 import { selectDepartmentById} from '../../redux/departmentsSlice'
 import {getDepartmentById} from '../../redux/departmentsSlice'
-import { selectUser } from '../../redux/departmentsSlice';
 import {removeUserFromDepartment} from '../../redux/departmentsSlice';
 import { Link } from 'react-router-dom'
 import {
@@ -17,20 +16,18 @@ import {
   MDBCardHeader,
   MDBIcon,
   MDBTable,
-  MDBTableHead,MDBTableBody
+  MDBTableHead,MDBTableBody,
+  MDBValidation
 } from 'mdb-react-ui-kit';
-
 import Navbar1 from '../navbar/navbar1';
-import { async } from 'q';
 
 export default function UpdateDepartments() {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
-  console.log(id)
   const department = useSelector((state) => selectDepartmentById(state, id))
-  
+  const {status} = useSelector((state => state.departments))
+  console.log(status)
   const [departmentName, setDepartmentName] = useState(department?.name);
     
   const onChangeName = (e) =>{
@@ -38,9 +35,10 @@ export default function UpdateDepartments() {
   }
 
   const handleUpdate = async (event )=> {
+    if(departmentName !== ''){
       event.preventDefault();
       await dispatch(updateDepartment({id: department.id ,name: departmentName})) 
-      window.location.reload(false)
+    }
 }
 
   useEffect(() => {
@@ -52,11 +50,10 @@ export default function UpdateDepartments() {
     window.location.reload(false)
   } 
 
-
   const renderUser = (
     <>
             <MDBContainer fluid >
-              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBRow className='justify-content-center align-items-center m-4'>
                     <MDBCard>
                       <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
                         <div>
@@ -94,7 +91,17 @@ export default function UpdateDepartments() {
                                       className="me-3"
                                     />
                                     </button>
-                                  <button><Link to={`/profile/edit/${item.id}`}>Edit User</Link></button>
+                                    <button style={{background: "none", border: "none"}}>
+                                            <Link to={`/profile/edit/${item.id}`}>
+                                              <MDBIcon
+                                                fas
+                                                icon="edit"
+                                                color="success"
+                                                size="lg"
+                                                className="me-3"
+                                              />
+                                            </Link>
+                                        </button>
                                 </td>
                               </tr>
                              ))}
@@ -110,19 +117,29 @@ export default function UpdateDepartments() {
           <>
             <Navbar1 />
             <MDBContainer fluid>
-              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBRow className='justify-content-center align-items-center m-4'>
               <MDBCard>
                 <MDBCardBody className='px-4'>
                   <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Departments</h3>
                   <MDBRow>   
+                  <MDBValidation className='row g-0'> 
+
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4'  size='lg' id='form2' type='text' onChange={onChangeName} value={departmentName}/>
-                    </MDBCol>
-                  </MDBRow>  
+                      <MDBInput wrapperClass='mb-4' id='form2' type='text' onChange={onChangeName} value={departmentName} required/>
+                    </MDBCol> 
                     <MDBCol md='12'>
-                      <button className="btn btn-primary" onClick={handleUpdate}>Update Departments</button>
-                    </MDBCol>        
+                    {status === 'Success' &&  
+                    <>
+                      <p style={{color: "green"}}>Update Success</p>   
+                      </>
+                    }
+                      <button type='submit' className="btn btn-primary" onClick={handleUpdate}>Update Departments</button>
+                    </MDBCol> 
+                    </MDBValidation>
+
+                  </MDBRow>  
+                     
                 </MDBCardBody>
               </MDBCard>
               </MDBRow>
