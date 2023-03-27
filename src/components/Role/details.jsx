@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-  import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-    import { getUserById } from '../../redux/roleSlice'
+import { getUserById } from '../../redux/roleSlice'
 
-  const DetailsRoles = () => { 
+const DetailsUserRoles = () => { 
     const { id } = useParams()
+
     const dispatch = useDispatch()
-    const {loading,error, users }=  useSelector(
-        (state) => state.roles
-        )
+    const {loading, users }=  useSelector(
+        (state) => state.roles)
+        
     useEffect(()=>{
         dispatch(getUserById(id),[]);
     },[])
@@ -24,4 +25,4 @@ import { useParams } from 'react-router-dom'
     )
   }
 
-  export default DetailsRoles;
+  export default DetailsUserRoles;

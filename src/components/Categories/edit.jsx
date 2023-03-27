@@ -41,7 +41,7 @@ export default function UpdateCategories() {
         clearTimeout(timeId)
       }
     }, []); 
-    const category = useSelector((state) => selectCategoryById(state))
+    const category = useSelector((state) => selectCategoryById(state, id))
 
     const [nameCategory, setNameCategory] = useState(category?.name);
 

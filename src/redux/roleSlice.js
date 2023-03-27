@@ -51,16 +51,12 @@ export const getUser = createAsyncThunk('roleList/getUser', async (_, {rejectWit
     if (error.response && error.response.status == 401) {
         return rejectWithValue("End of login sesion")
     } if (error.response && error.response.status == 403){
-      console.log("a", error)
       return rejectWithValue("Your accounts don't can't access")
     }else {
         return rejectWithValue(error.response.data)
     }
   }
 })
-
-
-
 
 export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id, {rejectWithValue}) => {
   try{
@@ -71,7 +67,6 @@ export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id, {
     if (error.response && error.response.status == 401) {
         return rejectWithValue("End of login sesion")
     } if (error.response && error.response.status == 403){
-      console.log("a", error)
       return rejectWithValue("Your accounts don't can't access")
     }else {
         return rejectWithValue(error.response.data)
@@ -81,7 +76,7 @@ export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id, {
 
 
 
-  export const updateRoleAsync = createAsyncThunk('roleList/updateRoleAsync', async (initialData,{rejectWithValue}) => { 
+  export const updateRole = createAsyncThunk('roleList/updateRole', async (initialData,{rejectWithValue}) => { 
     const {userId} = initialData
     const {roleId} = initialData
     try{
@@ -92,7 +87,6 @@ export const getRoleById = createAsyncThunk('roleList/getRoleById', async (id, {
       if (error.response && error.response.status == 401) {
           return rejectWithValue("End of login sesion")
       } if (error.response && error.response.status == 403){
-        console.log("a", error)
         return rejectWithValue("Your accounts don't can't access")
       }else {
           return rejectWithValue(error.response.data)
@@ -156,6 +150,7 @@ const roleSlice = createSlice({
       state.loading = false
       state.error = action.payload
     })
+
     builder.addCase(getRoleById.pending, (state, action) => {
         state.status = 'loading'
         state.loading = false
@@ -172,6 +167,22 @@ const roleSlice = createSlice({
       state.loading = true
       state.error = action.payload
     })
+
+    builder.addCase(updateRole.pending, (state, action) => {
+      state.status = 'loading'
+      state.loading = false
+      state.error = ''
+    })
+    builder.addCase(updateRole.fulfilled, (state, action) => {
+    state.loading = false
+    state.status = 'Success'
+    state.error = ''
+    })
+    builder.addCase(updateRole.rejected, (state, action) => {
+    state.status = 'rejected'
+    state.loading = true
+    state.error = action.payload
+  })
   }
 })
 

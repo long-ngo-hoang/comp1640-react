@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import instance from './configApi';
 
 
-export const getDepartment = createAsyncThunk('departmentList/getDepartment', async (_, {rejectWithValue}) => {
+export const getDepartmentByQACoordinator = createAsyncThunk('departmentList/getDepartmentByQACoordinator', async (_, {rejectWithValue}) => {
   try{
   const response = await instance
     .get('/Departments/GetDepartmentByQACoordinator');
@@ -187,7 +187,7 @@ const departmentsSlice = createSlice({
     loading: false,
     status: "idle",
     departments: [],
-    detailDepartment: {} ,
+    detailsDepartment: {},
     analysis: [],
     error: ''
   },
@@ -195,17 +195,17 @@ const departmentsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-    .addCase(getDepartment.pending, (state, action) => {
+    .addCase(getDepartmentByQACoordinator.pending, (state, action) => {
       state.loading = true;
       state.status = "loading";
     })
-    .addCase(getDepartment.fulfilled, (state, action) => {
+    .addCase(getDepartmentByQACoordinator.fulfilled, (state, action) => {
       state.loading = false
-      state.detailDepartment = action.payload
+      state.detailsDepartment =  action.payload;
       state.error = ''
       state.status = 'idle'
     })
-    .addCase(getDepartment.rejected, (state, action) => {
+    .addCase(getDepartmentByQACoordinator.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected"
       state.error = action.payload
@@ -235,7 +235,8 @@ const departmentsSlice = createSlice({
     .addCase(getDepartmentById.fulfilled, (state, action) => {
       state.status = 'idle'
       state.loading = false
-      state.detailDepartment = action.payload
+      const currentDepartment = state.departments.filter((item)=> item.id !==  action.payload.id);
+      state.departments = [...currentDepartment, action.payload];
       state.error = ''
     })
     .addCase(getDepartmentById.rejected, (state, action) => {
@@ -363,12 +364,12 @@ const departmentsSlice = createSlice({
   }
 
 })
-export const selectMyDepartments = (state) => state.departments.detailDepartment;
+export const selectMyDepartments = (state) => state.departments.detailsDepartment;
 
 export const selectAllDepartments = (state) => state.departments.departments;
 export const selectUser = (state) => state.departments;
 
 export const selectDepartmentById = (state, id) =>
-state.departments.detailDepartment;
+state.departments.departments.find((item) => item.id === id);
 
 export default departmentsSlice.reducer

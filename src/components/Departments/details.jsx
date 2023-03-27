@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDepartmentById, getDepartmentById} from '../../redux/departmentsSlice'
-import {getDepartment, Invitations} from '../../redux/departmentsSlice'
+import {getDepartmentByQACoordinator, Invitations} from '../../redux/departmentsSlice'
 import { Link } from 'react-router-dom'
 import {
   MDBContainer,
@@ -29,7 +29,7 @@ export default function DetailsDepartment() {
   const {loading} = useSelector((state => state.departments))
   
   useEffect(() => {
-    dispatch(getDepartment())     
+    dispatch(getDepartmentByQACoordinator())     
   }, [])
 
   useEffect(() => {

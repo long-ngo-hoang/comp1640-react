@@ -20,7 +20,6 @@ import UpdateAcademicYear from './components/AcademicYears/edit';
 import ViewAcademicYears from './components/AcademicYears/view';
 import AddAcademicYears from './components/AcademicYears/create';
 import ViewNotification from './components/Notifications/view';
-import ViewRoles from './components/Role/view';
 import DetailsRoles from './components/Role/details';
 import AddRoles from './components/Role/addRole';
 import './App.css';
@@ -94,7 +93,6 @@ function App() {
         </Route>
 
         <Route path="role" element={<RequireAuth allowedRoles={["Administrator"]} />}>
-          <Route path="view" element={<ViewRoles />} />
           <Route path="create/:id" element={<AddRoles />} />
           <Route path="detail/:id" element={<DetailsRoles />} />
         </Route>

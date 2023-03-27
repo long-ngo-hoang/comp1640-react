@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateProfile } from '../../redux/profilesSlice.js';
-import { useParams, useNavigate  } from 'react-router-dom';
+import { useParams  } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { selectAllUsers } from '../../redux/profilesSlice.js'
 import { getProfileById } from '../../redux/profilesSlice';
@@ -13,29 +13,22 @@ import {
     MDBCardText,
     MDBCardBody,
     MDBCardImage,
-    MDBInput,
     MDBValidation
   } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1.jsx';
 import AddDepartmentToUser from '../Departments/addDepartment.jsx';
 import AddRoles from '../Role/addRole.jsx';
-import { getUserById } from '../../redux/roleSlice'
+import DetailsUserRoles from '../Role/details.jsx';
 
 export default function UpdateUser() {
 
     const { id } = useParams()
     const dispatch = useDispatch();
     const user = useSelector(selectAllUsers)
-    useEffect(()=>{
-      dispatch(getUserById(id));
-  },[])
 
     useEffect(()=>{
-      console.log(id)
        dispatch(getProfileById(id));
-  },[])
-
-
+    },[])
 
     const [users, setUsers] = useState({
         id: id,
@@ -74,11 +67,12 @@ export default function UpdateUser() {
         event.preventDefault();
         dispatch(updateProfile(users)) 
       }
-      }
-        return (
-          <>
-<Navbar1/>
-<br/>
+    }
+
+return (
+    <>
+      <Navbar1/>
+      <br/>
       <MDBContainer className="">
      
         <MDBRow>
@@ -136,13 +130,20 @@ export default function UpdateUser() {
             <h6>Departments</h6>
             <AddDepartmentToUser/>
             <hr/>
-            <h6>Roles</h6>
+            <MDBRow>
+              <MDBCol sm="3">
+                <MDBCardText>Roles</MDBCardText>
+              </MDBCol>
+              <MDBCol sm="9">
+                <DetailsUserRoles/>
+              </MDBCol>
+            </MDBRow>
             <AddRoles/>
             <hr/>
 
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-          </>
-        )
+    </>
+  )
 }

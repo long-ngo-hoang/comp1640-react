@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import { getUserById } from '../../redux/roleSlice'
-import { updateRoleAsync } from '../../redux/roleSlice'
+import { updateRole } from '../../redux/roleSlice'
 import SelectedRole from './selectedBox'
 import {
   MDBCol,
@@ -16,7 +16,6 @@ import {
   const AddRoles = () => { 
     const { id } = useParams()
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [selectRole, setSelectRole] = useState('');
     const {loading, users }=  useSelector(
@@ -31,12 +30,13 @@ import {
         dispatch(getUserById(id),[]);
     },[])
 
-    const handleSubmit = (event )=> {
+    const handleSubmit = async (event )=> {
         event.preventDefault();
-        dispatch(updateRoleAsync({userId: id, roleId: selectRole })
+       await dispatch(updateRole({userId: id, roleId: selectRole })
         ) 
-        navigate(`/role/view`)
-    }
+        window.location.reload(false)
+
+      }
 
     return (
       <>
