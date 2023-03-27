@@ -21,8 +21,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Navbar1 from '../navbar/navbar1';
 import { addComment } from '../../redux/ideasSlice';
-import { addReaction } from "../../redux/reactionSlice";
-import { deleteReaction } from "../../redux/reactionSlice";
+import { updateReaction } from "../../redux/reactionsSlice";
 
 export default function DetailIdea() {
 
@@ -45,13 +44,15 @@ export default function DetailIdea() {
   }
 
   const handleLike = async (id) =>  {
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Like"}));
+    await dispatch(updateReaction({ideaId: id, name: "Like"}));
+    window.location.reload(false);
+
   }
 
   const handleDislike = async (id) =>  { 
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Dislike"}));
+    await dispatch(updateReaction({ideaId: id, name: "Dislike"}));
+    window.location.reload(false);
+
   }
 
   const onChangeAnonymous = (e) => {
@@ -116,15 +117,17 @@ export default function DetailIdea() {
                   {idea.documents?.map(item=> (
                     <Link to={item.documentUrl}>
                     <MDBCardImage style={{height: "150px"}}   onClick={item.documentUrl}  key={item.id} src={item.documentUrl} fluid className="rounded-3" alt="Cotton T-shirt" />
-                    </Link>
+                    </Link>                   
+
                     ))}
                   </MDBCol>   
 
-                  <MDBCol  md="2" lg="2" xl="2" style={{display: "flex", width: "100%"}}>
+                  <MDBCol  md="2" lg="2" xl="2" style={{display: "flex", width: "100%"}}> 
                     <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
-                    <Link className="btn btn-outline-primary" onClick={() => handleLike(idea.id)} > <MDBIcon far icon="thumbs-up" /></Link>
-                    <Link className="btn btn-outline-primary" onClick={() => handleDislike(idea.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
-                    </div>
+                      <Link className="btn btn-outline-primary" onClick={() => handleLike(idea.id)} > <MDBIcon far icon="thumbs-up" /></Link>
+                      <button className="btn btn-outline-primary"> <MDBIcon  />{idea.reactions.length} Reactions</button>
+                      <Link className="btn btn-outline-primary" onClick={() => handleDislike(idea.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
+                    </div>                   
                   </MDBCol>   
 
                 </MDBRow>           

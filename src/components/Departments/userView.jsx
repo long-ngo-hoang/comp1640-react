@@ -41,7 +41,7 @@ import Navbar1 from "../navbar/navbar1";
       <Navbar1/>
              <MDBContainer fluid >
               
-              <MDBRow className='justify-content-center align-items-center m-4'>
+              <MDBRow className='justify-content-center align-items-center m-5'>
                     <MDBCard>
                       <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
                         <div style={{display: "flex", justifyContent: "space-beetwen"}}>

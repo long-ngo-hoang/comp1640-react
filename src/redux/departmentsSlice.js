@@ -188,6 +188,7 @@ const departmentsSlice = createSlice({
     status: "idle",
     departments: [],
     detailsDepartment: {},
+    statisticalAnalysis: [],
     analysis: [],
     error: ''
   },
@@ -333,10 +334,9 @@ const departmentsSlice = createSlice({
       state.status = "idle";
 
     })
-
     builder.addCase(getStatisticalAnalysis.fulfilled, (state, action) => {
       state.loading = false
-      state.analysis = action.payload
+      state.statisticalAnalysis = action.payload
       state.error = ''
       state.status = "idle";
 
@@ -366,7 +366,10 @@ const departmentsSlice = createSlice({
 })
 export const selectMyDepartments = (state) => state.departments.detailsDepartment;
 
+export const selectStatisticalAnalysis = (state) => state.departments.statisticalAnalysis;
+
 export const selectAllDepartments = (state) => state.departments.departments;
+
 export const selectUser = (state) => state.departments;
 
 export const selectDepartmentById = (state, id) =>

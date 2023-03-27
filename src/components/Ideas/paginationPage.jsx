@@ -35,6 +35,8 @@ function PaddingPage(){
 
     return (
       <>
+          <br/>
+
        <nav aria-label='...'>
       <MDBPagination size='sm' className='mb-0' style={{justifyContent: "center"}}>
       {pageNumbers?.map(number =>
@@ -46,6 +48,7 @@ function PaddingPage(){
 
       </MDBPagination>
     </nav>
+    <br/>
         {/* <nav aria-label="Page navigation example">
           <ul className="pagination">
             {pageNumbers?.map(number =>

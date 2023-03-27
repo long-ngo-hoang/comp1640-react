@@ -14,8 +14,7 @@ import { Link } from 'react-router-dom'
 import './view.css'
 import { useParams } from "react-router-dom";
 import PaddingPage from './paginationPage'
-import { addReaction } from "../../redux/reactionSlice";
-import { deleteReaction } from "../../redux/reactionSlice";
+import { updateReaction } from "../../redux/reactionsSlice";
 import Alert from 'react-bootstrap/Alert'  
 
 function ViewIdeas(){  
@@ -39,13 +38,15 @@ function ViewIdeas(){
   const dispatch = useDispatch()
 
   const handleLike = async (id) =>  {
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Like"}));
+    await dispatch(updateReaction({ideaId: id, name: "Like"}));
+    window.location.reload(false);
+
   }
 
   const handleDislike = async (id) =>  { 
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Dislike"}));
+    await dispatch(updateReaction({ideaId: id, name: "Dislike"}));
+    window.location.reload(false);
+
   }
 
   useEffect(() => {
@@ -84,7 +85,7 @@ function ViewIdeas(){
               ideas?.map(item =>
                  (   
 
-            <div className="container mt-5 mb-5" key={item.id} >
+            <div className="container mt-5" key={item.id} >
             <div className="d-flex justify-content-center row">
                 <div className="col-md-10">
                     <div className="row p-2 bg-white border rounded">
@@ -95,12 +96,15 @@ function ViewIdeas(){
                         </div>
                         <div className="align-items-center align-content-center col-md-3 border-left mt-1">
                             <div className="d-flex flex-row align-items-center">
-                                <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span>
+                                <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span> 
+                            </div>
+                            <div className="d-flex flex-row align-items-center">
                             </div>
                             <h6 className="text-success">{!item.isAnonymous ? <div>{item.author}</div> : <div>Anoymouse</div>}</h6>
-                            <div className="d-flex flex-column mt-4"><Link style={{widows: "100%"}} type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link></div>
-                            <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
-                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
+                            <div className="d-flex flex-column mt-2"><Link style={{widows: "100%"}} type="button" className="btn btn-outline-primary" to={`/ideas/detail/${item.id}`}>View More</Link></div>
+                            <div className="btn-group d-flex  mt-2" role="group" aria-label="Basic radio toggle button group">
+                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up"/></Link>
+                                <button className="btn btn-outline-primary"> <MDBIcon  />{item.reactions.length} Reactions</button>
                                 <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                             </div>
                         </div>

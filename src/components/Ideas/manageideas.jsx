@@ -15,8 +15,7 @@ import { useState } from 'react'
 import PaddingPage from './paginationPage'
 import { useParams, useNavigate } from 'react-router-dom'
 import Alert from 'react-bootstrap/Alert'  
-import { addReaction } from "../../redux/reactionSlice";
-import { deleteReaction } from "../../redux/reactionSlice";
+import { updateReaction } from "../../redux/reactionsSlice";
 
 function ManageIdeas(){
  
@@ -38,13 +37,15 @@ function ManageIdeas(){
     }
     
   const handleLike = async (id) =>  {
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Like"}));
+    await dispatch(updateReaction({ideaId: id, name: "Like"}));
+    window.location.reload(false);
+
   }
 
   const handleDislike = async (id) =>  { 
-    await dispatch(deleteReaction(id));
-    await dispatch(addReaction({ideaId: id, name: "Dislike"}));
+    await dispatch(updateReaction({ideaId: id, name: "Dislike"}));
+    window.location.reload(false);
+
   }
 
     useEffect(() => {
@@ -96,15 +97,16 @@ function ManageIdeas(){
                                 <h4 className="mr-1">{item.viewCount}</h4><span className="strike-text">View</span>
                             </div>
                             <h6 className="text-success">{item.author}</h6>
-                            <div className="btn-group d-flex mt-4">
+                            <div className="btn-group d-flex mt-2">
                               <Link  className="btn btn-outline-primary"   to={`/ideas/edit/${item.id}`}><MDBIcon icon="edit" color="success" /> 
                               </Link>
                               <Link className="btn btn-outline-primary"  onClick={() => handleRemove(item.id)}> <MDBIcon icon="trash-alt" color="danger" />
                               </Link>
                                             
                               </div>
-                            <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
+                            <div className="btn-group d-flex  mt-2" role="group" aria-label="Basic radio toggle button group">
                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
+                               <button className="btn btn-outline-primary"> <MDBIcon  />{item.reactions.length} Reactions</button>
                                 <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                             </div>
                         </div>

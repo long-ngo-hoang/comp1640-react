@@ -31,6 +31,7 @@ import { AxiosInterceptorsSetup } from './redux/configApi';
 import { useNavigate } from 'react-router-dom';
 import MyDepartment from './components/Departments/mydepartment';
 import DetailsDepartment from './components/Departments/details';
+import Chart from './components/Departments/chart';
 function App() {
   function AxiosInterceptorNavigate() {
     let navigate = useNavigate();
@@ -44,6 +45,7 @@ function App() {
       <Routes>
       <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={<LogIn/>} />
+        <Route path='/chart' element={<Chart/>} />
 
         <Route path="ideas" element={<RequireAuth allowedRoles={["Staff", "Administrator", "Quality Assurance Manager" ,"Quality Assurance Coordinator"]} />}>   
           <Route path='myideas' element={<ManageIdeas />} />
