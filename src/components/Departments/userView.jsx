@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUser } from '../../redux/roleSlice'
-import { Invitations } from '../../redux/departmentsSlice'
-import Alert from 'react-bootstrap/Alert' 
 import {
   MDBContainer,
   MDBRow,
@@ -38,16 +36,12 @@ import Navbar1 from "../navbar/navbar1";
       }
     }, []);
 
-    function handleInvitations(id) {
-      dispatch(Invitations(id));
-    }
-    
     return (
       <>
       <Navbar1/>
              <MDBContainer fluid >
               
-              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBRow className='justify-content-center align-items-center m-4'>
                     <MDBCard>
                       <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
                         <div style={{display: "flex", justifyContent: "space-beetwen"}}>
@@ -90,15 +84,6 @@ import Navbar1 from "../navbar/navbar1";
                                               />
                                             </Link>
                                         </button>
-                                  <button style={{background: "none", border: "none"}} onClick={()=> handleInvitations(item.id)}>
-                                    <MDBIcon
-                                      fas
-                                      icon="trash-alt"
-                                      color="danger"
-                                      size="lg"
-                                      className="me-3"
-                                    />
-                                    </button>
                                 </td>
                               </tr>
                              )): null}

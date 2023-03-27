@@ -30,7 +30,8 @@ import AddDepartmentToUser from './components/Departments/addDepartment';
 import Register from './components/Accounts/register';
 import { AxiosInterceptorsSetup } from './redux/configApi';
 import { useNavigate } from 'react-router-dom';
-
+import MyDepartment from './components/Departments/mydepartment';
+import DetailsDepartment from './components/Departments/details';
 function App() {
   function AxiosInterceptorNavigate() {
     let navigate = useNavigate();
@@ -62,7 +63,10 @@ function App() {
           <Route path="edit/:id" element={<UpdateCategories />} />
         </Route>
 
-        <Route path="departments" element={<RequireAuth allowedRoles={["Administrator" ,"Quality Assurance Coordinator"]} />}>
+        <Route path="departments" element={<RequireAuth allowedRoles={["Administrator" ,"Quality Assurance Manager", "Quality Assurance Coordinator"]} />}>
+          <Route path="MyDepartment" element={<MyDepartment />} />
+          <Route path="details/:id" element={<DetailsDepartment />} />
+
           <Route path="view" element={<ViewDepartments />} />
           <Route path="viewUser" element={<ViewUser />} />
           <Route path="create" element={<AddDepartments/>} />

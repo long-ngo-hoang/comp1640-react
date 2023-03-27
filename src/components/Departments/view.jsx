@@ -18,8 +18,12 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar1 from "../navbar/navbar1";
 import Alert from 'react-bootstrap/Alert'  
+import jwt_decode from "jwt-decode";
 
 const ViewDepartments = () => {
+  const token = localStorage.getItem('token')  
+   const decodedToken = jwt_decode(token);    
+
   const {error} = useSelector((state) => state.departments)
   const departmentsInDb = useSelector(selectAllDepartments)
   const dispatch = useDispatch()
@@ -58,11 +62,12 @@ const ViewDepartments = () => {
                           Departments
                         </h5>
                         </div>
+                        {decodedToken.Roles === "Administrator" && 
                         <div>
                         <Link type="button" className="btn btn-primary" to={`/departments/create`}>
                             Create Departments
                         </Link>
-                        </div>
+                        </div>}
                       </MDBCardHeader>
                         <MDBCardBody>
                           <MDBTable className="mb-0">
@@ -82,7 +87,8 @@ const ViewDepartments = () => {
                                   <span>{item.name}</span>
                                 </td>  
                                 <td className="align-middle">
-
+                                {decodedToken.Roles === "Administrator" ? 
+                                <>
                                 <button style={{background: "none", border: "none"}}>
                                   <Link to={`/departments/edit/${item.id}`}>
                                     <MDBIcon
@@ -104,6 +110,11 @@ const ViewDepartments = () => {
                                       className="me-3"
                                     />
                                     </button>
+                                    </>
+                                      :  <button style={{background: "none", border: "none"}}>
+                                        <Link to={`/departments/details/${item.id}`}>
+                                        <i class="fas fa-fast-forward" style={{color: "green"}}></i></Link>
+                                        </button>}
 
                                 </td>
                               </tr>

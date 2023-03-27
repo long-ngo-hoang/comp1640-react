@@ -105,7 +105,7 @@ function ManageIdeas(){
                               </div>
                             <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
-                                <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" /></Link>
+                                <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                             </div>
                         </div>
                     </div>  

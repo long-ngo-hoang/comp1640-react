@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {updateDepartment} from '../../redux/departmentsSlice'
-import {  useParams  } from 'react-router-dom';
-import { selectDepartmentById} from '../../redux/departmentsSlice'
-import {getDepartmentById} from '../../redux/departmentsSlice'
-import {removeUserFromDepartment} from '../../redux/departmentsSlice';
+import { selectDepartmentById, getDepartmentById} from '../../redux/departmentsSlice'
+import {getDepartment, Invitations} from '../../redux/departmentsSlice'
 import { Link } from 'react-router-dom'
 import {
   MDBContainer,
@@ -12,42 +9,91 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBInput,
   MDBCardHeader,
   MDBIcon,
   MDBTable,
   MDBTableHead,MDBTableBody,
-  MDBValidation
+  MDBCardText,
+  MDBSpinner
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 
-export default function UpdateDepartments() {
+import {  useParams  } from 'react-router-dom';
+
+export default function DetailsDepartment() {
   const { id } = useParams()
+
   const dispatch = useDispatch()
 
   const department = useSelector((state) => selectDepartmentById(state, id))
-  const {status} = useSelector((state => state.departments))
-  const [departmentName, setDepartmentName] = useState(department?.name);
-    
-  const onChangeName = (e) =>{
-    setDepartmentName(e.target.value);
-  }
-
-  const handleUpdate = async (event )=> {
-    if(departmentName !== ''){
-      event.preventDefault();
-      await dispatch(updateDepartment({id: department.id ,name: departmentName})) 
-    }
-}
+  const {loading} = useSelector((state => state.departments))
+  
+  useEffect(() => {
+    dispatch(getDepartment())     
+  }, [])
 
   useEffect(() => {
     dispatch(getDepartmentById(id))     
   }, [])
 
-  const handleRemove = async (id )=> {
-    await dispatch(removeUserFromDepartment(id))
-    window.location.reload(false)
-  } 
+  function handleInvitations(id) {
+    dispatch(Invitations(id));
+  }
+  const renderUser = (
+    <>
+            <MDBContainer fluid >
+              <MDBRow className='justify-content-center align-items-center m-4'>
+                    <MDBCard>
+                      <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
+                        <div>
+                        <h5 className="mb-0">
+                          <MDBIcon fas icon="tasks" className="me-2" />
+                          User
+                        </h5>
+                        </div>
+                        <div>
+                        {loading &&  <MDBSpinner role='status'>
+                <span className='visually-hidden'>Loading...</span>
+              </MDBSpinner>}
+                        </div>
+                      </MDBCardHeader>
+                        <MDBCardBody>
+                          <MDBTable className="mb-0">
+                            <MDBTableHead>
+                              <tr>
+                                <th scope="col">Name</th> 
+                                <th scope="col">Actions</th>
+                              </tr>
+                            </MDBTableHead>
+                            <MDBTableBody>
+                          {department === null 
+                            ? <h1> page not have data</h1> :
+                            department?.allUsers?.map(item =>
+                              (   
+                              <tr className="fw-normal" key={item.id}>
+                                <td className="align-middle">
+                                  <span>{item.userName}</span>
+                                </td>  
+                                <td className="align-middle">
+                                <button style={{background: "none", border: "none"}} onClick={()=> handleInvitations(item.id)}>
+                                    <MDBIcon
+                                      fas icon="envelope-open-text" 
+                                      color="success"
+                                                                            size="lg"
+                                    />
+                                    </button>
+                                </td>  
+
+                              </tr>
+                             ))}
+                            </MDBTableBody>
+                          </MDBTable>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBRow>
+                </MDBContainer>
+    </>
+  );
   const renderIdeas = (
     <>
             <MDBContainer fluid >
@@ -88,71 +134,11 @@ export default function UpdateDepartments() {
                                   <span>{item.viewCount}</span>
                                 </td>  
                                 <td className="align-middle">
-                                <Link  type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link>
+                                <button style={{background: "none", border: "none"}}>
+                                        <Link to={`/ideas/detail/${item.id}`}>
+                                        <i class="fas fa-fast-forward" style={{color: "green"}}></i></Link>
+                                </button>
                                 </td>  
-                              </tr>
-                             ))}
-                            </MDBTableBody>
-                          </MDBTable>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBRow>
-                </MDBContainer>
-    </>
-  );
-  const renderUser = (
-    <>
-            <MDBContainer fluid >
-              <MDBRow className='justify-content-center align-items-center m-4'>
-                    <MDBCard>
-                      <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
-                        <div>
-                        <h5 className="mb-0">
-                          <MDBIcon fas icon="tasks" className="me-2" />
-                          User
-                        </h5>
-                        </div>
-                      </MDBCardHeader>
-                        <MDBCardBody>
-                          <MDBTable className="mb-0">
-                            <MDBTableHead>
-                              <tr>
-                                <th scope="col">Name</th> 
-                                <th scope="col">Actions</th>
-                              </tr>
-                            </MDBTableHead>
-                            <MDBTableBody>
-                          {department === null 
-                            ? <h1> page not have data</h1> :
-                            department?.allUsers?.map(item =>
-                              (   
-                              <tr className="fw-normal" key={item.id}>
-                                <td className="align-middle">
-                                  <span>{item.userName}</span>
-                                </td>  
-                                <td className="align-middle">
-
-                                  <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
-                                    <MDBIcon
-                                      fas
-                                      icon="trash-alt"
-                                      color="danger"
-                                      size="lg"
-                                      className="me-3"
-                                    />
-                                    </button>
-                                    <button style={{background: "none", border: "none"}}>
-                                            <Link to={`/profile/edit/${item.id}`}>
-                                              <MDBIcon
-                                                fas
-                                                icon="edit"
-                                                color="success"
-                                                size="lg"
-                                                className="me-3"
-                                              />
-                                            </Link>
-                                        </button>
-                                </td>
                               </tr>
                              ))}
                             </MDBTableBody>
@@ -170,32 +156,21 @@ export default function UpdateDepartments() {
               <MDBRow className='justify-content-center align-items-center m-4'>
               <MDBCard>
                 <MDBCardBody className='px-4'>
-                  <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Update Departments</h3>
+                  <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Details Departments</h3>
                   <MDBRow>   
-                  <MDBValidation className='row g-0'> 
-
-                    <MDBCol md='12'>
-                      <label className="mb-0">Name</label>
-                      <MDBInput wrapperClass='mb-4' id='form2' type='text' onChange={onChangeName} value={departmentName} required/>
-                    </MDBCol> 
-                    <MDBCol md='12'>
-                    {status === 'Success' &&  
-                    <>
-                      <p style={{color: "green"}}>Update Success</p>   
-                      </>
-                    }
-                      <button type='submit' className="btn btn-primary" onClick={handleUpdate}>Update Departments</button>
-                    </MDBCol> 
-                    </MDBValidation>
-
+                  <MDBCol sm="3">
+                    <MDBCardText> Name Department: </MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText >{department?.name}</MDBCardText>
+                  </MDBCol>
                   </MDBRow>  
                      
                 </MDBCardBody>
               </MDBCard>
               </MDBRow>
             </MDBContainer>
-
-                  {renderUser}
+            {renderUser}
                   {renderIdeas}
 
           </>

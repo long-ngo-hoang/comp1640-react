@@ -23,7 +23,7 @@ const UserView = () => {
     const user = useSelector(selectAllUsers)
     let {error} = useSelector((state)=> state.accounts)
     const dispatch = useDispatch()
-  console.log(error)
+
     useEffect(() => {
      dispatch(getProfiles())     
     }, [])

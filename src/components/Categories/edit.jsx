@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {updateCategory, selectCategoryById} from '../../redux/categoriesSlice'
-import { useParams, useNavigate  } from 'react-router-dom';
+import { useParams  } from 'react-router-dom';
 import {
   MDBContainer,
   MDBRow,
@@ -9,10 +9,17 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBValidation
+  MDBValidation,
+  MDBCardHeader,
+  MDBIcon,
+  MDBTable,
+  MDBTableHead,
+  MDBTableBody
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 import Alert from 'react-bootstrap/Alert'  
+import { getCategoryById } from '../../redux/categoriesSlice';
+import { Link } from 'react-router-dom'
 
 export default function UpdateCategories() {
     const { id } = useParams()
@@ -22,8 +29,11 @@ export default function UpdateCategories() {
     const [show, setShow] = useState(true)
 
     useEffect(() => {
+      dispatch(getCategoryById(id))     
+    }, [])
+
+    useEffect(() => {
       const timeId = setTimeout(() => {
-        // After 3 seconds set the show value to false
         setShow(false)
       }, 3000)
   
@@ -31,7 +41,7 @@ export default function UpdateCategories() {
         clearTimeout(timeId)
       }
     }, []); 
-    const category = useSelector((state) => selectCategoryById(state, id))
+    const category = useSelector((state) => selectCategoryById(state))
 
     const [nameCategory, setNameCategory] = useState(category?.name);
 
@@ -53,14 +63,65 @@ export default function UpdateCategories() {
           </section>
       )
   }
+  const renderIdeas = (
+    <>
+            <MDBContainer fluid >
+              <MDBRow className='justify-content-center align-items-center m-4'>
+                    <MDBCard>
+                      <MDBCardHeader className="p-3" style={{display: "flex", justifyContent: "space-between", marginTop: "10px"}}>
+                        <div>
+                        <h5 className="mb-0">
+                          <MDBIcon fas icon="tasks" className="me-2" />
+                          Ideas
+                        </h5>
+                        </div>
+                      </MDBCardHeader>
+                        <MDBCardBody>
+                          <MDBTable className="mb-0">
+                            <MDBTableHead>
+                              <tr>
+                                <th scope="col">Name</th> 
+                                <th scope="col">Author</th>
+                                <th scope="col">View</th>   
+                                 <th scope="col">Actions</th>
 
+                              </tr>
+                            </MDBTableHead>
+                            <MDBTableBody>
+                          {category === null 
+                            ? <h1> page not have data</h1> :
+                            category?.allIdeas?.ideas?.map(item =>
+                              (   
+                              <tr className="fw-normal" key={item.id}>
+                                <td className="align-middle">
+                                  <span>{item.name}</span>
+                                </td>  
+                                <td className="align-middle">
+                                  <span>{item.author}</span>
+                                </td>  
+                                <td className="align-middle">
+                                  <span>{item.viewCount}</span>
+                                </td>  
+                                <td className="align-middle">
+                                <Link  type="button" className="btn btn-primary" to={`/ideas/detail/${item.id}`}>View More</Link>
+                                </td>  
+                              </tr>
+                             ))}
+                            </MDBTableBody>
+                          </MDBTable>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBRow>
+                </MDBContainer>
+    </>
+  );
         return (
           <>
             <Navbar1 />
             {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
            
             <MDBContainer fluid>
-              <MDBRow className='justify-content-center align-items-center m-5'>
+              <MDBRow className='justify-content-center align-items-center m-4'>
               <MDBCard>
                 <MDBCardBody className='px-4'>
                    <MDBValidation className='row g-0'> 
@@ -85,6 +146,7 @@ export default function UpdateCategories() {
               </MDBCard>
               </MDBRow>
             </MDBContainer>
+            {renderIdeas}
           </>
         )
 }

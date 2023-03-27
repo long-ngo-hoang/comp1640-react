@@ -1,6 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { act } from 'react-dom/test-utils';
 import instance from './configApi';
+
+
+export const getDepartment = createAsyncThunk('departmentList/getDepartment', async (_, {rejectWithValue}) => {
+  try{
+  const response = await instance
+    .get('/Departments/GetDepartmentByQACoordinator');
+  return response.data;
+  }catch(error){
+    if (error.response && error.response.status == 401) {
+        return rejectWithValue("End of login sesion")
+    } if (error.response && error.response.status == 403){
+      console.log("a", error)
+      return rejectWithValue("Your accounts don't can't access")
+    }else {
+        return rejectWithValue(error.response.data)
+    }
+  }
+})
 
 export const getDepartments = createAsyncThunk('departmentList/getDepartments', async (_, {rejectWithValue}) => {
   try{
@@ -170,6 +187,7 @@ const departmentsSlice = createSlice({
     loading: false,
     status: "idle",
     departments: [],
+    detailDepartment: {} ,
     analysis: [],
     error: ''
   },
@@ -177,6 +195,22 @@ const departmentsSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+    .addCase(getDepartment.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    })
+    .addCase(getDepartment.fulfilled, (state, action) => {
+      state.loading = false
+      state.detailDepartment = action.payload
+      state.error = ''
+      state.status = 'idle'
+    })
+    .addCase(getDepartment.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected"
+      state.error = action.payload
+    })
+
     .addCase(getDepartments.pending, (state, action) => {
       state.loading = true;
       state.status = "loading";
@@ -201,8 +235,7 @@ const departmentsSlice = createSlice({
     .addCase(getDepartmentById.fulfilled, (state, action) => {
       state.status = 'idle'
       state.loading = false
-      const currentDepartments = state.departments.filter((item)=> item.id !==  action.payload.id);
-      state.departments = [...currentDepartments, action.payload];
+      state.detailDepartment = action.payload
       state.error = ''
     })
     .addCase(getDepartmentById.rejected, (state, action) => {
@@ -279,6 +312,8 @@ const departmentsSlice = createSlice({
     builder.addCase(addUserToDepartment.pending, (state, action) => {
       state.loading = true
       state.state = 'loading'
+      state.status = "idle";
+
     })
     builder.addCase(addUserToDepartment.fulfilled, (state, action) => {
       // const id = action.payload;
@@ -294,25 +329,46 @@ const departmentsSlice = createSlice({
     builder.addCase(getStatisticalAnalysis.pending, (state, action) => {
       state.loading = true
       state.error = ''
+      state.status = "idle";
+
     })
 
     builder.addCase(getStatisticalAnalysis.fulfilled, (state, action) => {
       state.loading = false
       state.analysis = action.payload
       state.error = ''
+      state.status = "idle";
+
     })
     builder.addCase(getStatisticalAnalysis.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.type
+    })
+
+    builder.addCase(Invitations.pending, (state, action) => {
+      state.loading = true
+      state.error = ''
+    })
+
+    builder.addCase(Invitations.fulfilled, (state, action) => {
+      state.loading = false
+      state.error = ''
+      state.status = "Success"
+
+    })
+    builder.addCase(Invitations.rejected, (state, action) => {
       state.loading = false
       state.error = action.type
     })
   }
 
 })
+export const selectMyDepartments = (state) => state.departments.detailDepartment;
 
 export const selectAllDepartments = (state) => state.departments.departments;
 export const selectUser = (state) => state.departments;
 
 export const selectDepartmentById = (state, id) =>
-  state.departments.departments.find((item) => item.id === id);
+state.departments.detailDepartment;
 
 export default departmentsSlice.reducer

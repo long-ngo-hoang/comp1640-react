@@ -117,6 +117,11 @@ const [currentPage, setCurrentPage] = useState(1)
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
+            <MDBNavbarLink active aria-current='page' href='/departments/view'>
+                View Departments
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
               <MDBNavbarLink active aria-current='page' href='/ideas/view'>
                 View Ideas
               </MDBNavbarLink>
@@ -129,6 +134,11 @@ const [currentPage, setCurrentPage] = useState(1)
             <MDBNavbarItem>
               <MDBNavbarLink active aria-current='page' href='/ideas/view'>
                 View Ideas
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <MDBNavbarLink active aria-current='page' href='/departments/MyDepartment'>
+                My Departments
               </MDBNavbarLink>
             </MDBNavbarItem>
             </MDBNavbarNav>

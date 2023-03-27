@@ -105,6 +105,7 @@ const categoriesSlice = createSlice({
     loading: false,
     status: "idle",
     categories: [],
+    detailsCategory: {},
     error: ''
 
   },
@@ -135,7 +136,7 @@ const categoriesSlice = createSlice({
     .addCase(getCategoryById.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "idle"
-      state.categories[0] = action.payload
+      state.detailsCategory = action.payload
       state.error= ''
     })
     .addCase(getCategoryById.rejected, (state, action) => {
@@ -196,7 +197,7 @@ const categoriesSlice = createSlice({
 
 export const selectAllCategories = (state) => state.categories.categories;
 
-export const selectCategoryById = (state, Id) =>
-    state.categories.categories.find((category) => category.id === Id);
+export const selectCategoryById = (state) =>
+    state.categories.detailsCategory;
     
 export default categoriesSlice.reducer
