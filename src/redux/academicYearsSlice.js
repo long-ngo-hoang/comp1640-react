@@ -22,7 +22,7 @@ export const getAcademicYearById = createAsyncThunk('academicYearList/getAcademi
   try{
   const id = initialData;
   const response = await instance
-    .get(`/AcademicYears/${id}?pageIndex=1`);
+    .get(`/AcademicYears/${id}`);
   return response.data;
   }
   catch(error){

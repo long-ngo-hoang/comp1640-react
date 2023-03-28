@@ -80,8 +80,6 @@ function ViewIdeas(){
         <MDBCol md="12" xl="10">
           
           {!loading && ideas.length ? 
-          ideas === null 
-            ? <h1> page not have data</h1> :
               ideas?.map(item =>
                  (   
 
@@ -104,7 +102,7 @@ function ViewIdeas(){
                             <div className="d-flex flex-column mt-2"><Link style={{widows: "100%"}} type="button" className="btn btn-outline-primary" to={`/ideas/detail/${item.id}`}>View More</Link></div>
                             <div className="btn-group d-flex  mt-2" role="group" aria-label="Basic radio toggle button group">
                                 <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up"/></Link>
-                                <button className="btn btn-outline-primary"> <MDBIcon  />{item.reactions.length} Reactions</button>
+                                <button className="btn btn-outline-primary"> <MDBIcon  />{item?.reactions?.length} Reactions</button>
                                 <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                             </div>
                         </div>
@@ -112,7 +110,7 @@ function ViewIdeas(){
                 </div>
             </div>
         </div>
-                       )) : null}     
+                       )) : <h1> Websites not have data</h1>}     
         </MDBCol>
       </MDBRow>
     </MDBContainer>

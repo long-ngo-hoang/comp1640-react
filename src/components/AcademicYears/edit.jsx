@@ -2,7 +2,6 @@ import React, { useEffect , useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {  useParams, useNavigate  } from 'react-router-dom';
 import {getAcademicYearById} from '../../redux/academicYearsSlice'
-
 import { updateAcademicYear, selectAcademicYearById} from '../../redux/academicYearsSlice'
 import {
   MDBContainer,
@@ -22,8 +21,13 @@ import Navbar1 from '../navbar/navbar1';
 import moment from 'moment';
 import Alert from 'react-bootstrap/Alert'  
 import { Link } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
+
 
 export default function UpdateAcademicYear() {
+  const token = localStorage.getItem('token')
+  const decodedToken = jwt_decode(token);    
+
     const { id } = useParams();
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -167,11 +171,15 @@ export default function UpdateAcademicYear() {
                   <MDBRow>   
                     <MDBCol md='12'>
                       <label className="mb-0">Name</label>
+                      {decodedToken.Roles !== "Quality Assurance Manager" ?
                       <MDBInput wrapperClass='mb-4'  id='form2' type='text' onChange={onChangeName} value={academicYears.name} required/>
+                      : <label>{academicYears.name}</label>}
+                      
                       <hr class="hr" />
 
                     </MDBCol>
-                 
+                    {decodedToken.Roles !== "Quality Assurance Manager" &&
+                <>      
                   <MDBCol md='12' >
                         <span className="text-danger"></span>
                         <label  className="control-label">Start Time</label>
@@ -185,9 +193,11 @@ export default function UpdateAcademicYear() {
                           dateFormat="dd-MM-yyyy HH:mm"
                         />
                                             <hr class="hr" />
+                      </MDBCol>     
+                      </> }
 
-                      </MDBCol>
-                      <br/>
+                {decodedToken.Roles === "Quality Assurance Manager" &&
+                <>                      <br/>
                       <MDBCol md='12'>
                         <span className="text-danger"></span>
                         <label className="mb-2">Closure Date</label>
@@ -203,8 +213,11 @@ export default function UpdateAcademicYear() {
                                             <hr class="hr" />
 
                       </MDBCol>
+                      </>
+                      }
                       <br/>
-
+           {decodedToken.Roles !== "Quality Assurance Manager" &&
+                <>     
                       <MDBCol md='12'>
                         <span className="text-danger"></span>
                         <label  className="mb-2">Final Closure Date</label>
@@ -220,7 +233,8 @@ export default function UpdateAcademicYear() {
                                             <hr class="hr" />
 
                       </MDBCol>
-
+</>
+}
                      
                     <MDBCol md='12'> 
                       <button type='submit' className="btn btn-primary" onClick={handleSubmit}>Update Academic Year</button>

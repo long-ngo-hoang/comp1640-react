@@ -59,11 +59,10 @@ export const AxiosInterceptorsSetup = navigate => {
       response => response,
       error => {
           if (error.response.status === 401) {
-            
               navigate('/login');
           }
           if(error.response.status === 403){
-            
+  
           }
           return Promise.reject(error);
       }

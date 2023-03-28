@@ -18,8 +18,11 @@ import {
 import Navbar1 from "../navbar/navbar1";
 import { Link } from 'react-router-dom'
 import Alert from 'react-bootstrap/Alert'  
+import jwt_decode from "jwt-decode";
 
 const EditAcademicYears = () => { 
+  const token = localStorage.getItem('token')
+  const decodedToken = jwt_decode(token); 
   const {error} = useSelector((state) => state.academicYears)
   const [show, setShow] = useState(true)
 
@@ -60,11 +63,14 @@ const EditAcademicYears = () => {
                                     Academic Years
                                   </h5>
                                   </div>
+                                  {decodedToken.Roles !== "Quality Assurance Manager" &&
+
                                   <div>
                                   <Link type="button" className="btn btn-primary" to={`/academicyears/create`}>
                                       Create Academic Years
                                   </Link>
                                   </div>
+}
                                   
                                 </MDBCardHeader>
                                   <MDBCardBody>

@@ -28,7 +28,7 @@ export default function DetailIdea() {
   const { id } = useParams()
 
   const idea = useSelector((state) => selectIdeaById(state, id))
-  const {loading} = useSelector((state => state.ideas))
+  const {loading, error} = useSelector((state => state.ideas))
   const dispatch = useDispatch()
 
   const [comment, setComment] = useState({
@@ -125,7 +125,7 @@ export default function DetailIdea() {
                   <MDBCol  md="2" lg="2" xl="2" style={{display: "flex", width: "100%"}}> 
                     <div className="btn-group d-flex  mt-4" role="group" aria-label="Basic radio toggle button group">
                       <Link className="btn btn-outline-primary" onClick={() => handleLike(idea.id)} > <MDBIcon far icon="thumbs-up" /></Link>
-                      <button className="btn btn-outline-primary"> <MDBIcon  />{idea.reactions.length} Reactions</button>
+                      <button className="btn btn-outline-primary"> <MDBIcon  />{idea?.reactions?.length} Reactions</button>
                       <Link className="btn btn-outline-primary" onClick={() => handleDislike(idea.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                     </div>                   
                   </MDBCol>   
@@ -139,6 +139,9 @@ export default function DetailIdea() {
           <MDBCard className="shadow-0 border"> 
             <MDBCardBody className='px-4'>
             <h4 >Comments</h4> 
+            {error &&    
+                <p style={{color: "red"}}>{error}</p>
+              }     
               <div >                
                 <MDBSwitch  id='flexSwitchCheckDefault' label='Anonymous' onChange={onChangeAnonymous} checked={comment.isAnonymous} value={comment.isAnonymous}  />
                 <MDBValidation className='row g-3'> 

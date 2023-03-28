@@ -14,7 +14,7 @@ import AddIdea from './components/Ideas/create';
 import UserView from './components/Profile/view'
 import UpdateUser from './components/Profile/edit';
 import {LogIn} from './components/Accounts/login';
-import HomePage from './components/pages/homepage';
+import HomePage from './components/homepage';
 import RequireAuth from './authorization';
 import UpdateAcademicYear from './components/AcademicYears/edit';
 import ViewAcademicYears from './components/AcademicYears/view';
@@ -76,7 +76,7 @@ function App() {
           <Route path='register' element={<Register/>} />
         </Route>
         
-        <Route path="academicYears" element={<RequireAuth allowedRoles={["Administrator"]} />}>
+        <Route path="academicYears" element={<RequireAuth allowedRoles={["Administrator", "Quality Assurance Manager" ]} />}>
           <Route path="view" element={<ViewAcademicYears />} />
           <Route path="create" element={<AddAcademicYears/>} />
           <Route path="edit/:id" element={<UpdateAcademicYear />} />

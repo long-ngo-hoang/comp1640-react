@@ -13,9 +13,11 @@ import {
   MDBValidation
 } from "mdb-react-ui-kit";
 import Navbar1 from '../navbar/navbar1';
+import jwt_decode from "jwt-decode";
 
 export default function AddAcademicYears() {
-  
+  const token = localStorage.getItem('token')
+  const decodedToken = jwt_decode(token);    
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -106,6 +108,8 @@ export default function AddAcademicYears() {
                           dateFormat="dd-MM-yyyy HH:mm"
                         />
                       </MDBCol>
+                      {decodedToken.Roles === "Quality Assurance Manager" &&
+                <> 
                       <br/>
                       <MDBCol md='12'>
                         <span className="text-danger"></span>
@@ -120,6 +124,8 @@ export default function AddAcademicYears() {
                           dateFormat="dd-MM-yyyy HH:mm"
                         />
                       </MDBCol>
+                      </>
+}
                       <br/>
 
                       <MDBCol md='12'>

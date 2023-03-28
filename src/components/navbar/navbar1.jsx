@@ -112,6 +112,11 @@ const [currentPage, setCurrentPage] = useState(1)
           {decodedToken?.Roles === "Quality Assurance Manager" && 
           <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
+              <MDBNavbarLink active aria-current='page' href='/academicYears/view'>
+                Manage Academic Years
+              </MDBNavbarLink>
+            </MDBNavbarItem>    
+            <MDBNavbarItem>
               <MDBNavbarLink active aria-current='page' href='/categories/view'>
                 Manage Categories
               </MDBNavbarLink>

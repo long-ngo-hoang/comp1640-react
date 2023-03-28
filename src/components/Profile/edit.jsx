@@ -13,7 +13,8 @@ import {
     MDBCardText,
     MDBCardBody,
     MDBCardImage,
-    MDBValidation
+    MDBValidation,
+    MDBSpinner
   } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1.jsx';
 import AddDepartmentToUser from '../Departments/addDepartment.jsx';
@@ -25,6 +26,10 @@ export default function UpdateUser() {
     const { id } = useParams()
     const dispatch = useDispatch();
     const user = useSelector(selectAllUsers)
+
+    const {loading} =  useSelector(
+      (state) => state.user
+      );
 
     useEffect(()=>{
        dispatch(getProfileById(id));
@@ -68,7 +73,14 @@ export default function UpdateUser() {
         dispatch(updateProfile(users)) 
       }
     }
-
+    if(loading){
+      return (
+      <>
+      <MDBSpinner color='primary'>
+          <span className='visually-hidden'>Loading...</span>
+        </MDBSpinner>
+      </>)
+    }
 return (
     <>
       <Navbar1/>

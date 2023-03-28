@@ -78,7 +78,7 @@ function ManageIdeas(){
         <MDBCol md="12" xl="10">
         {error && show ? <div>    <Alert variant="success">{error}</Alert>  </div> : null}
           {ideas === null 
-            ? <h1> page not have data</h1> :
+            ? <h1>Website not have data</h1> :
               ideas?.map(item =>
                  (   
             <div className="container mt-5 mb-5" key={item.id} >
@@ -106,7 +106,7 @@ function ManageIdeas(){
                               </div>
                             <div className="btn-group d-flex  mt-2" role="group" aria-label="Basic radio toggle button group">
                                <Link className="btn btn-outline-primary" onClick={() => handleLike(item.id)} > <MDBIcon far icon="thumbs-up" /></Link>
-                               <button className="btn btn-outline-primary"> <MDBIcon  />{item.reactions.length} Reactions</button>
+                               <button className="btn btn-outline-primary"> <MDBIcon  />{item?.reactions?.length} Reactions</button>
                                 <Link className="btn btn-outline-primary" onClick={() => handleDislike(item.id)} > <MDBIcon far icon="thumbs-down" color="danger" /></Link>
                             </div>
                         </div>
