@@ -131,6 +131,11 @@ const [currentPage, setCurrentPage] = useState(1)
                 View Ideas
               </MDBNavbarLink>
             </MDBNavbarItem>
+            <MDBNavbarItem>
+              <MDBNavbarLink active aria-current='page' href='/chart'>
+               Statistical analysis 
+              </MDBNavbarLink>
+            </MDBNavbarItem>
             </MDBNavbarNav>
             }
 

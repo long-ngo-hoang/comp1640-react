@@ -42,16 +42,10 @@ const UserView = () => {
     const toggleShow = () => setShowShow(!showShow);
   
     const [account, setAccount] = useState({
-        email: "",
         password: "",
         newPassword: "",
         confirmPassword: ""
     });
-    const onChangeMail = (e) =>{
-        setAccount((preV) => {     
-            return{...preV, email: e.target.value}
-        })
-    }
 
     const onChangePassword = (e) =>{
         setAccount((preV) => {     
@@ -71,7 +65,7 @@ const UserView = () => {
         })
     }
     const handleSubmit =  (event )=> {
-      if(account.email && account.password && account.newPassword && account.confirmPassword){
+      if( account.password && account.newPassword && account.confirmPassword){
         event.preventDefault();
       dispatch(changePassword(account)) 
       }
@@ -147,10 +141,6 @@ const UserView = () => {
               <MDBValidation className='row g-3'> 
 
             <MDBRow>
-            <MDBCol md='12'>
-                <MDBCardText className="mb-0">Confirm Email : </MDBCardText>
-                <MDBInput wrapperClass='mb-4'  id='form2' type='text' onChange={onChangeMail} value={account.email}/>
-              </MDBCol>
               <MDBCol md='12'>
                 <MDBCardText className="mb-0">Password : </MDBCardText>
                 <MDBInput wrapperClass='mb-4'  id='form2' type='password' onChange={onChangePassword} value={account.password} required/>

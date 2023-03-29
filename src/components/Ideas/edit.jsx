@@ -14,7 +14,8 @@ import {
   MDBTextArea,
   MDBCardImage,
   MDBIcon,
-  MDBValidation
+  MDBValidation,
+  MDBSpinner
 } from 'mdb-react-ui-kit';
 import Navbar1 from '../navbar/navbar1';
 import './addIdea.css'
@@ -25,6 +26,7 @@ export default function UpdateIdea() {
     const { id } = useParams()
      const dispatch = useDispatch();
      const ideaInDb = useSelector((state) => selectIdeaById(state, id))
+     let {loading, status} = useSelector((state => state.ideas))
 
      useEffect(()  => {
       dispatch(getIdeaById(id)) 
@@ -155,6 +157,13 @@ export default function UpdateIdea() {
                </MDBCol>
             </MDBRow>   
           <MDBCol md='12'>
+          {loading &&  <MDBSpinner role='status'>
+                <span className='visually-hidden'>Loading...</span>
+              </MDBSpinner>
+              }
+              {status === 'success' &&    
+                <p style={{color: "green"}}>Update Success</p>
+              }   
           <button type='submit' className="btn btn-primary" onClick={handleSubmit}>Update Idea</button>
           </MDBCol>       
             </MDBValidation>  

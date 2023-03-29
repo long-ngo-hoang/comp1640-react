@@ -172,14 +172,6 @@ export default function DetailIdea() {
                   <div className="d-flex justify-content-between">
                     <div className="d-flex flex-row align-items-center">
                       <p className="small mb-0">{item?.isAnonymous ? <div>Anonymous </div> : <div>{item.author}</div>}</p>
-                      <button style={{background: "none", border: "none"}}>
-                        <Link to={`/departments/edit/${item.id}`}>
-                          <MDBIcon
-                            icon="edit"
-                            color="success"
-                          />
-                        </Link>
-                      </button>
                       <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
                         <MDBIcon
                           icon="trash-alt"

@@ -289,6 +289,7 @@ const ideasSlice = createSlice({
     .addCase(updateIdea.fulfilled, (state, action) => {
       state.status = 'idle';
       state.loading = false;
+      state.status = 'success';
       let currentIdea = state.ideas.filter((item)=> item.id !== action.payload.id);
       currentIdea = action.payload;
     })

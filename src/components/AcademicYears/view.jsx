@@ -114,6 +114,8 @@ const EditAcademicYears = () => {
                                               />
                                             </Link>
                                         </button>
+                                        {decodedToken.Roles !== "Quality Assurance Manager" &&
+
                                             <button style={{background: "none", border: "none"}} onClick={() => handleRemove(item.id)}>
                                               <MDBIcon
                                                 fas
@@ -123,6 +125,7 @@ const EditAcademicYears = () => {
                                                 className="me-3"
                                               />
                                               </button>
+                                          }
                                           </td>
                                         </tr>
                                        ))}

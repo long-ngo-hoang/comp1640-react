@@ -16,7 +16,6 @@ export const updateReaction = createAsyncThunk('reactionList/updateReaction', as
     if (error.response && error.response.status == 401) {
         return rejectWithValue("End of login sesion")
     } if (error.response && error.response.status == 403){
-      console.log("a", error)
       return rejectWithValue("Your accounts don't can't access")
     }else {
         return rejectWithValue(error.response.data)

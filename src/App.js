@@ -6,7 +6,6 @@ import UpdateIdea from './components/Ideas/edit';
 import ViewCategories from './components/Categories/view';
 import AddCategories from './components/Categories/create';
 import UpdateCategories from './components/Categories/edit';
-import EditComments from './components/Comments/edit';
 import ViewDepartments from './components/Departments/view';
 import AddDepartments from './components/Departments/create';
 import UpdateDepartments from './components/Departments/edit';
@@ -55,7 +54,6 @@ function App() {
           <Route path="create" element={<AddIdea />} />
           <Route path="detail/:id" element={<DetailIdea />} />
           <Route path="edit/:id" element={<UpdateIdea />} />
-          <Route path="comment/edit/:id" element={<EditComments />} />
         </Route>
 
         <Route path="categories" element={<RequireAuth allowedRoles={["Quality Assurance Manager"]} />}>

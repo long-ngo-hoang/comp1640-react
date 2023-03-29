@@ -29,7 +29,6 @@ const persistCongig = {
     key: 'root',
     storage,
    blacklist: ['files'],
-  //  transforms: [saveSubsetFilter]
 };
 
 const reducer = combineReducers({
