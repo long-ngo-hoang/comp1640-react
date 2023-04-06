@@ -100,11 +100,7 @@ const [currentPage, setCurrentPage] = useState(1)
                 Manage Users
               </MDBNavbarLink>
             </MDBNavbarItem> 
-            <MDBNavbarItem>
-            <MDBNavbarLink active aria-current='page' href='https://localhost:7044/Documents/DownloadZip'>
-                Download Documents
-              </MDBNavbarLink>
-            </MDBNavbarItem> 
+
             </MDBNavbarNav>
 
             // https://localhost:7044/Documents/DownloadZip
@@ -136,6 +132,11 @@ const [currentPage, setCurrentPage] = useState(1)
                Statistical analysis 
               </MDBNavbarLink>
             </MDBNavbarItem>
+            <MDBNavbarItem>
+            <MDBNavbarLink active aria-current='page' href='https://localhost:7044/Documents/DownloadZip'>
+                Download Documents
+              </MDBNavbarLink>
+            </MDBNavbarItem> 
             </MDBNavbarNav>
             }
 
@@ -185,7 +186,10 @@ const [currentPage, setCurrentPage] = useState(1)
                 </MDBDropdownMenu>
               </MDBDropdown>
             </MDBNavbarItem>
-          </MDBNavbarNav>
+          </MDBNavbarNav> 
+          <MDBNavbarLink active aria-current='page' href='#'>
+            <span>{decodedToken.UserName} </span>
+          </MDBNavbarLink>
           <MDBNavbarLink active aria-current='page' href='/myProfile/view'>
               <button  style={{background: "none", border: "none"}} >
                 <MDBIcon fas icon="user"  size="lg"/>

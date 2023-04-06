@@ -88,13 +88,23 @@ export default function UpdateAcademicYear() {
    const handleSubmit = async (event )=> {
     if(academicYears.name !== ''){
         event.preventDefault();
+        if(decodedToken.Roles === "Quality Assurance Manager"){
         await dispatch(updateAcademicYear({id: id,            
           name: academicYears.name,
-          StartDate: startDate, 
+          StartDate: academicYear?.startDate, 
           ClosureDate: closureDate, 
-          FinalClosureDate: finalClosureDate})
+          FinalClosureDate: academicYear?.finalClosureDate})
         ) 
         navigate(`/academicYears/view`)
+        }else{
+          await dispatch(updateAcademicYear({id: id,            
+            name: academicYears.name,
+            StartDate: startDate, 
+            ClosureDate: academicYear?.closureDate, 
+            FinalClosureDate: finalClosureDate})
+          ) 
+          navigate(`/academicYears/view`)
+        }
     }
   }  
 
